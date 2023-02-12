@@ -1,0 +1,141 @@
+---
+title: "Data download from CRSP"
+author:
+  - Marie Dyveke Olafsen 
+output: 
+  html_document:
+    toc: true
+    toc_depth: 2
+date: "`r Sys.Date()`"
+---
+
+```{r setup, include=FALSE}
+# set default chunk options
+knitr::opts_chunk$set(
+  echo = TRUE,
+  cache = TRUE,
+  autodep = TRUE
+  )
+```
+
+# Setup
+
+```{r}
+source("/Users/mariedyveke/Documents/GitHub/thesis/R/Lib.R")
+
+setwd <- "/Users/mariedyveke/Documents/GitHub/thesis"
+datapath <- "/Users/mariedyveke/Documents/GitHub/thesis/data"
+sqlpath <- "/Users/mariedyveke/Documents/GitHub/thesis/SQL"
+```
+
+Establishing the connection
+
+```{r}
+wrds <- dbConnect(Postgres(),
+                  host='wrds-pgdata.wharton.upenn.edu',
+                  port=9737,
+                  dbname='wrds',
+                  sslmode='require',
+                  user='aumari96a8')
+```
+
+# Overview of Data
+
+```{r}
+res <- dbSendQuery(wrds, 
+                  "select column_name
+                   from information_schema.columns
+                   where table_schema='crsp'
+                   and table_name='dsf'
+                   order by column_name")
+data <- dbFetch(res, n=-1)
+dbClearResult(res)
+
+# The following connection is not available (the WRDS is a student user and not faculty)
+# res <- dbSendQuery(wrds, 
+#                   "select column_name
+#                    from information_schema.columns
+#                    where table_schema='optionm'
+#                    and table_name='opprcd'
+#                    order by column_name")
+# data <- dbFetch(res, n=-1)
+# dbClearResult(res)
+# data
+
+```
+
+# Test of structure of downloading of data
+
+```{r}
+query <- read_file(paste0(sqlpath,"/initial.sql")) %>%
+  str_replace_all("@from","'2002-01-01'") %>% 
+  str_replace_all("@to","'2003-01-01'")
+
+# Following query shows that there is app. 3 mio obervations for each year
+
+# res <- dbSendQuery(wrds, "SELECT DISTINCT permno FROM crsp_a_stock.dsf WHERE date BETWEEN '2002-01-01' AND '2003-01-01'")
+# data <- dbFetch(res, n=-1)
+# dbClearResult(res)
+# data %>% nrow() * 365
+
+res <- dbSendQuery(wrds, query)
+data <- dbFetch(res, n=100)
+dbClearResult(res)
+init_data <- data
+
+init_data %>% write_csv(paste0(datapath,"/tmp.csv"))
+
+```
+
+# Actual download
+
+```{r}
+
+years <- 1996:2024
+
+for(step in 1:(length(years)-1)){
+
+  # Setting the particular year
+  query <- read_file(paste0(sqlpath,"/initial.sql")) %>%
+  str_replace_all("@from",paste0("'",years[step],"-01-01'")) %>% 
+  str_replace_all("@to",paste0("'",years[step+1],"-01-01'"))
+  
+  # Downloading the data
+  res <- dbSendQuery(wrds, query)
+  data <- dbFetch(res, n=-1)
+  dbClearResult(res)
+  loop_data <- data
+  
+  # Saving the data
+  loop_data %>% write_csv(paste0(datapath,"/CRSP_allstocks_daily_raw_",years[step],".csv"))
+  
+  print(paste0("Done with file: CRSP_allstocks_daily_raw_",years[step],".csv"))
+}
+```
+
+
+## Colophon 
+<!-- Always keep this section for reproducibility -->
+
+This report has been created inside [RStudio](http://www.rstudio.com/ide/) using [R Markdown](https://rmarkdown.rstudio.com/). 
+
+The report was built using:
+
+```{r message = FALSE, warning = FALSE, echo = FALSE}
+session <- devtools::session_info()
+session$platform
+```
+
+Along with these packages:
+
+```{r message = FALSE, warning = FALSE, echo = FALSE}
+session$packages %>% 
+  select(package, loadedversion, date, source) %>% 
+  DT::datatable(rownames = FALSE,
+                class = 'cell-border stripe',
+                filter = list(position = 'top'),
+                options = list(pageLength = 5, 
+                           autoWidth = FALSE,
+                           bInfo = FALSE,
+                           paging = TRUE))
+```
