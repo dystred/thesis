@@ -1,0 +1,258 @@
+---
+title: "Filtering the data"
+author:
+  - Marie Dyveke Olafsen 
+output: 
+  html_document:
+    toc: true
+    toc_depth: 2
+date: "`r Sys.Date()`"
+---
+
+```{r setup, include=FALSE}
+# set default chunk options
+knitr::opts_chunk$set(
+  echo = TRUE,
+  cache = TRUE,
+  autodep = TRUE
+  )
+```
+
+# Setup
+
+```{r}
+source("/Users/mariedyveke/Documents/GitHub/thesis/R/Lib.R")
+
+setwd <- "/Users/mariedyveke/Documents/GitHub/thesis"
+datapath <- "/Users/mariedyveke/Documents/GitHub/thesis/data"
+sqlpath <- "/Users/mariedyveke/Documents/GitHub/thesis/SQL"
+```
+
+Importing and transforming the data
+
+```{r}
+datafiles <- list.files(datapath) %>% 
+  str_split_fixed(pattern="_",n=5) %>% 
+  as_tibble()
+
+permno_files <- datafiles %>%
+  dplyr::filter(V2 == "PERMNOtoTICKER")
+returns_files <- datafiles %>% 
+  dplyr::filter(V1 == "CRSP" & V2 == "allstocks" & V3 == "daily" & V4 == "raw")
+
+permno_data <- read_csv(file = paste0(datapath,"/",permno_files$V1,"_",permno_files$V2,"_",permno_files$V3), show_col_types = FALSE)
+
+# Unique Permno and tickers - for matching tickers to daily returns
+permnos <- permno_data %>% summarize(uniq = unique(permno)) %>% nrow()
+permtoticker <- permno_data %>% dplyr::filter(!is.na(ticker))  %>% dplyr::select(permno,ticker) %>% unique()
+
+moretickerstoperms <- permtoticker %>% 
+  dplyr::group_by(permno) %>% 
+  dplyr::mutate(tickerstoperm = row_number()) %>% 
+  dplyr::filter(tickerstoperm>1) %>% 
+  dplyr::select(permno) %>% 
+  unique()
+
+# Finding the date of the change in ticker:
+permno_data %>% 
+  dplyr::filter((permno %in% moretickerstoperms$permno) & !is.na(ticker)) %>% 
+  dplyr::group_by(permno) %>% 
+  dplyr::mutate(first_ = row_number()==1,
+                keep_ = row_number()==1 | ticker!=dplyr::lag(ticker)) %>% 
+  dplyr::filter(keep_)
+
+uniq_permnos <- permno_data %>% summarize(uniq = unique(permno))
+rm(permno_data)
+
+years <- 1996:2023
+
+# Calculating weekly/monthly returns + relevant measures
+
+for(year in years){
+  # year=1996
+  
+  tmp_data <- read_csv(file = paste0(datapath,"/",returns_files$V1,"_",returns_files$V2,"_",returns_files$V3,"_",returns_files$V4,"_",year,".csv"), show_col_types = FALSE) %>% 
+    dplyr::mutate(week = week(date),
+                  month = month(date),
+                  bidaskspread = ask-bid,
+                  numtrd = ifelse(numtrd == 99, 0, numtrd),
+                  vol = ifelse(vol<0,NA,vol),
+                  prc = ifelse(prc<0,NA,prc),
+                  bidaskaverage = ifelse(prc<0,-prc,NA))
+  
+  tmp_data %>% 
+    dplyr::group_by(permno,week) %>% 
+    summarize(date = min(date),
+              bidlo = min(c(bidlo,1000000), na.rm = TRUE),
+              askhi = max(c(0,askhi), na.rm = TRUE),
+              closingprice = tail(prc,n=1, na.rm = TRUE),
+              openprice = head(openprc,n=1, na.rm = TRUE),
+              return = (closingprice-openprice)/openprice,
+              volume = sum(vol, na.rm = TRUE),
+              bidaskspread = mean(bidaskspread, na.rm = TRUE),
+              trades = sum(numtrd, na.rm = TRUE),
+              .groups="keep") %>% 
+    write_csv(file = paste0(datapath,"/CRSP_allstocks_weekly_raw",year,".csv"))
+  
+  tmp_data %>% 
+    dplyr::group_by(permno,month) %>% 
+    summarize(date = min(date),
+              bidlo = min(c(bidlo,1000000), na.rm = TRUE),
+              askhi = max(c(0,askhi), na.rm = TRUE),
+              closingprice = tail(prc,n=1, na.rm = TRUE),
+              openprice = head(openprc,n=1, na.rm = TRUE),
+              return = (closingprice-openprice)/openprice,
+              volume = sum(vol, na.rm = TRUE),
+              bidaskspread = mean(bidaskspread, na.rm = TRUE),
+              trades = sum(numtrd, na.rm = TRUE),
+              .groups="keep") %>% 
+    write_csv(file = paste0(datapath,"/CRSP_allstocks_monthly_raw",year,".csv"))
+  
+  rm(tmp_data)
+}
+
+```
+
+# Overview of Data
+
+```{r}
+
+
+
+for(i in 2:permnos){
+  #i=1
+  tmp_data_total = tibble()
+  tmp_permno <- uniq_permnos$uniq[i]
+  
+  for(step in years){
+    print(step)
+    tmp_data <- read_csv(file = paste0(datapath,"/",returns_files$V1,"_",returns_files$V2,"_",returns_files$V3,"_",returns_files$V4,"_",step,".csv"), show_col_types = FALSE) %>% 
+      dplyr::filter(permno == tmp_permno)
+    
+    tmp_data_total <- rbind(tmp_data_total,tmp_data)
+  }
+  
+  tmp_data_total %>% unique() %>% write_csv(file = paste0(datapath,"/specific_stocks/CRSP_",tmp_permno,"_daily_raw.csv")) 
+  rm(tmp_data_total)
+}
+```
+
+# Test of structure of downloading of data
+
+```{r}
+query <- read_file(paste0(sqlpath,"/initial.sql")) %>%
+  str_replace_all("@from","'2002-01-01'") %>% 
+  str_replace_all("@to","'2003-01-01'")
+
+# Following query shows that there is app. 3 mio obervations for each year
+
+# res <- dbSendQuery(wrds, "SELECT DISTINCT permno FROM crsp_a_stock.dsf WHERE date BETWEEN '2002-01-01' AND '2003-01-01'")
+# data <- dbFetch(res, n=-1)
+# dbClearResult(res)
+# data %>% nrow() * 365
+
+res <- dbSendQuery(wrds, query)
+data <- dbFetch(res, n=100)
+dbClearResult(res)
+init_data <- data
+
+init_data %>% write_csv(paste0(datapath,"/tmp.csv"))
+
+```
+
+# Actual download
+
+```{r}
+
+years <- 1996:2024
+
+for(step in 1:(length(years)-1)){
+
+  # Setting the particular year
+  query <- read_file(paste0(sqlpath,"/initial.sql")) %>%
+  str_replace_all("@from",paste0("'",years[step],"-01-01'")) %>% 
+  str_replace_all("@to",paste0("'",years[step+1],"-01-01'"))
+  
+  # Downloading the data
+  res <- dbSendQuery(wrds, query)
+  data <- dbFetch(res, n=-1)
+  dbClearResult(res)
+  loop_data <- data
+  
+  # Saving the data
+  loop_data %>% write_csv(paste0(datapath,"/CRSP_allstocks_daily_raw_",years[step],".csv"))
+  
+  print(paste0("Done with file: CRSP_allstocks_daily_raw_",years[step],".csv"))
+}
+```
+
+## Other relevant libraries
+
+```{r}
+# Industry, sector, various accounting measures
+res <- dbSendQuery(wrds, 
+                  "SELECT   column_name
+                   FROM     information_schema.columns
+                   WHERE    table_schema='crspa'
+                        AND table_name='ccmfundq'
+                   ORDER BY column_name")
+data <- dbFetch(res, n=-1)
+dbClearResult(res)
+
+years <- 1995:2024
+
+for(step in 1:(length(years)-1)){
+
+  # Setting the particular year
+  query <- "SELECT * FROM compa.fundq WHERE datadate BETWEEN @from AND @to" %>%
+  str_replace_all("@from",paste0("'",years[step],"-01-01'")) %>% 
+  str_replace_all("@to",paste0("'",years[step+1],"-01-01'"))
+  
+  # Downloading the data
+  res <- dbSendQuery(wrds, query)
+  data <- dbFetch(res, n=-1)
+  dbClearResult(res)
+  loop_data <- data
+  
+  # Saving the data
+  loop_data %>% write_csv(paste0(datapath,"/CRSP_fundamentals_raw_",years[step],".csv"))
+  
+  print(paste0("Done with file: CRSP_fundamentals_raw_",years[step],".csv"))
+}
+
+# PERMNO identification
+res <- dbSendQuery(wrds, "SELECT date, permno, permco, ticker FROM crsp.dse WHERE date BETWEEN '1996-01-01' AND '2024-01-01'")
+data <- dbFetch(res, n=-1)
+dbClearResult(res)
+permno_data <- data
+
+permno_data %>% write_csv(paste0(datapath,"/CRSP_PERMNOtoTICKER_raw.csv"))
+
+
+
+```
+
+## Colophon 
+<!-- Always keep this section for reproducibility -->
+
+This report has been created inside [RStudio](http://www.rstudio.com/ide/) using [R Markdown](https://rmarkdown.rstudio.com/). 
+
+The report was built using:
+
+```{r message = FALSE, warning = FALSE, echo = FALSE}
+session <- devtools::session_info()
+session$platform
+```
+
+Along with these packages:
+
+```{r message = FALSE, warning = FALSE, echo = FALSE}
+session$packages %>% 
+  select(package, loadedversion, date, source) %>% 
+  DT::datatable(rownames = FALSE,
+                class = 'cell-border stripe',
+                filter = list(position = 'top'),
+                options = list(pageLength = 5, 
+                           autoWidth = FALSE,
+                           bInfo = FALSE,
+                           paging = TRUE))

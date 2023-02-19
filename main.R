@@ -27,7 +27,7 @@ data
 # Seeing which tables axist in a certain library
 res <- dbSendQuery(wrds, "SELECT DISTINCT table_name
                    FROM information_schema.columns
-                   WHERE table_schema='crsp' -- Specifying the particular library
+                   WHERE table_schema='compa' -- Specifying the particular library
                    ORDER BY table_name")
 data <- dbFetch(res, n=-1)
 dbClearResult(res)
@@ -36,15 +36,15 @@ data
 # Specifying specific table within a library
 res <- dbSendQuery(wrds, "select column_name
                    from information_schema.columns
-                   where table_schema='crspa'
-                   and table_name='dsf'
+                   where table_schema='compa'
+                   and table_name='fundq'
                    order by column_name")
 data <- dbFetch(res, n=-1)
 dbClearResult(res)
 data
 
 # Get the first 10 rows of data from dataset
-res <- dbSendQuery(wrds, "SELECT * FROM crsp_a_stock.dsf")
+res <- dbSendQuery(wrds, "SELECT * FROM crsp.dse")
 data <- dbFetch(res, n=10)
 dbClearResult(res)
 data

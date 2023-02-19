@@ -43,24 +43,24 @@ wrds <- dbConnect(Postgres(),
 
 ```{r}
 res <- dbSendQuery(wrds, 
-                  "select column_name
-                   from information_schema.columns
-                   where table_schema='crsp'
-                   and table_name='dsf'
-                   order by column_name")
+                  "SELECT   column_name
+                   FROM     information_schema.columns
+                   WHERE    table_schema='crsp'
+                        AND table_name='dsf'
+                   ORDER BY column_name")
 data <- dbFetch(res, n=-1)
 dbClearResult(res)
 
 # The following connection is not available (the WRDS is a student user and not faculty)
-# res <- dbSendQuery(wrds, 
-#                   "select column_name
-#                    from information_schema.columns
-#                    where table_schema='optionm'
-#                    and table_name='opprcd'
-#                    order by column_name")
-# data <- dbFetch(res, n=-1)
-# dbClearResult(res)
-# data
+res <- dbSendQuery(wrds, 
+                  "select column_name
+                   from information_schema.columns
+                   where table_schema='optionm'
+                   and table_name='opprcd'
+                   order by column_name")
+data <- dbFetch(res, n=-1)
+dbClearResult(res)
+data
 
 ```
 
@@ -73,10 +73,10 @@ query <- read_file(paste0(sqlpath,"/initial.sql")) %>%
 
 # Following query shows that there is app. 3 mio obervations for each year
 
-# res <- dbSendQuery(wrds, "SELECT DISTINCT permno FROM crsp_a_stock.dsf WHERE date BETWEEN '2002-01-01' AND '2003-01-01'")
-# data <- dbFetch(res, n=-1)
-# dbClearResult(res)
-# data %>% nrow() * 365
+res <- dbSendQuery(wrds, "SELECT * FROM optionm.opprcd WHERE date BETWEEN '1996-01-01' AND '2023-01-01'")
+data <- dbFetch(res, n=-1)
+dbClearResult(res)
+data
 
 res <- dbSendQuery(wrds, query)
 data <- dbFetch(res, n=100)
@@ -113,6 +113,51 @@ for(step in 1:(length(years)-1)){
 }
 ```
 
+## Other relevant libraries
+
+```{r}
+# Industry, sector, various accounting measures
+res <- dbSendQuery(wrds, 
+                  "SELECT   column_name
+                   FROM     information_schema.columns
+                   WHERE    table_schema='crspa'
+                        AND table_name='ccmfundq'
+                   ORDER BY column_name")
+data <- dbFetch(res, n=-1)
+dbClearResult(res)
+
+years <- 1995:2024
+
+for(step in 1:(length(years)-1)){
+
+  # Setting the particular year
+  query <- "SELECT * FROM compa.fundq WHERE datadate BETWEEN @from AND @to" %>%
+  str_replace_all("@from",paste0("'",years[step],"-01-01'")) %>% 
+  str_replace_all("@to",paste0("'",years[step+1],"-01-01'"))
+  
+  # Downloading the data
+  res <- dbSendQuery(wrds, query)
+  data <- dbFetch(res, n=-1)
+  dbClearResult(res)
+  loop_data <- data
+  
+  # Saving the data
+  loop_data %>% write_csv(paste0(datapath,"/CRSP_fundamentals_raw_",years[step],".csv"))
+  
+  print(paste0("Done with file: CRSP_fundamentals_raw_",years[step],".csv"))
+}
+
+# PERMNO identification
+res <- dbSendQuery(wrds, "SELECT date, permno, permco, ticker FROM crsp.dse WHERE date BETWEEN '1996-01-01' AND '2024-01-01'")
+data <- dbFetch(res, n=-1)
+dbClearResult(res)
+permno_data <- data
+
+permno_data %>% write_csv(paste0(datapath,"/CRSP_PERMNOtoTICKER_raw.csv"))
+
+
+
+```
 
 ## Colophon 
 <!-- Always keep this section for reproducibility -->
