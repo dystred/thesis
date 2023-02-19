@@ -1,0 +1,134 @@
+
+\ProvidesPackage{Preamble}
+
+
+%%% Define default text and math fonts %%%
+\newcommand\hmmax{0}
+\newcommand\bmmax{0}
+%\usepackage[bitstream-charter]{mathdesign}
+\usepackage[T1]{fontenc}
+\let\circledS\undefined
+
+%% 	Useful for equation referencing etc. %%
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bm}
+
+%\usepackage[el,nf]{coelacanth}	%Nice til forside
+
+%% Encoding, margins, and figure packages %%
+\usepackage[latin9]{inputenc}
+\usepackage{geometry}
+\geometry{verbose,tmargin=2.3cm,bmargin=2.2cm,lmargin=1.8cm,rmargin=1.8cm}
+%\setlength{\parskip}{\smallskipamount}
+\setlength{\parskip}{0.4em} % 0.4em
+\setlength{\parindent}{2mm} % 1.5em
+\usepackage{float}
+\usepackage{changepage}
+\usepackage{graphbox}
+\usepackage{geometry}
+
+%% Setting equation numbering to count as Section#.X  %%
+\numberwithin{equation}{section}
+
+%% YES mark
+\usepackage{tikz}
+\def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;} 
+
+
+
+%Declaring \e -> Indicator function
+\usepackage{bbm}
+\DeclareSymbolFont{bbsymbol}{U}{bbm}{m}{n}
+\DeclareMathSymbol{\bbonesmall}{\mathalpha}{bbsymbol}{`1}
+\newcommand{\bbone}{\mathalpha{\scalebox{1.2}{$\bbonesmall$}}}
+
+%% For appendix. We do not use it
+\usepackage{appendix}
+
+%% Setting line spacing
+\usepackage{setspace}
+\setstretch{1.325}
+\makeatletter
+\newread\tmp
+
+%% Character Counting 
+\newcommand{\quickcharcount}[1]{%
+  \immediate\write18{texcount -1 -sum -merge -char #1.tex > #1-chars.sum}%
+  \openin\tmp=#1-chars.sum%
+  \read\tmp to \thechar%
+  \closein\tmp%
+}
+
+\newcommand{\quickwordcount}[1]{%
+  \immediate\write18{texcount -1 -sum -merge #1.tex > #1-words.sum}%
+  \openin\tmp=#1-words.sum%
+  \read\tmp to \theword%
+  \closein\tmp%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\usepackage{mathtools}
+\usepackage{pgffor}
+\usepackage{amsfonts}
+\usepackage{dsfont}
+\usepackage[counterclockwise]{rotating}
+\usepackage{float}
+\usepackage{afterpage}
+\usepackage{subcaption}
+\usepackage{threeparttable}
+\usepackage[export]{adjustbox}
+\usepackage{graphicx}
+\graphicspath{ {./Billeder/} }
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage[labelfont=sc]{caption}
+\usepackage[colorlinks=true,citecolor=blue]{hyperref}
+\usepackage{xcolor}
+%\usepackage{setspace}
+\usepackage{import}
+\usepackage{tablefootnote}
+\usepackage{tabularx}
+\usepackage[lastpage,user]{zref}
+\usepackage{lscape}
+\usepackage{selinput}
+\SelectInputMappings{   % Semi-automatic determination
+	ae={æ},               % of input encoding
+	oslash={ø},           % by a list of selected glyphs
+	Euro={€}              % see: http://partners.adobe.com/public/developer/en/opentype/glyphlist.txt
+}
+\usepackage{fancyhdr}% http://ctan.org/pkg/fancyhdr 
+\pagestyle{fancy} % Set page style to "fancy"
+\usepackage{titling}
+\usepackage{lastpage} \fancyhead{} % Clear all headers 
+\fancyfoot{}% Clear all footers
+\fancyhead{}% Clear all footers
+\fancyhead[L]{\small \textit {Marie Dyveke Olafsen}}
+\fancyhead[R]{\nouppercase\leftmark} %Right
+\cfoot{\thepage\ of \zpageref{LastPage}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{corollary}{Corollary}[section]
+\newtheorem{definition}{Definition}[section]
+\makeatother
+
+
+% Useful shorthand stuff
+
+\newcommand{\Q}{\mathbb{Q}}      % Q measure
+\renewcommand{\P}{\mathbb{P}}      % P measure
+\newcommand{\R}{\mathbb{R}}    % R real number
+\newcommand{\e}{\mathrm{e}}    % e exponential
+\newcommand{\X}{\mathbb{X}}    % e exponential
+\renewcommand{\exp}{\mathrm{exp}}% exp
+\renewcommand{\log}{\mathrm{log}}% exp
+\newcommand{\nneval}[1]{\mathcal{NN}_{\Theta}\left(#1\right)}
+\newcommand{\nn}{\mathcal{NN}_{\Theta}}
+\newcommand{\nnevalwx}[2]{\mathcal{NN}_{#1}\left(#2\right)}
+\newcommand{\pspace}[1]{\left(\Omega,\mathcal{F},\mathbb{#1}\right)}
+\newcommand{\filtpspace}[1]{\left(\Omega,\mathcal{F},\left(\mathcal{F}_t\right)_{0\leq t \leq T},\mathbb{#1}\right)}
+\renewcommand{\red}[1] {\textcolor{BrickRed}{#1}}
+\renewcommand{\redmath}[1] {\textcolor{BrickRed}{\text{#1}}}
+\usepackage{natbib}
+
