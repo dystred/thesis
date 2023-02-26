@@ -69,7 +69,6 @@ years <- 1996:2023
 # Calculating weekly/monthly returns + relevant measures
 
 for(year in years){
-  # year=1996
   
   tmp_data <- read_csv(file = paste0(datapath,"/",returns_files$V1,"_",returns_files$V2,"_",returns_files$V3,"_",returns_files$V4,"_",year,".csv"), show_col_types = FALSE) %>% 
     dplyr::mutate(week = week(date),
@@ -117,120 +116,27 @@ for(year in years){
 
 ```{r}
 
+years <- 1996:2022
 
-
-for(i in 2:permnos){
-  #i=1
+for(i in 7:permnos){
+  print(i/permnos)
   tmp_data_total = tibble()
   tmp_permno <- uniq_permnos$uniq[i]
   
   for(step in years){
-    print(step)
-    tmp_data <- read_csv(file = paste0(datapath,"/",returns_files$V1,"_",returns_files$V2,"_",returns_files$V3,"_",returns_files$V4,"_",step,".csv"), show_col_types = FALSE) %>% 
+    # print(step)
+    tmp_data <- read_csv(file = paste0(datapath,"/",returns_files$V1,"_",returns_files$V2,"_monthly_",returns_files$V4,"_",step,".csv"), show_col_types = FALSE) %>% 
       dplyr::filter(permno == tmp_permno)
     
     tmp_data_total <- rbind(tmp_data_total,tmp_data)
   }
   
-  tmp_data_total %>% unique() %>% write_csv(file = paste0(datapath,"/specific_stocks/CRSP_",tmp_permno,"_daily_raw.csv")) 
+  tmp_data_total %>% unique() %>% write_csv(file = paste0(datapath,"/specific_stocks/CRSP_",tmp_permno,"_monthly_raw.csv")) 
   rm(tmp_data_total)
 }
 ```
 
-# Test of structure of downloading of data
 
-```{r}
-query <- read_file(paste0(sqlpath,"/initial.sql")) %>%
-  str_replace_all("@from","'2002-01-01'") %>% 
-  str_replace_all("@to","'2003-01-01'")
-
-# Following query shows that there is app. 3 mio obervations for each year
-
-# res <- dbSendQuery(wrds, "SELECT DISTINCT permno FROM crsp_a_stock.dsf WHERE date BETWEEN '2002-01-01' AND '2003-01-01'")
-# data <- dbFetch(res, n=-1)
-# dbClearResult(res)
-# data %>% nrow() * 365
-
-res <- dbSendQuery(wrds, query)
-data <- dbFetch(res, n=100)
-dbClearResult(res)
-init_data <- data
-
-init_data %>% write_csv(paste0(datapath,"/tmp.csv"))
-
-```
-
-# Actual download
-
-```{r}
-
-years <- 1996:2024
-
-for(step in 1:(length(years)-1)){
-
-  # Setting the particular year
-  query <- read_file(paste0(sqlpath,"/initial.sql")) %>%
-  str_replace_all("@from",paste0("'",years[step],"-01-01'")) %>% 
-  str_replace_all("@to",paste0("'",years[step+1],"-01-01'"))
-  
-  # Downloading the data
-  res <- dbSendQuery(wrds, query)
-  data <- dbFetch(res, n=-1)
-  dbClearResult(res)
-  loop_data <- data
-  
-  # Saving the data
-  loop_data %>% write_csv(paste0(datapath,"/CRSP_allstocks_daily_raw_",years[step],".csv"))
-  
-  print(paste0("Done with file: CRSP_allstocks_daily_raw_",years[step],".csv"))
-}
-```
-
-## Other relevant libraries
-
-```{r}
-# Industry, sector, various accounting measures
-res <- dbSendQuery(wrds, 
-                  "SELECT   column_name
-                   FROM     information_schema.columns
-                   WHERE    table_schema='crspa'
-                        AND table_name='ccmfundq'
-                   ORDER BY column_name")
-data <- dbFetch(res, n=-1)
-dbClearResult(res)
-
-years <- 1995:2024
-
-for(step in 1:(length(years)-1)){
-
-  # Setting the particular year
-  query <- "SELECT * FROM compa.fundq WHERE datadate BETWEEN @from AND @to" %>%
-  str_replace_all("@from",paste0("'",years[step],"-01-01'")) %>% 
-  str_replace_all("@to",paste0("'",years[step+1],"-01-01'"))
-  
-  # Downloading the data
-  res <- dbSendQuery(wrds, query)
-  data <- dbFetch(res, n=-1)
-  dbClearResult(res)
-  loop_data <- data
-  
-  # Saving the data
-  loop_data %>% write_csv(paste0(datapath,"/CRSP_fundamentals_raw_",years[step],".csv"))
-  
-  print(paste0("Done with file: CRSP_fundamentals_raw_",years[step],".csv"))
-}
-
-# PERMNO identification
-res <- dbSendQuery(wrds, "SELECT date, permno, permco, ticker FROM crsp.dse WHERE date BETWEEN '1996-01-01' AND '2024-01-01'")
-data <- dbFetch(res, n=-1)
-dbClearResult(res)
-permno_data <- data
-
-permno_data %>% write_csv(paste0(datapath,"/CRSP_PERMNOtoTICKER_raw.csv"))
-
-
-
-```
 
 ## Colophon 
 <!-- Always keep this section for reproducibility -->
