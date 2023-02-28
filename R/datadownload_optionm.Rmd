@@ -37,65 +37,471 @@ wrds <- dbConnect(Postgres(),
                   port=9737,
                   dbname='wrds',
                   sslmode='require',
-                  user='derivatives2023')
+                  user='aumari96a8')
 
 ```
 
 # Overview of Data
 
 ```{r}
+res <- dbSendQuery(wrds, "select distinct table_schema
+                   from information_schema.tables
+                   where table_type ='VIEW'
+                   or table_type ='FOREIGN TABLE'
+                   order by table_schema")
+data <- dbFetch(res, n=-1)
+dbClearResult(res)
+data
+
+res <- dbSendQuery(wrds, "SELECT DISTINCT table_name
+                   FROM information_schema.columns
+                   WHERE table_schema='optionm' -- Specifying the particular library
+                   ORDER BY table_name")
+data <- dbFetch(res, n=-1)
+dbClearResult(res)
+data
+```
+
+```{r}
+
+# Not option, option_price_view
 res <- dbSendQuery(wrds, 
                   "SELECT   column_name
                    FROM     information_schema.columns
-                   WHERE    table_schema='crsp'
-                        AND table_name='dsf'
+                   WHERE    table_schema='optionm'
+                        AND table_name='option_price_view'
                    ORDER BY column_name")
 data <- dbFetch(res, n=-1)
 dbClearResult(res)
-
-# The following connection is not available (the WRDS is a student user and not faculty)
-res <- dbSendQuery(wrds, 
-                  "select column_name
-                   from information_schema.columns
-                   where table_schema='optionm'
-                   and table_name='opprcd'
-                   order by column_name")
-data <- dbFetch(res, n=-1)
-dbClearResult(res)
 data
 
 ```
 
-# Test of structure of downloading of data
-
 ```{r}
-query <- read_file(paste0(sqlpath,"/initial.sql")) %>%
-  str_replace_all("@from","'2002-01-01'") %>% 
-  str_replace_all("@to","'2003-01-01'")
-
-# Following query shows that there is app. 3 mio obervations for each year
-
-res <- dbSendQuery(wrds, "SELECT * FROM optionm.opprcd WHERE date BETWEEN '1996-01-01' AND '2023-01-01'")
-data <- dbFetch(res, n=-1)
+res <- dbSendQuery(wrds,
+                   "SELECT c.*, 
+                           perms.permno,
+                           p.put_vol, 
+                           p.put_open_interest, 
+                           p.put_impl_vol, 
+                           call_impl_vol - put_impl_vol AS impl_spread
+                    FROM 
+                        (SELECT secid, 
+                                date, 
+                                exdate, 
+                                strike_price, 
+                                volume AS call_vol, 
+                                open_interest AS call_open_interest, 
+                                impl_volatility AS call_impl_vol
+                         FROM optionm.opprcd1996
+                         WHERE 1=1
+                           AND cp_flag = 'C' 
+                           AND contract_size = 100
+                        ) c
+                   INNER JOIN
+                        (SELECT secid, 
+                                date, 
+                                exdate, 
+                                strike_price, 
+                                volume AS put_vol, 
+                                open_interest AS put_open_interest, 
+                                impl_volatility AS put_impl_vol
+                         FROM optionm.opprcd1996
+                         WHERE 1=1
+                           AND cp_flag = 'P' 
+                           AND contract_size = 100
+                        ) p
+                    ON    c.date         = p.date 
+                      AND c.secid        = p.secid 
+                      AND c.exdate       = p.exdate 
+                      AND c.strike_price = p.strike_price)
+                   
+                   "
+                   )
+data <- dbFetch(res,n=10)
 dbClearResult(res)
 data
-
-res <- dbSendQuery(wrds, query)
-data <- dbFetch(res, n=100)
-dbClearResult(res)
-init_data <- data
-
-init_data %>% write_csv(paste0(datapath,"/tmp.csv"))
-
 ```
 
-# Actual download
+# Actual Download
 
 ```{r}
+query <- "SELECT c.*, 
+                 c.strike/c.forward_price AS moneyness,
+                 p.put_vol, 
+                 p.put_open_interest, 
+                 p.put_impl_vol, 
+                 call_impl_vol - put_impl_vol AS impl_spread
+          FROM 
+              (SELECT secid, 
+                      date, 
+                      DATE_PART('week',date) AS week_,
+                      exdate, 
+                      forward_price,
+                      strike_price/contract_size AS strike, 
+                      volume AS call_vol, 
+                      open_interest AS call_open_interest, 
+                      impl_volatility AS call_impl_vol
+               FROM optionm.opprcd@year
+               WHERE 1=1
+                 AND cp_flag = 'C' 
+                 AND contract_size >= 1
+                 AND COALESCE(forward_price,999999) > 0
+              ) c
+          INNER JOIN
+              (SELECT secid, 
+                      date, 
+                      exdate, 
+                      strike_price/contract_size AS strike, 
+                      volume AS put_vol, 
+                      open_interest AS put_open_interest, 
+                      impl_volatility AS put_impl_vol
+               FROM optionm.opprcd@year
+               WHERE 1=1
+                 AND cp_flag = 'P' 
+                 AND contract_size >= 1
+              ) p
+          ON    c.date   = p.date 
+            AND c.secid  = p.secid 
+            AND c.exdate = p.exdate 
+            AND c.strike = p.strike
+          WHERE 1=1
+              AND c.week_ = @week
+          "
+# %>% str_replace_all("@year","1996")
+years = 1996:2021
+months = 1:12
+weeks = 0:54
 
+for(year in years){
+  for(week in weeks){
+    # year = 2020
+    # month = 1
+    # week = 9
+    
+    print(paste0("Year: ", year, " and week: ", week, "."))
+    
+    query_tmp <- query %>% 
+      str_replace_all("@year",paste0(year)) %>% 
+      str_replace_all("@week",paste0(week))
+    
+    print("query")
+    res <- dbSendQuery(wrds, query_tmp)
+    print("fetch")
+    data <- dbFetch(res,n=-1)
+    dbClearResult(res)
+    
+    print("download data")
+    
+    # Raw data
+    data %>% write_csv(paste0(datapath,"/OPTIONM_alloptions_daily_raw_week",week,"year",year,".csv"))
+    data %>% 
+      dplyr::filter(
+            # Condition 1: impl vol between 0 and 150%
+              (call_impl_vol >= 0 & call_impl_vol <= 1.5) 
+            & (put_impl_vol  >= 0 & put_impl_vol  <= 1.5) 
+            
+            # Condition 2: TTM longer than a week and less than a year
+            & (difftime(exdate,date,units="days") >= 7) 
+            & (difftime(exdate,date,units="days") <= 365)
+            
+            # Condition 3: moneyness between 0.7 and 1.3
+            & ((moneyness >= 0.7 & moneyness <= 1.3) | is.na(moneyness))
+          ) %>% 
+      write_csv(paste0(datapath,"/OPTIONM_alloptions_daily_filtered_week",week,"year",year,".csv"))
+    
+    # Metadata :
+    data %>% 
+      dplyr::summarize(secids = n_distinct(secid), 
+                observations = n(),
+                observations_per_secid = observations / secids,
+                average_open_interest_puts = mean(put_open_interest, na.rm = TRUE),
+                average_open_interest_calls = mean(call_open_interest, na.rm = TRUE),
+                average_moneyness = mean(moneyness, na.rm = TRUE),
+                model = "All_data"
+                ) %>% 
+      rbind(
+        data %>% 
+          dplyr::filter(
+            # Condition 1: impl vol between 0 and 150%
+              (call_impl_vol >= 0 & call_impl_vol <= 1.5) 
+            & (put_impl_vol  >= 0 & put_impl_vol  <= 1.5) 
+            
+            # Condition 2: TTM longer than a week and less than a year
+            & (difftime(exdate,date,units="days") >= 7) 
+            & (difftime(exdate,date,units="days") <= 365)
+            
+            # Condition 3: moneyness between 0.7 and 1.3
+            & ((moneyness >= 0.7 & moneyness <= 1.3) | is.na(moneyness))
+          ) %>% 
+          dplyr::summarize(secids = n_distinct(secid), 
+                observations = n(),
+                observations_per_secid = observations / secids,
+                average_open_interest_puts = mean(put_open_interest, na.rm = TRUE),
+                average_open_interest_calls = mean(call_open_interest, na.rm = TRUE),
+                average_moneyness = mean(moneyness, na.rm = TRUE),
+                model = "Filtered_data"
+                )) %>% 
+      write_csv(paste0(datapath,"/OPTIONM_metadata_weekly_summarized_week",week,"year",year,".csv"))
+    
+    # All data - weekly data
+    data %>% 
+      group_by(secid,date) %>% 
+      summarize(date = min(date),
+                impl_vol_spread = mean(impl_spread, na.rm = TRUE), 
+                weighted_impl_vol_spread = weighted.mean(x = impl_spread, w = call_open_interest+put_open_interest, na.rm = TRUE),
+                sum_open_interest = sum(call_open_interest,put_open_interest),
+                sum_volume = sum(call_vol,put_vol),
+                .groups = "keep") %>%
+      write_csv(paste0(datapath,"/OPTIONM_alloptions_weekly_raw_week",week,"year",year,".csv"))
+    
+    data %>% 
+      dplyr::filter(
+            # Condition 1: impl vol between 0 and 150%
+              (call_impl_vol >= 0 & call_impl_vol <= 1.5) 
+            & (put_impl_vol  >= 0 & put_impl_vol  <= 1.5) 
+            
+            # Condition 2: TTM longer than a week and less than a year
+            & (difftime(exdate,date,units="days") >= 7) 
+            & (difftime(exdate,date,units="days") <= 365)
+            
+            # Condition 3: moneyness between 0.7 and 1.3
+            & ((moneyness >= 0.7 & moneyness <= 1.3) | is.na(moneyness))
+          ) %>% 
+      group_by(secid,date) %>% 
+      summarize(date = min(date),
+                impl_vol_spread = mean(impl_spread, na.rm = TRUE), 
+                weighted_impl_vol_spread = weighted.mean(x = impl_spread, w = call_open_interest+put_open_interest, na.rm = TRUE),
+                sum_open_interest = sum(call_open_interest,put_open_interest),
+                sum_volume = sum(call_vol,put_vol),
+                .groups = "keep") %>%
+      write_csv(paste0(datapath,"/OPTIONM_alloptions_weekly_filtered_week",week,"year",year,".csv"))
+    
+  }
+}
+
+# And 2022: 
+
+query2022 <- "SELECT c.*, 
+                 c.strike/c.forward_price AS moneyness,
+                 p.put_vol, 
+                 p.put_open_interest, 
+                 p.put_impl_vol, 
+                 call_impl_vol - put_impl_vol AS impl_spread
+          FROM 
+              (SELECT secid, 
+                      date, 
+                      DATE_PART('week',date) AS week_,
+                      exdate, 
+                      forward_price,
+                      strike_price/contract_size AS strike, 
+                      volume AS call_vol, 
+                      open_interest AS call_open_interest, 
+                      impl_volatility AS call_impl_vol
+               FROM optionm.opprcd2022
+               WHERE 1=1
+                 AND cp_flag = 'C' 
+                 AND contract_size >= 1
+                 AND COALESCE(forward_price,999999) > 0
+              ) c
+          INNER JOIN
+              (SELECT secid, 
+                      date, 
+                      exdate, 
+                      strike_price/contract_size AS strike, 
+                      volume AS put_vol, 
+                      open_interest AS put_open_interest, 
+                      impl_volatility AS put_impl_vol
+               FROM optionm.opprcd2022
+               WHERE 1=1
+                 AND cp_flag = 'P' 
+                 AND contract_size >= 1
+              ) p
+          ON    c.date   = p.date 
+            AND c.secid  = p.secid 
+            AND c.exdate = p.exdate 
+            AND c.strike = p.strike
+          WHERE 1=1
+              AND c.week_ = @week
+          "
+
+year = 2022
+weeks = 0:54
+
+for(week in weeks){
+  # week = 9
+  
+  print(paste0("Year: ", year, " and week: ", week, "."))
+  
+  query_tmp <- query2022 %>% 
+    str_replace_all("@year",paste0(year)) %>% 
+    str_replace_all("@week",paste0(week))
+  
+  print("query")
+  res <- dbSendQuery(wrds, query_tmp)
+  print("fetch")
+  data <- dbFetch(res,n=-1)
+  dbClearResult(res)
+  
+  print("download data")
+  
+  # Raw data
+  data %>% write_csv(paste0(datapath,"/OPTIONM_alloptions_daily_raw_week",week,"year",year,".csv"))
+  data %>% 
+    dplyr::filter(
+          # Condition 1: impl vol between 0 and 150%
+            (call_impl_vol >= 0 & call_impl_vol <= 1.5) 
+          & (put_impl_vol  >= 0 & put_impl_vol  <= 1.5) 
+          
+          # Condition 2: TTM longer than a week and less than a year
+          & (difftime(exdate,date,units="days") >= 7) 
+          & (difftime(exdate,date,units="days") <= 365)
+          
+          # Condition 3: moneyness between 0.7 and 1.3
+          & ((moneyness >= 0.7 & moneyness <= 1.3) | is.na(moneyness))
+        ) %>% 
+    write_csv(paste0(datapath,"/OPTIONM_alloptions_daily_filtered_week",week,"year",year,".csv"))
+  
+  # Metadata :
+  data %>% 
+    dplyr::summarize(secids = n_distinct(secid), 
+              observations = n(),
+              observations_per_secid = observations / secids,
+              average_open_interest_puts = mean(put_open_interest, na.rm = TRUE),
+              average_open_interest_calls = mean(call_open_interest, na.rm = TRUE),
+              average_moneyness = mean(moneyness, na.rm = TRUE),
+              model = "All_data"
+              ) %>% 
+    rbind(
+      data %>% 
+        dplyr::filter(
+          # Condition 1: impl vol between 0 and 150%
+            (call_impl_vol >= 0 & call_impl_vol <= 1.5) 
+          & (put_impl_vol  >= 0 & put_impl_vol  <= 1.5) 
+          
+          # Condition 2: TTM longer than a week and less than a year
+          & (difftime(exdate,date,units="days") >= 7) 
+          & (difftime(exdate,date,units="days") <= 365)
+          
+          # Condition 3: moneyness between 0.7 and 1.3
+          & ((moneyness >= 0.7 & moneyness <= 1.3) | is.na(moneyness))
+        ) %>% 
+        dplyr::summarize(secids = n_distinct(secid), 
+              observations = n(),
+              observations_per_secid = observations / secids,
+              average_open_interest_puts = mean(put_open_interest, na.rm = TRUE),
+              average_open_interest_calls = mean(call_open_interest, na.rm = TRUE),
+              average_moneyness = mean(moneyness, na.rm = TRUE),
+              model = "Filtered_data"
+              )) %>% 
+    write_csv(paste0(datapath,"/OPTIONM_metadata_weekly_summarized_week",week,"year",year,".csv"))
+  
+  # All data - weekly data
+  data %>% 
+    group_by(secid,date) %>% 
+    summarize(date = min(date),
+              impl_vol_spread = mean(impl_spread, na.rm = TRUE), 
+              weighted_impl_vol_spread = weighted.mean(x = impl_spread, w = call_open_interest+put_open_interest, na.rm = TRUE),
+              sum_open_interest = sum(call_open_interest,put_open_interest),
+              sum_volume = sum(call_vol,put_vol),
+              .groups = "keep") %>%
+    write_csv(paste0(datapath,"/OPTIONM_alloptions_weekly_raw_week",week,"year",year,".csv"))
+  
+  data %>% 
+    dplyr::filter(
+          # Condition 1: impl vol between 0 and 150%
+            (call_impl_vol >= 0 & call_impl_vol <= 1.5) 
+          & (put_impl_vol  >= 0 & put_impl_vol  <= 1.5) 
+          
+          # Condition 2: TTM longer than a week and less than a year
+          & (difftime(exdate,date,units="days") >= 7) 
+          & (difftime(exdate,date,units="days") <= 365)
+          
+          # Condition 3: moneyness between 0.7 and 1.3
+          & ((moneyness >= 0.7 & moneyness <= 1.3) | is.na(moneyness))
+        ) %>% 
+    group_by(secid,date) %>% 
+    summarize(date = min(date),
+              impl_vol_spread = mean(impl_spread, na.rm = TRUE), 
+              weighted_impl_vol_spread = weighted.mean(x = impl_spread, w = call_open_interest+put_open_interest, na.rm = TRUE),
+              sum_open_interest = sum(call_open_interest,put_open_interest),
+              sum_volume = sum(call_vol,put_vol),
+              .groups = "keep") %>%
+    write_csv(paste0(datapath,"/OPTIONM_alloptions_weekly_filtered_week",week,"year",year,".csv"))
+  
+}
 
 
 ```
+
+# Unique SECIDs
+
+```{r}
+secids <- list()
+
+years = 1996:2021
+i = 1
+query_secids <- "SELECT DISTINCT c.secid
+              FROM 
+                  (SELECT secid, 
+                          date, 
+                          DATE_PART('week',date) AS week_,
+                          exdate, 
+                          forward_price,
+                          strike_price/contract_size AS strike, 
+                          volume AS call_vol, 
+                          open_interest AS call_open_interest, 
+                          impl_volatility AS call_impl_vol
+                   FROM optionm.opprcd@year
+                   WHERE 1=1
+                     AND cp_flag = 'C' 
+                     AND contract_size >= 1
+                     AND COALESCE(forward_price,999999) > 0
+                  ) c
+              INNER JOIN
+                  (SELECT secid, 
+                          date, 
+                          exdate, 
+                          strike_price/contract_size AS strike, 
+                          volume AS put_vol, 
+                          open_interest AS put_open_interest, 
+                          impl_volatility AS put_impl_vol
+                   FROM optionm.opprcd@year
+                   WHERE 1=1
+                     AND cp_flag = 'P' 
+                     AND contract_size >= 1
+                  ) p
+              ON    c.date   = p.date 
+                AND c.secid  = p.secid 
+                AND c.exdate = p.exdate 
+                AND c.strike = p.strike
+          "
+
+for(year in years){
+  # year = 2002
+  print(year)
+  
+  query_tmp <- query_secids %>% 
+      str_replace_all("@year",paste0(year))
+  
+  # print("query")
+  res <- dbSendQuery(wrds, query_tmp)
+  # print("fetch")
+  data <- dbFetch(res,n=-1)
+  dbClearResult(res)
+  
+  # print("download data")
+  
+  # Raw data
+  secids[[i]] <- data
+  
+  i=i+1
+}
+
+secids <- do.call(rbind.data.frame, secids)
+uniq_secids <- unique(secids) %>% write_csv(paste0(datapath,"/OPTIONM_SECIDS.csv"))
+```
+
 
 ## Colophon 
 <!-- Always keep this section for reproducibility -->
