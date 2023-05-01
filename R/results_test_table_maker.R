@@ -17,7 +17,7 @@ ff3_data <- suppressWarnings({
   ) %>% 
     dplyr::rename(date = `...1`) %>% 
     mutate(date = ymd(date)) %>% 
-    dplyr::filter(year(date) >= 1996 & year(date) < 2023)
+    dplyr::filter(lubridate::year(date) >= 1996 & lubridate::year(date) < 2023)
 })
 
 ff5_data <- read_csv(paste0(ffdatapath,"/F-F_Research_Data_5_Factors_2x3_daily.CSV"), 
@@ -25,8 +25,8 @@ ff5_data <- read_csv(paste0(ffdatapath,"/F-F_Research_Data_5_Factors_2x3_daily.C
                         show_col_types = FALSE) %>% 
   dplyr::rename(date = `...1`) %>% 
   mutate(date = ymd(date)) %>% 
-  dplyr::filter(year(date) >= 1996 & year(date) < 2023) %>% 
-  mutate(period_ = paste0(year(date),"_",week(date))) %>% 
+  dplyr::filter(lubridate::year(date) >= 1996 & lubridate::year(date) < 2023) %>% 
+  mutate(period_ = paste0(lubridate::year(date),"_",lubridate::week(date))) %>% 
   group_by(period_) %>% 
   mutate(across(c(where(is.numeric)), ~ .x/100 + 1)) %>% 
   mutate(across(c(where(is.numeric)), cumprod)) %>% 
@@ -205,8 +205,8 @@ returns_data %>%
   group_by(portfolio) %>% 
   mutate(Return = cumprod(Return)) %>% 
   ggplot(aes(x=date, y=Return)) +
-  scale_x_date(limits = c(ymd(paste0(year(min(returns_data$date)),"-01-01")),
-                          ymd(paste0(year(max(returns_data$date))+1,"01-01"))), 
+  scale_x_date(limits = c(ymd(paste0(lubridate::year(min(returns_data$date)),"-01-01")),
+                          ymd(paste0(lubridate::year(max(returns_data$date))+1,"01-01"))), 
                expand = c(0, 0)) +
   geom_line(aes(color = portfolio)) +
   labs(color = "Portfolios:",
@@ -281,9 +281,9 @@ if(doublesort){
 ################################################################################
 
 tmp <- returns_data %>% 
-  mutate(period_ = paste0(year(date), "_",week)) %>% 
+  mutate(period_ = paste0(lubridate::year(date), "_",week)) %>% 
   left_join(ff3_data %>% 
-              mutate(period_ = paste0(year(date),"_",week(date)))
+              mutate(period_ = paste0(lubridate::year(date),"_",lubridate::week(date)))
             , by = "period_") %>% 
   fill(RF)
 
@@ -304,6 +304,8 @@ if(grepl(":", colnames(returns_data_excess)[3], fixed = TRUE)){
   returns_data_excess <- returns_data_excess %>% 
     mutate(LSD = .[[3+portfolios_number*(portfolios_number-1)]] - .[[portfolios_number+2]])
 }
+
+# Might be fun to split it into subsamples 1996-2005 - 2006-2012 2013-2021
 
 descr_returns_data <- returns_data_excess %>% 
  summarise(across(c(where(is.numeric), -week), 
@@ -334,9 +336,9 @@ descr_returns_data <- descr_returns_data %>%
 ################################################################################
 
 returns_excess_ff5 <- returns_data %>% 
-  mutate(period_ = paste0(year(date), "_",week)) %>% 
+  mutate(period_ = paste0(lubridate::year(date), "_",week)) %>% 
   left_join(ff5_data %>% 
-              mutate(period_ = paste0(year(date),"_",week(date)))
+              mutate(period_ = paste0(lubridate::year(date),"_",lubridate::week(date)))
             , by = "period_") %>% 
   fill(RF)
 
@@ -493,12 +495,12 @@ dev.off()
 fm_data_simple <- returns_data_excess %>% 
   dplyr::select(c(1:(cols+2))) %>% 
   gather(key = "Portfolio", value = "Return", -c(date.x, week)) %>% 
-  mutate(period = paste0(year(date.x),"_",week(date.x))) %>% 
+  mutate(period = paste0(lubridate::year(date.x),"_",lubridate::week(date.x))) %>% 
   left_join(
     signal_data_raw %>% mutate(Portfolio = ifelse(portfolios2, 
                                                   paste0(portfolios1,"_",portfolios2),
                                                   as.character(portfolios1)),
-                               period = paste0(year(date), "_", week(date) + ifelse(pred, 1, 0))) %>% 
+                               period = paste0(lubridate::year(date), "_", lubridate::week(date) + ifelse(pred, 1, 0))) %>% 
       dplyr::select(Portfolio, period, median),
     by = c("Portfolio", "period")
   ) %>% 
@@ -577,13 +579,57 @@ fm_second_stage_simple_time <- group_fm_second %>%
 ################ Fama Macbeth - Time Invariant + Other Factors #################
 ################################################################################
 
+fm_data_ff5 <- returns_data_excess %>% 
+  dplyr::select(c(1:(cols+2))) %>% 
+  gather(key = "Portfolio", value = "Return", -c(date.x, week)) %>% 
+  mutate(period = paste0(lubridate::year(date.x),"_",lubridate::week(date.x))) %>% 
+  left_join(
+    signal_data_raw %>% mutate(Portfolio = ifelse(portfolios2, 
+                                                  paste0(portfolios1,"_",portfolios2),
+                                                  as.character(portfolios1)),
+                               period = paste0(lubridate::year(date), "_", lubridate::week(date) + ifelse(pred, 1, 0))) %>% 
+      dplyr::select(Portfolio, period, median),
+    by = c("Portfolio", "period")
+  ) %>% 
+  dplyr::select(period, Portfolio, Return, median) %>% 
+  left_join(returns_excess_ff5 %>% 
+              dplyr::select(period_, `Mkt-RF`, SMB, HML, RMW, CMA, RF),
+            by = c("period" = "period_")) %>% 
+  group_by(Portfolio)
 
+# First stage regression
 
+fm_first_stage_ff5 <- fm_data_ff5 %>% 
+  group_map(~ broom::tidy(lm(Return ~ median + `Mkt-RF` + SMB + HML + RMW + CMA, data = .x))) %>% 
+  bind_rows() %>% 
+  mutate(group = sort(rep(1:cols, times=7)))
 
+# Second Stage
+
+fm_second_stage_ff5 <- fm_data_ff5 %>% 
+  mutate(group = cur_group_id()) %>% 
+  dplyr::select(period, Portfolio, Return, group) %>% 
+  left_join(
+    fm_first_stage_ff5 %>% 
+      dplyr::filter(term != "(Intercept)") %>% 
+      dplyr::select(group, beta = estimate, variable = term) %>% 
+      spread(key = variable, value = beta) %>% 
+      dplyr::rename(MKT = `\`Mkt-RF\``)
+    , by = "group") %>% 
+  ungroup() %>% 
+  group_by(period) %>% 
+  group_map(~ broom::tidy(lm(Return ~ median + MKT + SMB + HML + RMW + CMA, data = .x))) %>% 
+  bind_rows() %>% 
+  group_by(term) %>% 
+  summarize(gamma_hat = mean(estimate),
+            gamma_hat_var = var(estimate)) %>% 
+  mutate(tstat = gamma_hat/(gamma_hat_var^0.5))
 
 ################################################################################
 ################## Fama Macbeth - Time Variant + Other Factors #################
 ################################################################################
+
+
 
 
 
