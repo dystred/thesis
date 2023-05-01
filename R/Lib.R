@@ -1,4 +1,7 @@
-rm(list = ls())
+# rm(list = ls())
+
+set.seed(666)
+
 library(tidyverse)
 library(jsonlite)
 library(remotes)
@@ -19,8 +22,31 @@ library(patchwork)
 library(dsbox)
 library(fitdistrplus)
 library(conflicted)
+library(boot)
+library(monotonicity)
+library(moments)
+library(RColorBrewer)
+library(reshape)
+library(rollRegres)
 
 library(RPostgres) # wrds
+
+wrds <- dbConnect(Postgres(),
+                  host='wrds-pgdata.wharton.upenn.edu',
+                  port=9737,
+                  dbname='wrds',
+                  sslmode='require',
+                  user='aumari96a8')
+
+setwd           <- "/Users/mariedyveke/Documents/GitHub/thesis"
+datapath        <- "/Users/mariedyveke/Documents/GitHub/thesis/data"
+datapath1        <- "/Users/mariedyveke/Documents/GitHub/thesis/data1"
+sqlpath         <- "/Users/mariedyveke/Documents/GitHub/thesis/SQL"
+datafilterpath  <- "/Users/mariedyveke/Documents/GitHub/thesis/filtered_data"
+plotpath        <- "/Users/mariedyveke/Documents/GitHub/thesis/plots"
+projectplotpath <- "/Users/mariedyveke/Documents/GitHub/thesis/Project/Plots"
+portfoliopath   <- "/Users/mariedyveke/Documents/GitHub/thesis/portfolios"
+ffdatapath      <- "/Users/mariedyveke/Documents/GitHub/thesis/ff_data"
 
 # Functions
 

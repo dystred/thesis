@@ -79,11 +79,11 @@
 \usepackage{threeparttable}
 \usepackage[export]{adjustbox}
 \usepackage{graphicx}
-\graphicspath{ {./Billeder/} }
+\graphicspath{ {./Plots/} }
 \usepackage{multirow}
 \usepackage{booktabs}
 \usepackage[labelfont=sc]{caption}
-\usepackage[colorlinks=true,citecolor=blue]{hyperref}
+\usepackage[colorlinks=true,citecolor=blue!35!black]{hyperref}
 \usepackage{xcolor}
 %\usepackage{setspace}
 \usepackage{import}
@@ -113,6 +113,20 @@
 \newtheorem{definition}{Definition}[section]
 \makeatother
 
+% theorems and conditions
+\usepackage{tcolorbox}
+\tcbuselibrary{theorems}
+
+\newtcbtheorem[number within=section]{mytheo}{My Theorem}%
+{colback=green!5,colframe=green!35!black,fonttitle=\bfseries}{th}
+\newtcbtheorem[number within=section]{mycondition}{Condition}%
+{colback=blue!5,colframe=blue!15!black,fonttitle=\bfseries}{th}
+
+% Bibliography
+\usepackage{natbib}
+\bibliographystyle{abbrvnat}
+\setcitestyle{authoryear,open={(},close={)}}
+
 
 % Useful shorthand stuff
 
@@ -128,7 +142,7 @@
 \newcommand{\nnevalwx}[2]{\mathcal{NN}_{#1}\left(#2\right)}
 \newcommand{\pspace}[1]{\left(\Omega,\mathcal{F},\mathbb{#1}\right)}
 \newcommand{\filtpspace}[1]{\left(\Omega,\mathcal{F},\left(\mathcal{F}_t\right)_{0\leq t \leq T},\mathbb{#1}\right)}
-\renewcommand{\red}[1] {\textcolor{BrickRed}{#1}}
-\renewcommand{\redmath}[1] {\textcolor{BrickRed}{\text{#1}}}
+%\renewcommand{\red}[1] {\textcolor{BrickRed}{#1}}
+%\renewcommand{\redmath}[1] {\textcolor{BrickRed}{\text{#1}}}
 \usepackage{natbib}
 

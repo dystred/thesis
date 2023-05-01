@@ -51,7 +51,6 @@ res <- dbSendQuery(wrds,
 data <- dbFetch(res, n=-1)
 dbClearResult(res)
 
-# The following connection is not available (the WRDS is a student user and not faculty)
 res <- dbSendQuery(wrds, 
                   "select column_name
                    from information_schema.columns
@@ -157,6 +156,35 @@ permno_data %>% write_csv(paste0(datapath,"/CRSP_PERMNOtoTICKER_raw.csv"))
 
 
 
+```
+
+## Outstanding shares for value-weighted portfolios
+```{r}
+years <- 1996:2022
+
+# for(year in years){
+# 
+#   # Setting the particular year
+#   query <- "SELECT t.permno 
+#                   ,t.shrout
+#             FROM crsp_a_stock.dsf t
+#             WHERE 1=1
+#                   AND t.date >= '1996-01-01' -- The first date of observations on option metrics
+#                   AND t.date BETWEEN @from AND @to" %>%
+#     str_replace_all("@from",paste0("'",year,"-01-01'")) %>% 
+#     str_replace_all("@to",paste0("'",year+1,"-01-01'"))
+#     
+#   # Downloading the data
+#   res <- dbSendQuery(wrds, query)
+#   data <- dbFetch(res, n=-1)
+#   dbClearResult(res)
+#   loop_data <- data
+#   
+#   # Saving the data
+#   loop_data %>% write_csv(paste0(datapath,"/CRSP_allstocks_daily_raw_",years[step],".csv"))
+#   
+#   print(paste0("Done with file: CRSP_allstocks_daily_raw_",years[step],".csv"))
+# }
 ```
 
 ## Colophon 

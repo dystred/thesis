@@ -1,0 +1,50 @@
+% Data and estimation of signal
+
+% Info : https://lib.tsinghua.edu.cn/PDF/OptionMetricsshiyongzhinan.pdf
+
+Data is downloaded from OptionMetrics, CRSP and Compustat. The extensive data has been filtered to only include the stocks registered on American exchanges and are only included in the portfolio formation if a signal is observed in the relevant period, which is the preceding week in the return predictability section and in the week of the return in the cross sectional section. All data have been joined together using the SECIDs, PERMNOs and GKEY.
+
+The conditions for excluding some of the data regarding the implied volatilities are introduced in \cite{cremers2010deviations}. The conditions are elaborated below. Note, however, that as also discussed in \cite{shang2016option}, I will do the analysis for a dataset with the conditions imposed, but also include the results from the analysis without the conditions imposed in the appendix, to show the effect of the conditions and the robustness of the results.
+ 
+ 
+
+The signal is the spread between the implied volatility of call and put options with the same maturity and strike. These values are observed at market close at a daily frequence. I will take an average across maturities and strikes everyday for each stock to have a simple signal. This average can both be a simple average across every available datapoint or a weighted average using the open interest reported at market close for each pair. \cite{cremers2010deviations} argue that the latter approach incorporates the liquidity aspect of the options. I assume that the more liquidity an option has, the more fair is the price, and the more reflective of the market's opinion is it. Thus the latter approach for weighting the implied volatility spread ensures that the signal incorporates the market's view.
+
+The conditions for including the options in the signal is described below. The first condition is in regards to the implied volatility of each option.
+
+\begin{mycondition}{Restrictions on Implied Volatility Level}{condition:implvol}
+	$$ 0 \leq IV_{j,t}^{i,call} \leq 1.5\; \text{and} \; 0 \leq IV_{j,t}^{i,put} \leq 1.5 $$
+	
+	The implied volatility should be within these limits for both puts and calls for the spread to be included in the signal, which naturally limits the distribution of the implied volatility spread.
+	The historical volatility of the stock markets represented by the VIX Index reached a max of 0.7 in 2017, therefore a limit of 1.5 on individual options is sensible. 
+\end{mycondition}
+
+The second condition relates to the time to maturity of the option pairs, measured in days.
+
+\begin{mycondition}{Restrictions on Time To Maturity}{condition:ttm} 
+	$$7 \leq TTM_{days}  \leq 365 $$
+	
+	Options with time to maturity within these limits are the most liquid and by excluding the imminent maturing options, the signal will only contain data on options with maturity prevailing the return period.
+\end{mycondition}
+
+For the last condition, the forward price of the stock is estimated at the point of daily closing prices for the individual option. Optionmetrics describes the calculation as follows: "The forward security price is calculated based on the last closing security price, plus the interest, less projected dividends" - \cite{optionmetrics}.
+
+\begin{mycondition}{Restrictions on Moneyness}{condition:moneyyy}
+	$$ 0.7 \leq \frac{F_{0,i}}{K} \leq 1.3 $$
+	
+	The moneyness (ratio between forward price of the underlying stock and the strike price of the option) should be between those limits, which ensures that the options included are somewhat close to being at-the-money and decreases the noise from illiquid deep-in-the-money or deep-out-of-the-money options.
+\end{mycondition}
+
+
+The average of these is taken per day, and the observed signal for return predictability is the latest day within the last 7 days before the return period begins. Furthermore, for the cross sectional analysis, the implied volatility spread is averaged across the entirety of the return period, giving an average of at most 5 days observations. If there is no observed spread in this period, the stock is not considered for portfolio formation, in either scenario.
+
+The data is splitted into portfolios based on the value of the signal and on the change in the signal over the last week. 
+
+Ratio of open interest options/stocks as a continuous variable compared to the dummy variables 
+
+
+Why are we only interested in at-the-money options?
+
+Meta data:
+amount of stocks over time, signal over time (the four plots of being weighted and filtered) + split the sample into different levels of open interest and tabulate the difference in mean / var etc. for 5 portfolios.
+

@@ -17,11 +17,11 @@
 \addtocontents{toc}{\protect\thispagestyle{empty}}
  \hypersetup{
  	colorlinks,
- 	linkcolor={blue!40!blue},
+ 	linkcolor={blue!25!black},
  	citecolor={blue!60!black},
- 	urlcolor={blue!80!black}
+ 	urlcolor={blue!25!black}
  }
-{\hypersetup{linkcolor={blue!40!blue},} \tableofcontents }
+{\hypersetup{linkcolor={blue!20!black},} \tableofcontents }
 \thispagestyle{empty}
 %%%%%%%%%%%%%%%%%%%%%%% END Table of contents %%%%%%%%%%%%%%%%%%%%%
 
@@ -31,47 +31,28 @@
 \input{./Sections/1. Introduction}
 \clearpage
 
-\section{Hedging in Complete and Incomplete Markets}
+\section{Setting}
 \label{section:Setting}
 \input{./Sections/2. Setting}
 \clearpage
 
-\section{Towards a Solvable Statistical Learning Problem and Deep Hedging}
-\label{section:DeepHedging}
-\input{./Sections/3. Deep Hedging}
-\clearpage
-
-\section{Market Scenario Generation with Time-Varying Volatility Models} \label{section:volmodels}
-\input{./Sections/4. VolModels}
-\clearpage
-
-\section{Continuous-Time Markov Models for Option Pricing and Hedging}
-\label{section:benchmark}
-\input{./Sections/5. Benchmark Models}
-\clearpage
-
-\section{Assessing the Impact of Model Risk on Deep Hedging} 
-\label{section:simulation_deephedging}
-\input{./Sections/6. Simulation Performance}
-\clearpage
-
-\section{Data and Volatility Descriptives} 
+\section{Data}
 \label{section:data}
-\input{./Sections/7. Data}
-\clearpage	
-
-\section{Empirical Evaluation} \label{section:empirical}
-\input{./Sections/8. Empirical Evaluation}
+\input{./Sections/3. Data}
 \clearpage
 
+\section{Cross Sectional Analysis}
+\label{section:cross}
+\input{./Sections/4. CrossSection}
+\clearpage
 
-\section{Conclusion} 
-\label{section:conclusion}
-\input{./Sections/9. Conclusion}
+\section{Discussion and Further Research}
+\label{section:disco}
+\input{./Sections/5. Discussion}
 \clearpage
 
 %%%%%%%%%%%%%%%%%%%%%%% Importing bibliography %%%%%%%%%%%%%%%%%%%%%
-\bibliographystyle{/Users/jacobkrusejensen/Dropbox/Okonomi/DeepHedging_JKJ/latex/natbib/plainnat-jkj.bst}
+%\bibliographystyle{}
 \bibliography{biblo.bib}
 \clearpage
 
@@ -79,22 +60,3 @@
 \input{Appendicies/0. Main Appendix}
 
 \end{document}
-
-
-%%%% NOTES TO SELF %%%%
-
-% 1) Read the Godin paper on CVAR global optimal hedging. Pretty nice arguments on why to use global instead of local hedging etc.
-
-% 2) Also includes an "empirical" simulation experiment as in Buehler, 2019. Should do the same here (havent done it yet!).
-
-% 3) In realtion to 2): Buehler et el Fig 12 shows that DH outperforms BS when trained on GARCH estimated model from data and then compared to BS hedge on test data simulated from the ESTIMATED model. But does the improvement persist if evaluating on a test set simulated from the TRUE model? -> Nested MC simulation exercise. Notice that they use l(x)=x^2
-
-% 4) Doing exotic options hedging with options could be pretty cool
-
-% 5) Evaluating strategies just be assessing the terminal hedge erroe distribution is fine. Don't need to do local risk min evaluation stuff, but good to recall for defense.. See Gódin et al for explanation.
-
-% 6) In addition to TS and HIST figures for assessing the hedge error distribution, add nice-looking tables -> Looks more professional.
-
-% 7) Make large tables with results for different TTM's and moneyness.
-
-% 8) Show model performance as scatter plot of (S_T, PnL_T). Does DH outperform BS for paths ending ITM or OTM? 

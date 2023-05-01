@@ -1,0 +1,52 @@
+This is BibTeX, Version 0.99d (TeX Live 2021)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: Main.aux
+The style file: abbrvnat.bst
+Database file #1: biblo.bib
+Warning--I didn't find a database entry for ""
+Warning--empty journal in isakasoption
+Warning--empty year in isakasoption
+Warning--empty year in isakasoption
+Warning--empty institution in optionmetrics
+You've used 11 entries,
+            2773 wiz_defined-function locations,
+            662 strings with 6181 characters,
+and the built_in function-call counts, 4319 in all, are:
+= -- 412
+> -- 165
+< -- 12
++ -- 59
+- -- 48
+* -- 310
+:= -- 667
+add.period$ -- 34
+call.type$ -- 11
+change.case$ -- 48
+chr.to.int$ -- 11
+cite$ -- 26
+duplicate$ -- 216
+empty$ -- 384
+format.name$ -- 69
+if$ -- 897
+int.to.chr$ -- 1
+int.to.str$ -- 1
+missing$ -- 8
+newline$ -- 64
+num.names$ -- 44
+pop$ -- 89
+preamble$ -- 1
+purify$ -- 38
+quote$ -- 0
+skip$ -- 164
+stack$ -- 0
+substring$ -- 198
+swap$ -- 20
+text.length$ -- 1
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 121
+warning$ -- 4
+while$ -- 48
+width$ -- 0
+write$ -- 148
+(There were 5 warnings)

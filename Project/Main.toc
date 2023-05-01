@@ -1,0 +1,21 @@
+\thispagestyle {empty}
+\contentsline {section}{\numberline {1}Introduction}{1}{section.1}%
+\contentsline {section}{\numberline {2}Setting}{2}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Implied Volatility}{2}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Portfolios}{3}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Descriptive Statistics}{6}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}Monotonicity Test}{6}{subsection.2.4}%
+\contentsline {subsection}{\numberline {2.5}Comparing with Other Factors}{7}{subsection.2.5}%
+\contentsline {subsubsection}{\numberline {2.5.1}Fama-Macbeth Analysis}{7}{subsubsection.2.5.1}%
+\contentsline {subsection}{\numberline {2.6}Economic Evaluation}{7}{subsection.2.6}%
+\contentsline {subsection}{\numberline {2.7}Optimal Allocation}{7}{subsection.2.7}%
+\contentsline {section}{\numberline {3}Data}{8}{section.3}%
+\contentsline {section}{\numberline {4}Cross Sectional Analysis}{10}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Descriptive Statistics}{10}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Analysis}{10}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Optimal Allocation}{10}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}Conclusion}{10}{subsection.4.4}%
+\contentsline {section}{\numberline {5}Discussion and Further Research}{11}{section.5}%
+\contentsline {section}{Appendices}{13}{section*.3}%
+\contentsline {subsection}{\numberline {A}Figures}{14}{subsection.5.1}%
+\contentsline {subsection}{\numberline {B}Tables}{15}{subsection.5.2}%

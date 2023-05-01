@@ -1,4 +1,160 @@
+% Roadmap for this section 
+	%- Implied vol
+	%- Portfolios
+	%- test of portfolios
+	%- Significance compared to other factors
+	%- Sharpe ratio
+	%- Utility from investing in long-short portfolio
+
+The setting of this study is elaborated in this section. I will start out by explaining the implied volatility spread, how it is derived and why it is a relevant signal. Then I will go on to discuss the formation of portfolios and why this approach was decided on. Afterwards, the included test for monotonicity is described, and then followed up by the models I will employ to evaluate the signal and its significance compared to previous known risk factors. Lastly, I will draw up some usefull thoughts from the utility framework and include some relevant measures for evaluating the signal.
+
+
+\subsection{Implied Volatility}
+
+% Uses implied vol spread to predict - figlewski1993options
+% Same with amin2004index
+
+% Starting with the black scholes and the thoughts behind it - > how to find implied vol and what it means -> look at the difference to american options, and how the equality looks, defining the approach used by optionmetrics, 
+
+The Black-Scholes-Merton formula for a European call price is:
+\begin{equation}
+	c=SN\left(d_{1}\right)-Ke^{-r\left(T-t\right)}N\left(d_{2}\right)
+\end{equation}
+where $d_{1}=\frac{\ln\left(S_{0}/K\right)+\left(r-\delta+\frac{1}{2}\sigma^{2}\right)\left(T-t\right)}{\sigma\sqrt{T-t}}$
+and 
+$d_{2}=\frac{\ln\left(S_{0}/K\right)+\left(r-\delta-\frac{1}{2}\sigma^{2}\right)\left(T-t\right)}{\sigma\sqrt{T-t}}$.
+
+The corresponding price for an European put is:
+\begin{equation}
+	p=Ke^{-r\left(T-t\right)}N\left(-d_{2}\right)-SN\left(-d_{1}\right)
+\end{equation}
+
+
+Following the notation in \cite{cremers2010deviations} the implied volatility spread is calculated as:
+\begin{equation}
+	IV_{i,t}^{call}-IV_{i,t}^{put}=VS_{i,t}
+\end{equation}
+ and the signal is then estimated across time and stocks:
+  
+\begin{equation}
+	VS_{i,t} = \sum_{j=1}^{N_{i,t}}w_{j,t}^{i}\left(IV_{j,t}^{i,call}-IV_{j,t}^{i,put}\right)
+\end{equation}
+where $t$, $i$ and $j$ specifies the time, stock and combination of strike and maturity. $w_{j,t}^{i}$ is the weight for the specific maturity, strike and time. This weight can be both set to a simple average or based on the open interest in the pair of options.
+
+%\subsection{Approach}
+
+\subsection{Portfolios}
+
+The analysis of the relation between stock returns and the signal defined above is conducted using portfolios. Thus I will split the different firms into portfolios with the use of the signal. 
+
+The choice of forming portfolios compared to analyzing specific stocks over a period of time,
+is made based on the flexibility  of the setup. The approach requires no a priori assumptions about the effect, and also allows for the discovery of more than just a linear effect. This approach also has some diasadvantages, as the flexibility gives rise to a bigger risk of datasnooping. 
+
+The choice of using portfolios for the analysis is further made based on the extensive literature within asset pricing which makes the same choice. Furthermore, the choice is based on an approach looking the the effect of the signal on the entire American stock market, and not on specific stocks, therefore, an aggregation and combination of these stocks provides a clearer picture of the effect from the signal and reduces the noise from other individual risk factors.
+% JKJ: the word idiosyncratic might be useful in this context
+
+The portfolios are formed using breakpoints in distribution of the signal. Thus I start by choosing the amount of portfolios I would like. The traditional choice would be to follow \cite{} and make three portfolios with breakpoints at the 30 percentile and 70 percentile, to make portfolios consisting of the lowest 30\% of the signal, then the middle 40\%  and the last portfolio of the highest 30\% from the sample. In \cite{cremers2010deviations} they use five equal sized portfolios, and I will follow their example, but compare the results with portfolios sorted in the traditional way as mentioned above, and also with 10 portfolios. 
+
+The use of equal-sized portfolios stems from an ambition to evaluate the effect of the entire distribution of the signal and not just evaluate the tails as done in the traditional approach. Furthermore, my main analysis will be based on 5 equal sized portfolios to ensure a sufficient amount of stocks are in each. This means that I have a smaller sample of portfolio returns to evaluate, which I thought a reasonable tradeoff given the inclusion of the results from the analysis with different amount of portfolios in the appendix.
+
+Furthermore, the signal identified above might not be the sole signal that we are interested in. A combination of the absolute value of the implied volatility spread and the recent change in the implied volatility spread might also provide some insights. 
+
+Therefore, I will conduct an analysis focusing only on the univariate portfolio sorting based on the value, and following that a bivariate portfolio sorting with both a dependent and independent sorting with the implied volatility spread as the first sorting factor and the recent change in the implied volatility spread as the second sorting factor.
+% JKJ: I suppose this approach is based on some reference paper.
+
+The \textit{univariate} portfolio sorting has the following steps:
+
+\textbf{Step 1: Computing the breakpoints } Starting from the cross-sectional distribution of the signal, $S_{i,t}$, from the number of portfolios I need, denoted $n_{\rho}$, I find for all the $n_{\rho}-1$ breakpoints the $k$'th breakpoint as follows:
+\begin{equation}\label{eq:step1uni}
+	\mathcal{B}_{k,t}=\text{Percentile}_{\rho_{k}}\left(S_{i,t}\right)
+\end{equation}
+The sample used for the breakpoints determination is the entire available dataset. This is done to ensure equal sized portfolios across the analysis. It might however affect the liquidity aspect of the conclusions, as inclusion of smaller and less liquid stocks might skew the picture. This is due to the fact that smaller and less liquid stocks often have higher transactions costs and tighter borrowing constraints, and therefore not priced precisely as the markets expect.
+% JKJ: Maybe elaborate on what would be the alternative to using the full sample for bp determination
+
+\textbf{Step 2: Forming the Portfolios} The portfolios are then formed using the breakpoint, $\mathcal{B}_{k,t}$, found in the previous step. A stock, $i$, is then included in portfolio, $k$, if it's signal is within the breakpoints identified:
+% JKJ: To be more precise you could maybe state something like 'the pf corresponding to bp k is thus defined as'
+\begin{equation}
+	P_{k,t}=\left\{ i|\mathcal{B}_{k-1,t}\leq S_{i,t}<\mathcal{B}_{k,t}\right\} 
+\end{equation}
+When forming the last portfolio (the portfolio consisting of stocks with the highest value of the signal), I will add the last few stocks with a signal value equal to the maximum signal value of the sample. In contrast some researchers include less than or equal sign on both side of the signal in the formation of their portfolios, which means that some stocks might be included in two portfolios. To counteract this I choose the above approach insted, which results in my last portfolio having slightly more stocks included, but no stocks will be in two portfolios at once.
+
+\textbf{Step 3: Calculating the Returns} The returns will be calculated based on a value-weighted investment. Thus they are reported in simple value-weighted form with the market value, $MV_{i,t-1}$ observed as the shares outstanding timed the opening price at portfolio formation,  and calculated as follows:
+% JKJ: timed -> multiplied by?
+\begin{equation}
+	r_{k,t}=\frac{\sum_{i=1}^{N_{k,t}}MV_{i,t-1}\cdot r_{i,t}}{\sum_{i=1}^{N_{k,t}}MV_{i,t-1}}
+\end{equation}
+I choose a value-weighted approach compared to equal-weighted, as I want to make sure that small and illiquid stocks, which are difficult to trade, have a small impact on the results. 
+% JKJ: compared -> as opposed to
+
+For a \textit{bivariate} portfolio sorting, the steps look a little different. First and foremost, this will make it possible to control for two different sorting signals compared to just one in the univariate portfolio sorting. The inclusion of bivariate sorting to take a second signal into account leaves more choices to be made. Of course, there is the amount of portfolios and the percentiles of the second signal, but another important choice regarding the sorting of the stocks is also relevant, namely whether to do independent or dependent sorting. Which means that when we do the breakpoints calculation of the second signal, we should either find them for the entire sample or from the grouping from the first signal.
+
+In my case, I will look at the recent change in implied volatility spread as the second signal. Given the combination of the value of the same dataseries being the first sorting signal, it makes sense to do a dependent sorting. If an independent sorting were to be made, and given that the signal is relatively stable over the period as seen in figure OBS, there would be very few stocks with a low value of the signal (thus sorted in the first portfolio in the first sorting) and also having a big positive change in the signal value (sorted into the last portfolio in the second sorting) and vice versa. An independent sorting would therefore result in an almost empty portfolio of stocks with high (low) value and big negative (positive) change in the signal. A dependent sorting is chosen, and the following steps from above is adapted.
+% JKJ: makes sense, I think. So, as I understand your argument, in short, a dependent sort makes sense since the two different transformations of the spread feature is likely to be highly correlated.)
+
+\textbf{Adapted Step 1: Breakpoints for Dependent Bivariate Sorting} To find the breakpoints dependent on the first sorting signal, I use the following approach. Note that as mentioned above, the last portfolios are including the stocks with maximum value of the signal. The first sorting breakpoints for portfolio $k$ are defined as above in Equation \ref{eq:step1uni}, and the second sorting signal's breakpoints for portfolio $j$ is defined below:
+\begin{equation}
+	\mathcal{B}_{k,j,t}^{2}=\text{Percentile}_{\rho_{j}}\left(S_{i,t}^{2}|\mathcal{B}_{k,t}^{1}\leq S_{i,t}^{1}<\mathcal{B}_{k,t}^{1}\right)
+\end{equation}
+Which leaves me with $n_{p_{1}} - 1$ breakpoints for the first portfolio sorting and $n_{p_{1}} \cdot \left(n_{p_{2}} - 1\right)$ breakpoints for the second portfolio sorting. 
+
+\textbf{Adapted Step 2: Forming Portfolios with Dependent Bivariate Sorting} Instead of allocating stocks to different portfolios according to only the first signal, I use both set of breakpoints simultaneously.
+\begin{equation}
+	P_{k,j,t}=\left\{ i|\mathcal{B}_{k-1,j,t}^{1}\leq S_{i,t}<\mathcal{B}_{k,j,t}^{1}\right\} \cap\left\{ i|\mathcal{B}_{k,j-1,t}^{2}\leq S_{i,t}<\mathcal{B}_{k,j,t}^{2}\right\} 
+\end{equation}
+This results in $n_{p_{1}}\cdot n_{p_{2}}$ portfolios with approximately an equal amount of stocks included in each, with only the last portfolios including a slightly larger amounts of stocks.
+
+\textbf{Adapted Step 3: Calculating Returns with Dependent Bivariate Sorting} The third step is only slightly changed to account for the second dimension of portfolios:
+\begin{equation}
+	r_{k,j,t}=\frac{\sum_{i=1}^{N_{k,j,t}}MV_{i,t-1}\cdot r_{i,t}}{\sum_{i=1}^{N_{k,j,t}}MV_{i,t-1}}
+\end{equation}
+This concluding the adapted steps for the bivariate sorting. Any structure of analysis from here will look largely the same. 
+
+With the portfolio returns being computed, it is time to analyze them. A relevant fourth step will be to do some descriptive statistics of the returns and dive further into the pattern. 
+
+%JKJ: Never read or heard about portfolio sorting, but thought that maybe a general argument as to how this sorting approach scales with the number of features (not very well, given that you already have np1 * np2 portfolios, (yikes!) portfolios) could be relevant somewhere in the thesis?
+
+
+\subsection{Descriptive Statistics}
+
+Sharpe Ratio leading on to Utility
+
+
+\subsection{Monotonicity Test}
+
+The pattern of the returns have traditionally been inspected through visual analysis of the mean return of each portfolio. To do this in a more structured way, \cite{wolak1987exact, wolak1989testing} introduce a test for monotinicity in returns with a null hypothesis of a clear pattern, and \cite{fama1984term} proposes a similar test using Bonferroni bounds. \cite{patton2010monotonicity} introduces a test with the same purpose, but a different null hypothesis of no clear pattern in the returns across portfolios. This ensures that we only reject the null hypothesis of no distinct monotonically increasing returns across portfolios if there is enough evidence to support it, while the abovementioned tests would require the data to show a random pattern instead of a monotonically increasing one. In other words, I prefer to use a test which has no pattern as a prior and relies on the data to prove it wrong.
+
+The hypothesis of the \cite{patton2010monotonicity} test is formally written as, using $\Delta_{i} = \mu _{i} - \mu_{i-1}$ as the difference between the average return of portfolio $i$ and $i-1$:
+\begin{equation}
+	\begin{array}{c}
+		H_{0}:\Delta\leq0\\
+		H_{1}:\Delta>0
+	\end{array}
+\end{equation}
+The test statistic is then computed as the minimum of the observed deltas, $J_{T} = \min \left( \Delta \right)$. As there is no preformed distribution of this test statistic on which we can evaluate significance, we will find the distribution through bootstrapping with replacement from the original sample. This is all done in the R package provided by \cite{rpackagemonotonicity}. 
+
+The reason for the inclusion of this test is to identify if there is a monotonically increasing (or decreasing) pattern in the average returns of the portfolios. This will lead to a preliminary conclusion that it might be relevant to look at this signal, given that it when rejecting the null has a significant effect on the expected returns. 
+
+This test is, however, based on a view on the entire sample period and does not account for time varying monotonicity or if the pattern persists when corrected for other known risk factors. I will therefore in the further analysis look deeper into the time-varying predictability abilities of the signal and examine how it performs in the cross sectional study when confronted with common risk factors from \cite{fama1984term}.
+
+\subsection{Comparing with Other Factors}
+
+In this subsection I will elaborate on different approaches used for evaluating the signal against other (and acknowledged in the literature) factors. The first approach will be very basic and relate to the cross sectionality part of the analysis. The remaining approaches will relate to predictability of the 
+
+\subsubsection{Fama-Macbeth Analysis}
+Models considered : time invariant + rolling window betas + simple model + extended models with FF5
+
+Common issues -> Errors-in-variables + autocorrelation and heteroskedasticity -> using GMM to lessen issues  + increasing the sample frequency to decrease uncertainty in measuring + using portfolios to cancel out noise + using Shanken's correction to the standard errors as to not accept some coefficient as being statistical different from zero.
+
+\subsection{Economic Evaluation}
+
+Why would it be useful to evaluate the portfolios, in not only a statistical way but also in an economic way? Looking at utility from investing in long-short portfolios seem obvious.
+
+Utility from investing (expected) in the portfolio -> certainty equivalent -> mean-variance?
+
+\subsection{Optimal Allocation}
+
+Mean-variance? -> gaussian distribution (then mean-variance is the most relevant) -> finding the efficient frontier -> plotting the portfolios found along with FF 25 portfolios -> drawing the optimal allocation -> including the target return index
 
 
 
-\subsection{Setting the Stage: Martingale-Based Pricing and Hedging of Derivatives} \label{subsection:theoreticalhedging}
+

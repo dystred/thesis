@@ -1,2 +1,26 @@
+Starting with classic asset pricing theory
+ -> talking about risk factors
+ -> which are prominent at the moment?
+ -> some have shown that options are a factor 
+ -> \cite{harvey2000time} show skewness is relevant -> at odds with a mean variance optimizing investor -> more in line with prospect theory and other behavioural finance aspects, such as loss aversion
+ 
+ -> the option market is inherently forward looking - see appendix regarding theorem
+ -> options in general or mispricings of options?
+ -> use implied spread as a proxy for the mispricing of options 
+ -> the implied vol spread should be negative, as puts are more expensive, can protect against jump risk
+ -> which factors affect the implied vol spread? 
+ -> why is this implied vol spread a good proxy for systematic risk in stocks?
+ 
+ -> is it just a sign of shortsale constraints? Or informed trading?
+ -> or Pan and Poteshman proxy this by looking at trades initiated by the buyer, Ofek et al. also looks at the relation and find significant predictability from the short sale constraint
+ 
+ -> put call parity
+ -> fundamentals 
+ -> borrowing lending rates differ 
+ -> transactions costs
+ -> margin requirements and taxes
+ -> option on stocks are american and not european (which means the put call parity is not an equality but an inequality)
 
 
+ -> Inherent forward looking property of the option market 
+ -> we can estimate the risk-neutral distribution of the stock price given a lot of different options on the stock according to formula (2) in \cite{breeden1978prices} (and elaborated in appendix A in \cite{isakasoption}) which is under the Q-measure but can be approximated to the P-measure and used for forecasting stock prices. This is done by evaluting the differentiated call price with respect to the strike twice at a lot of different strikes at one maturity. This is however not feasible to estimate across a lot of different stocks, as their options might not be liquid enough to provide an accurate market view (due to either reduced interest, high transaction costs or too high margin requirements for the sellers).

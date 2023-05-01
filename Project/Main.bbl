@@ -1,0 +1,73 @@
+\begin{thebibliography}{11}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Breeden and Litzenberger(1978)]{breeden1978prices}
+D.~T. Breeden and R.~H. Litzenberger.
+\newblock Prices of state-contingent claims implicit in option prices.
+\newblock \emph{Journal of business}, pages 621--651, 1978.
+
+\bibitem[Cremers and Weinbaum(2010)]{cremers2010deviations}
+M.~Cremers and D.~Weinbaum.
+\newblock Deviations from put-call parity and stock return predictability.
+\newblock \emph{Journal of Financial and Quantitative Analysis}, 45\penalty0
+  (2):\penalty0 335--367, 2010.
+
+\bibitem[Fama(1984)]{fama1984term}
+E.~F. Fama.
+\newblock Term premiums in bond returns.
+\newblock \emph{Journal of Financial economics}, 13\penalty0 (4):\penalty0
+  529--546, 1984.
+
+\bibitem[Harvey and Siddique(2000)]{harvey2000time}
+C.~R. Harvey and A.~Siddique.
+\newblock Time-varying conditional skewness and the market risk premium.
+\newblock \emph{Research in Banking and Finance}, 1\penalty0 (1):\penalty0
+  27--60, 2000.
+
+\bibitem[Isakas and Melenberg()]{isakasoption}
+J.~Isakas and B.~Melenberg.
+\newblock The option implied risk-neutral distribution.
+
+\bibitem[Köstlmeier(2019)]{rpackagemonotonicity}
+S.~Köstlmeier.
+\newblock \emph{monotonicity: Test for Monotonicity in Expected Asset Returns,
+  Sorted byPortfolios}, 2019.
+\newblock URL \url{https://CRAN.R-project.org/package=monotonicity}.
+\newblock R package version 1.3.1.
+
+\bibitem[OptionMetrics(2015)]{optionmetrics}
+OptionMetrics.
+\newblock Ivydb us, file and data reference manual.
+\newblock Technical report, December 2015.
+\newblock Version 5.0.x.
+
+\bibitem[Patton and Timmermann(2010)]{patton2010monotonicity}
+A.~J. Patton and A.~Timmermann.
+\newblock Monotonicity in asset returns: New tests with applications to the
+  term structure, the capm, and portfolio sorts.
+\newblock \emph{Journal of Financial Economics}, 98\penalty0 (3):\penalty0
+  605--625, 2010.
+
+\bibitem[Shang(2016)]{shang2016option}
+D.~Shang.
+\newblock \emph{Option markets and stock return predictability}.
+\newblock PhD thesis, The University of Arizona, 2016.
+
+\bibitem[Wolak(1987)]{wolak1987exact}
+F.~A. Wolak.
+\newblock An exact test for multiple inequality and equality constraints in the
+  linear regression model.
+\newblock \emph{Journal of the American Statistical Association}, 82\penalty0
+  (399):\penalty0 782--793, 1987.
+
+\bibitem[Wolak(1989)]{wolak1989testing}
+F.~A. Wolak.
+\newblock Testing inequality constraints in linear econometric models.
+\newblock \emph{Journal of econometrics}, 41\penalty0 (2):\penalty0 205--235,
+  1989.
+
+\end{thebibliography}
