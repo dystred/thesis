@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2022.1.25)  1 MAY 2023 16:35
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2022.1.25)  30 MAY 2023 22:10
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -178,6 +178,11 @@ File: pdftex.def 2020/10/05 v1.2a Graphics/color driver for pdftex
 \Gin@box@hspace=\skip55
 \Gin@box@bwidth=\skip56
 \Gin@box@bheight=\skip57
+)
+(/usr/local/texlive/2021/texmf-dist/tex/latex/chngcntr/chngcntr.sty
+Package: chngcntr 2018/04/09 v1.1a change counter resetting
+Package chngcntr Info: \counterwithout already defined.
+(chngcntr)             Quitting chngcntr on input line 21.
 )
 (/usr/local/texlive/2021/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty
 (/usr/local/texlive/2021/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty
@@ -797,7 +802,9 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 86.
 )
 \Hy@SectionHShift=\skip66
-) (/usr/local/texlive/2021/texmf-dist/tex/latex/import/import.sty
+)
+Package hyperref Info: Option `colorlinks' set `true' on input line 99.
+ (/usr/local/texlive/2021/texmf-dist/tex/latex/import/import.sty
 Package: import 2020/04/01  v 6.2
 )
 (/usr/local/texlive/2021/texmf-dist/tex/latex/tablefootnote/tablefootnote.sty
@@ -1287,7 +1294,7 @@ Now handling font encoding PU ...
    defining Unicode char U+2423 (decimal 9251)
    defining Unicode char U+FEFF (decimal 65279)
 )
-Package selinput Info: Encoding `utf8' selected on input line 99.
+Package selinput Info: Encoding `utf8' selected on input line 115.
 
 (/usr/local/texlive/2021/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty
 Package: fancyhdr 2021/01/28 v4.0.1 Extensive control of page headers and foote
@@ -1474,46 +1481,42 @@ Package lastpage Info: Please have a look at the pageslts package at
 (lastpage)             https://www.ctan.org/pkg/pageslts
 (lastpage)             ! on input line 5.
  (./Frontpage.tex
-LaTeX Font Info:    Trying to load font information for U+msa on input line 31.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 34.
 
 
 (/usr/local/texlive/2021/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 31.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 34.
 
 
 (/usr/local/texlive/2021/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Trying to load font information for U+bbm on input line 31.
+LaTeX Font Info:    Trying to load font information for U+bbm on input line 34.
 
 
 (/usr/local/texlive/2021/texmf-dist/tex/latex/bbm-macros/ubbm.fd
 File: ubbm.fd 1999/03/15 V 1.2 Font definition for bbm font - TH
 )
-<./Pictures/ausegl_blaa.png, id=87, 569.12625pt x 569.12625pt>
+<./Pictures/ausegl_blaa.png, id=99, 569.12625pt x 569.12625pt>
 File: ./Pictures/ausegl_blaa.png Graphic file (type png)
 <use ./Pictures/ausegl_blaa.png>
-Package pdftex.def Info: ./Pictures/ausegl_blaa.png  used on input line 31.
+Package pdftex.def Info: ./Pictures/ausegl_blaa.png  used on input line 34.
 (pdftex.def)             Requested size: 199.19717pt x 199.19717pt.
 ) [1
 
 {/usr/local/texlive/2021/texmf-var/fonts/map/pdftex/updmap/pdftex.map} <./Pictu
 res/ausegl_blaa.png>] (./Sections/0. Abstract.tex) [2
 
-]
-
-Package hyperref Warning: Option `colorlinks' has already been used,
-(hyperref)                setting the option has no effect on input line 23.
-
-(./Main.toc)
+] (./Main.toc)
 \tf@toc=\write7
 \openout7 = `Main.toc'.
 
  [3
 
-] (./Sections/1. Introduction.tex)
+]
+(./Sections/1. Introduction.tex
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -1526,10 +1529,10 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.32 \clearpage
-                [1
+l.18 
+      [1
 
-] (./Sections/2. Setting.tex
+])
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -1542,11 +1545,12 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.50 T
-      he choice of forming portfolios compared to analyzing specific stocks ...
-[2
+l.32 \clearpage
+                [2] (./Sections/2. Setting.tex
 
-]
+LaTeX Warning: Reference `subsection:prospect' on page 3 undefined on input lin
+e 17.
+
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -1559,8 +1563,10 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.3}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.68 \begin{equation}
-                     \label{eq:step1uni} [3]
+l.18 
+      [3
+
+]
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -1580,14 +1586,9 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 [5]
 
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 13.59999pt, for example:
-(fancyhdr)                \setlength{\headheight}{13.59999pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
+LaTeX Warning: Reference `longstaff2001valuing' on page 6 undefined on input li
+ne 69.
 
-(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
-
-[6])
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -1596,7 +1597,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[7] (./Sections/3. Data.tex
+[6]
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -1605,9 +1606,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[8
-
-])
+[7]
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -1616,7 +1615,22 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[9] (./Sections/4. CrossSection.tex)
+[8])
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[9] (./Sections/3. Data.tex
+LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 5
+.
+
+(/usr/local/texlive/2021/texmf-dist/tex/latex/base/t1cmtt.fd
+File: t1cmtt.fd 2019/12/16 v2.5j Standard LaTeX font definitions
+)
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -1627,53 +1641,60 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 [10
 
-] (./Sections/5. Discussion.tex)
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 13.59999pt, for example:
-(fancyhdr)                \setlength{\headheight}{13.59999pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-
-(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
-
-[11
-
-] (./Main.bbl
-LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 3
-9.
- (/usr/local/texlive/2021/texmf-dist/tex/latex/base/t1cmtt.fd
-File: t1cmtt.fd 2019/12/16 v2.5j Standard LaTeX font definitions
-))
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 13.59999pt, for example:
-(fancyhdr)                \setlength{\headheight}{13.59999pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-
-(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
-
-[12
-
-] (./Appendicies/0. Main Appendix.tex (./Main.lot)
-\tf@lot=\write8
-\openout8 = `Main.lot'.
-
- (./Main.lof)
-\tf@lof=\write9
-\openout9 = `Main.lof'.
-
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 13.59999pt, for example:
-(fancyhdr)                \setlength{\headheight}{13.59999pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-
-(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
-
-[13
-
 ]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[11]
+<./Plots/metadata_optionm_openinterestVol_entireperiod.png, id=325, 853.5087pt 
+x 312.9291pt>
+File: ./Plots/metadata_optionm_openinterestVol_entireperiod.png Graphic file (t
+ype png)
+<use ./Plots/metadata_optionm_openinterestVol_entireperiod.png>
+Package pdftex.def Info: ./Plots/metadata_optionm_openinterestVol_entireperiod.
+png  used on input line 60.
+(pdftex.def)             Requested size: 435.08829pt x 159.5201pt.
+<./Plots/metadata_crsp_volumemarket_entireperiod.png, id=326, 853.5087pt x 312.
+9291pt>
+File: ./Plots/metadata_crsp_volumemarket_entireperiod.png Graphic file (type pn
+g)
+<use ./Plots/metadata_crsp_volumemarket_entireperiod.png>
+Package pdftex.def Info: ./Plots/metadata_crsp_volumemarket_entireperiod.png  u
+sed on input line 61.
+(pdftex.def)             Requested size: 435.08829pt x 159.5201pt.
+<./Plots/metadata_crsp_firms_entireperiod.png, id=327, 853.5087pt x 312.9291pt>
+
+File: ./Plots/metadata_crsp_firms_entireperiod.png Graphic file (type png)
+<use ./Plots/metadata_crsp_firms_entireperiod.png>
+Package pdftex.def Info: ./Plots/metadata_crsp_firms_entireperiod.png  used on 
+input line 62.
+(pdftex.def)             Requested size: 435.08829pt x 159.5201pt.
+)
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[12]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[13 <./Plots/metadata_optionm_openinterestVol_entireperiod.png> <./Plots/metada
+ta_crsp_volumemarket_entireperiod.png> <./Plots/metadata_crsp_firms_entireperio
+d.png>] (./Sections/6. Implementation.tex
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -1684,6 +1705,415 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 [14
 
+]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[15]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[16]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[17] (./Tables/factorcompetition_ALL_1_12_13.tex)
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[18]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[19]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[20]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[21]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[22]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[23]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[24]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[25]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[26]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[27]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[28])
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[29] (./Sections/4. CrossSection.tex
+(./Tables/descrstat_entireperiod_portfolios_1.tex)
+(./Tables/descrstat_entireperiod_portfolios_10.tex)
+(./Tables/descrstat_entireperiod_portfolios_2_CORNERS.tex)
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[30
+
+]
+<./Plots/meanreturns_entireperiod_simple_2.png, id=584, 426.6339pt x 284.5029pt
+>
+File: ./Plots/meanreturns_entireperiod_simple_2.png Graphic file (type png)
+<use ./Plots/meanreturns_entireperiod_simple_2.png>
+Package pdftex.def Info: ./Plots/meanreturns_entireperiod_simple_2.png  used on
+ input line 60.
+(pdftex.def)             Requested size: 230.33765pt x 153.60323pt.
+<./Plots/meanreturns_entireperiod_simple_18.png, id=585, 426.6339pt x 284.5029p
+t>
+File: ./Plots/meanreturns_entireperiod_simple_18.png Graphic file (type png)
+<use ./Plots/meanreturns_entireperiod_simple_18.png>
+Package pdftex.def Info: ./Plots/meanreturns_entireperiod_simple_18.png  used o
+n input line 61.
+(pdftex.def)             Requested size: 230.33765pt x 153.60323pt.
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[31] (./Tables/monotonicity_tests_9.tex)
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[32 <./Plots/meanreturns_entireperiod_simple_2.png> <./Plots/meanreturns_entire
+period_simple_18.png>]
+<./Plots/cumulativereturns_entireperiod_simple_2.png, id=610, 711.1368pt x 569.
+0058pt>
+File: ./Plots/cumulativereturns_entireperiod_simple_2.png Graphic file (type pn
+g)
+<use ./Plots/cumulativereturns_entireperiod_simple_2.png>
+Package pdftex.def Info: ./Plots/cumulativereturns_entireperiod_simple_2.png  u
+sed on input line 94.
+(pdftex.def)             Requested size: 486.2701pt x 389.08072pt.
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[33 <./Plots/cumulativereturns_entireperiod_simple_2.png>]
+(./Tables/factorcompetition_FF5_9.tex)
+Overfull \hbox (26.1803pt too wide) in paragraph at lines 126--129
+ [][] 
+ []
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[34] (./Tables/fm_results_timeinvariant_simple_9.tex)
+(./Tables/fm_results_timevariant_simple_9.tex)
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[35] (./Tables/fm_results_timeinvariant_FF5_9.tex)
+(./Tables/fm_results_timevariant_FF5_9.tex)
+Overfull \hbox (23.04391pt too wide) in paragraph at lines 191--194
+[][] 
+ []
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[36]
+<./Plots/principalcomponents_proportionvar_9.png, id=653, 711.1368pt x 312.9291
+pt>
+File: ./Plots/principalcomponents_proportionvar_9.png Graphic file (type png)
+<use ./Plots/principalcomponents_proportionvar_9.png>
+Package pdftex.def Info: ./Plots/principalcomponents_proportionvar_9.png  used 
+on input line 219.
+(pdftex.def)             Requested size: 435.08829pt x 191.45467pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+(./Tables/threepass_coefs_signif_FF5_9.tex)
+Overfull \hbox (43.94527pt too wide) in paragraph at lines 232--236
+ [][] 
+ []
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[37] (./Tables/threepass_strength_FF5_9.tex)
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[38 <./Plots/principalcomponents_proportionvar_9.png>]
+(./Tables/pooledcrosssection_all_2.tex)
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[39]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[40]
+<./Plots/meanstd_efffrontier_entireperiod_9.png, id=692, 711.1368pt x 312.9291p
+t>
+File: ./Plots/meanstd_efffrontier_entireperiod_9.png Graphic file (type png)
+<use ./Plots/meanstd_efffrontier_entireperiod_9.png>
+Package pdftex.def Info: ./Plots/meanstd_efffrontier_entireperiod_9.png  used o
+n input line 305.
+(pdftex.def)             Requested size: 383.89868pt x 168.93143pt.
+<./Plots/efficientfrontier_entireperiod_9.png, id=693, 711.1368pt x 312.9291pt>
+
+File: ./Plots/efficientfrontier_entireperiod_9.png Graphic file (type png)
+<use ./Plots/efficientfrontier_entireperiod_9.png>
+Package pdftex.def Info: ./Plots/efficientfrontier_entireperiod_9.png  used on 
+input line 306.
+(pdftex.def)             Requested size: 383.89868pt x 168.93143pt.
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[41 <./Plots/meanstd_efffrontier_entireperiod_9.png> <./Plots/efficientfrontier
+_entireperiod_9.png>]
+<./Plots/optimalallocation_SharpeRatio_entireperiod_2.png, id=703, 853.5087pt x
+ 853.5087pt>
+File: ./Plots/optimalallocation_SharpeRatio_entireperiod_2.png Graphic file (ty
+pe png)
+<use ./Plots/optimalallocation_SharpeRatio_entireperiod_2.png>
+Package pdftex.def Info: ./Plots/optimalallocation_SharpeRatio_entireperiod_2.p
+ng  used on input line 333.
+(pdftex.def)             Requested size: 486.2701pt x 486.2706pt.
+)
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[42]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[43 <./Plots/optimalallocation_SharpeRatio_entireperiod_2.png>]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[44] (./Sections/6. Discussion.tex
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[45
+
+])
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[46] (./Sections/9. Conclusion.tex
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[47
+
+])
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[48] (./Main.bbl
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[49
 
 ]
 
@@ -1694,22 +2124,196 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[15
+[50])
 
-]) 
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[51] (./Appendicies/0. Main Appendix.tex (./Main.lof)
+\tf@lof=\write8
+\openout8 = `Main.lof'.
+
+ (./Main.lot)
+\tf@lot=\write9
+\openout9 = `Main.lot'.
+
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[52
+
+]
+<./Plots/plot_returns_1997.png, id=795, 711.1368pt x 312.9291pt>
+File: ./Plots/plot_returns_1997.png Graphic file (type png)
+<use ./Plots/plot_returns_1997.png>
+Package pdftex.def Info: ./Plots/plot_returns_1997.png  used on input line 27.
+(pdftex.def)             Requested size: 230.33765pt x 101.35695pt.
+<./Plots/plot_returns_2002.png, id=796, 711.1368pt x 312.9291pt>
+File: ./Plots/plot_returns_2002.png Graphic file (type png)
+<use ./Plots/plot_returns_2002.png>
+Package pdftex.def Info: ./Plots/plot_returns_2002.png  used on input line 28.
+(pdftex.def)             Requested size: 230.33765pt x 101.35695pt.
+<./Plots/plot_returns_2006.png, id=797, 711.1368pt x 312.9291pt>
+File: ./Plots/plot_returns_2006.png Graphic file (type png)
+<use ./Plots/plot_returns_2006.png>
+Package pdftex.def Info: ./Plots/plot_returns_2006.png  used on input line 29.
+(pdftex.def)             Requested size: 230.33765pt x 101.35695pt.
+<./Plots/plot_returns_2010.png, id=798, 711.1368pt x 312.9291pt>
+File: ./Plots/plot_returns_2010.png Graphic file (type png)
+<use ./Plots/plot_returns_2010.png>
+Package pdftex.def Info: ./Plots/plot_returns_2010.png  used on input line 29.
+(pdftex.def)             Requested size: 230.33765pt x 101.35695pt.
+<./Plots/plot_returns_2015.png, id=799, 711.1368pt x 312.9291pt>
+File: ./Plots/plot_returns_2015.png Graphic file (type png)
+<use ./Plots/plot_returns_2015.png>
+Package pdftex.def Info: ./Plots/plot_returns_2015.png  used on input line 30.
+(pdftex.def)             Requested size: 230.33765pt x 101.35695pt.
+<./Plots/plot_returns_2021.png, id=800, 711.1368pt x 312.9291pt>
+File: ./Plots/plot_returns_2021.png Graphic file (type png)
+<use ./Plots/plot_returns_2021.png>
+Package pdftex.def Info: ./Plots/plot_returns_2021.png  used on input line 31.
+(pdftex.def)             Requested size: 230.33765pt x 101.35695pt.
+<./Plots/implvolspread_entireperiod_filtered_weighted.png, id=801, 711.1368pt x
+ 312.9291pt>
+File: ./Plots/implvolspread_entireperiod_filtered_weighted.png Graphic file (ty
+pe png)
+<use ./Plots/implvolspread_entireperiod_filtered_weighted.png>
+Package pdftex.def Info: ./Plots/implvolspread_entireperiod_filtered_weighted.p
+ng  used on input line 43.
+(pdftex.def)             Requested size: 307.12207pt x 135.1442pt.
+<./Plots/implvolspread_entireperiod_raw_weighted.png, id=802, 711.1368pt x 312.
+9291pt>
+File: ./Plots/implvolspread_entireperiod_raw_weighted.png Graphic file (type pn
+g)
+<use ./Plots/implvolspread_entireperiod_raw_weighted.png>
+Package pdftex.def Info: ./Plots/implvolspread_entireperiod_raw_weighted.png  u
+sed on input line 44.
+(pdftex.def)             Requested size: 307.12207pt x 135.1442pt.
+<./Plots/implvolspread_entireperiod_filtered_simple.png, id=803, 711.1368pt x 3
+12.9291pt>
+File: ./Plots/implvolspread_entireperiod_filtered_simple.png Graphic file (type
+ png)
+<use ./Plots/implvolspread_entireperiod_filtered_simple.png>
+Package pdftex.def Info: ./Plots/implvolspread_entireperiod_filtered_simple.png
+  used on input line 45.
+(pdftex.def)             Requested size: 307.12207pt x 135.1442pt.
+<./Plots/implvolspread_entireperiod_raw_simple.png, id=804, 711.1368pt x 312.92
+91pt>
+File: ./Plots/implvolspread_entireperiod_raw_simple.png Graphic file (type png)
+
+<use ./Plots/implvolspread_entireperiod_raw_simple.png>
+Package pdftex.def Info: ./Plots/implvolspread_entireperiod_raw_simple.png  use
+d on input line 46.
+(pdftex.def)             Requested size: 307.12207pt x 135.1442pt.
+
+
+LaTeX Warning: Float too large for page by 19.87537pt on input line 51.
+
+<./Plots/ACF_entireperiod_simple_1.png, id=806, 711.1368pt x 312.9291pt>
+File: ./Plots/ACF_entireperiod_simple_1.png Graphic file (type png)
+<use ./Plots/ACF_entireperiod_simple_1.png>
+Package pdftex.def Info: ./Plots/ACF_entireperiod_simple_1.png  used on input l
+ine 57.
+(pdftex.def)             Requested size: 486.2701pt x 213.9779pt.
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[53
+
+
+ <./Plots/plot_returns_1997.png> <./Plots/plot_returns_2002.png> <./Plots/plot_
+returns_2006.png> <./Plots/plot_returns_2010.png> <./Plots/plot_returns_2015.pn
+g> <./Plots/plot_returns_2021.png>]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[54 <./Plots/implvolspread_entireperiod_filtered_weighted.png> <./Plots/implvol
+spread_entireperiod_raw_weighted.png> <./Plots/implvolspread_entireperiod_filte
+red_simple.png> <./Plots/implvolspread_entireperiod_raw_simple.png>]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[55 <./Plots/ACF_entireperiod_simple_1.png>]
+(./Tables/factorcompetition_ALL_9-forprint.tex)
+(./Tables/threepass_coefs_se_FF5_9.tex)
+Overfull \hbox (6.92352pt too wide) in paragraph at lines 89--92
+ [][] 
+ []
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[56
+
+]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[57] (./Tables/metadata_ScenarioID.tex)
+Overfull \hbox (8.60455pt too wide) in paragraph at lines 105--108
+ [][] 
+ []
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[58]) 
 AED: lastpage setting LastPage
 (./Main.aux)
+
+LaTeX Warning: There were undefined references.
+
 Package rerunfilecheck Info: File `Main.out' has not changed.
-(rerunfilecheck)             Checksum: 34ADCA53447FAA37123FE5B988667D89;2688.
+(rerunfilecheck)             Checksum: 2E3D30B9D23BDB04CF5B645B29661FB0;3461.
  ) 
 Here is how much of TeX's memory you used:
- 27911 strings out of 478994
- 508753 string characters out of 5858184
- 793908 words of memory out of 5000000
- 44711 multiletter control sequences out of 15000+600000
- 421192 words of font info for 71 fonts, out of 8000000 for 9000
+ 28490 strings out of 478994
+ 524168 string characters out of 5858184
+ 821826 words of memory out of 5000000
+ 45041 multiletter control sequences out of 15000+600000
+ 428167 words of font info for 94 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 102i,12n,103p,980b,717s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 102i,14n,103p,2202b,717s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2021/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}
 </usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><
 /usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></
@@ -1717,24 +2321,36 @@ usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></us
 r/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/
 local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/lo
 cal/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local
-/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/te
-xlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/tex
-live/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texli
-ve/2021/texmf-dist/fonts/type1/public/cm-super/sfbx1095.pfb></usr/local/texlive
-/2021/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/local/texlive/2
-021/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb></usr/local/texlive/202
-1/texmf-dist/fonts/type1/public/cm-super/sfcc1200.pfb></usr/local/texlive/2021/
-texmf-dist/fonts/type1/public/cm-super/sfrm1095.pfb></usr/local/texlive/2021/te
-xmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2021/texm
-f-dist/fonts/type1/public/cm-super/sfrm1728.pfb></usr/local/texlive/2021/texmf-
-dist/fonts/type1/public/cm-super/sfti1000.pfb></usr/local/texlive/2021/texmf-di
-st/fonts/type1/public/cm-super/sfti1095.pfb></usr/local/texlive/2021/texmf-dist
-/fonts/type1/public/cm-super/sfti1200.pfb></usr/local/texlive/2021/texmf-dist/f
-onts/type1/public/cm-super/sftt1095.pfb>
-Output written on Main.pdf (18 pages, 369746 bytes).
+/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/te
+xlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texli
+ve/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/
+2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2
+021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/202
+1/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/2021/
+texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2
+021/texmf-dist/fonts/type1/public/cm-super/sfbx0900.pfb></usr/local/texlive/202
+1/texmf-dist/fonts/type1/public/cm-super/sfbx1095.pfb></usr/local/texlive/2021/
+texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/local/texlive/2021/te
+xmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb></usr/local/texlive/2021/texm
+f-dist/fonts/type1/public/cm-super/sfcc1000.pfb></usr/local/texlive/2021/texmf-
+dist/fonts/type1/public/cm-super/sfcc1095.pfb></usr/local/texlive/2021/texmf-di
+st/fonts/type1/public/cm-super/sfcc1200.pfb></usr/local/texlive/2021/texmf-dist
+/fonts/type1/public/cm-super/sfrm0600.pfb></usr/local/texlive/2021/texmf-dist/f
+onts/type1/public/cm-super/sfrm0800.pfb></usr/local/texlive/2021/texmf-dist/fon
+ts/type1/public/cm-super/sfrm0900.pfb></usr/local/texlive/2021/texmf-dist/fonts
+/type1/public/cm-super/sfrm1000.pfb></usr/local/texlive/2021/texmf-dist/fonts/t
+ype1/public/cm-super/sfrm1095.pfb></usr/local/texlive/2021/texmf-dist/fonts/typ
+e1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1
+/public/cm-super/sfrm1728.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/p
+ublic/cm-super/sfti1000.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/pub
+lic/cm-super/sfti1095.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/publi
+c/cm-super/sfti1200.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/
+cm-super/sftt0900.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/cm
+-super/sftt1095.pfb>
+Output written on Main.pdf (61 pages, 4488712 bytes).
 PDF statistics:
- 349 PDF objects out of 1000 (max. 8388607)
- 303 compressed objects within 4 object streams
- 65 named destinations out of 1000 (max. 500000)
- 178 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 981 PDF objects out of 1000 (max. 8388607)
+ 854 compressed objects within 9 object streams
+ 216 named destinations out of 1000 (max. 500000)
+ 307 words of extra memory for PDF output out of 10000 (max. 10000000)
 

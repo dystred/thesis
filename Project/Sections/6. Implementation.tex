@@ -1,0 +1,338 @@
+%%% Implementation
+
+The empirical implementation of the signal and it's effect on the stock market will be elaborated upon in this section. It will start by outlining the distribution of the signal and choices made regarding both the estimation of the signal and the formation of the portfolios, whereafter I will outline the factors, how they are made, and what other considerations were relevant for the analysis. Afterwards, I will go through the different frameworks for analyzing the relation between the stock market and the signal, and an investigation into the risk premias of the factors. The section will conclude with an overview of the economic evaluation of the factors.
+
+\subsection{Estimating the Signal}
+
+For the estimation of the signal, several choices have to be made. The first and most important aspect, in my view, is the choice of which period to observe the signal in. In \cite{fama1992cross} only information available at portfolio formation is used, while \cite{cremers2010deviations} include portfolios formed on signals observed at market-close Wednesday and holding period return measured from market-close on the same day until the following week's Wednesday. On the base of wanting to include the overnigth returns. 
+
+For every single option in the database, the implied volatility is found at end of each trading day. As mentioned above, the put-call-parity no longer holds for american options, and therefore there might be a difference in the implied volatility of a put and call with the same strike, maturity, and underlying stock. A high implied volatility means the options is worth more, or priced higher, and vice versa. 
+
+I wanted to evaluate the relative pricings of options, and their magnitude, so the signal is then based on the implied volatility spread. This implied volatility spread essentially controls for the intrinsic value of the options and makes it possible to compare the 'mispricing' across maturities, strikes, time, and stocks. Following the notation in \cite{cremers2010deviations} and the definition of the implied volatility spread in Equation \ref{eq:imp_vol_spread_CW},  the signal is then estimated across time and stocks:
+\begin{equation}
+	VS_{i,t} = \sum_{j=1}^{N_{i,t}}w_{j,t}^{i}\left(IV_{j,t}^{i,call}-IV_{j,t}^{i,put}\right)
+\end{equation}
+where $t$, $i$ and $j$ specifies the time, stock and combination of strike and maturity. $w_{j,t}^{i}$ is the weight for the specific maturity, strike and time. This weight can be either a simple average or based on the sum of open interest in the pair of options.
+
+\subsection{Forming Portfolios}
+
+The analysis of the relation between stock returns and the signal defined above is conducted using portfolios. Thus I will split the different firms into portfolios with the use of the signal. 
+
+The choice of forming portfolios compared to analyzing specific stocks over a period of time, is made based on the flexibility  of the setup. The approach requires no a priori assumptions about the effect, and also allows for the discovery of more than just a linear effect. This approach also has some diasadvantages, as the flexibility gives rise to a bigger risk of datasnooping. 
+
+The choice of using portfolios for the analysis is further made based on the extensive literature within asset pricing where a variety of signals have been evaluated through portfolio formation. Furthermore, the choice is based on an approach looking at the effect of the signal on the entire American stock market, and not on specific stocks, therefore, an aggregation and combination of these stocks provides a clearer picture of the effect from the signal and reduces the noise and idiosyncratic factors from other individual characteristics. 
+
+The portfolios are formed using breakpoints in distribution of the signal. Thus I start by choosing the amount of portfolios I would like. The traditional choice would be to follow \cite{fama1992cross} and make three portfolios with breakpoints at the 30 percentile and 70 percentile, to make portfolios consisting of the lowest 30\% of the signal, then the middle 40\%  and the last portfolio of the highest 30\% from the sample. In \cite{cremers2010deviations} they use five equal sized portfolios, and I will compare with their example, but instead primarily use the results with 10 equal-sized portfolios. An overview of the different versions of the portfolios is shown in the Appendix in Table \ref{tab:scenarioids}.
+
+The use of equal-sized portfolios stems from an ambition to evaluate the effect of the entire distribution of the signal and not just evaluate the tails as done in the traditional approach. Furthermore, my main analysis will be based on 5 equal sized portfolios to ensure a sufficient amount of stocks are in each. This means that I have a smaller sample of portfolio returns to evaluate, which I thought a reasonable tradeoff given the inclusion of the results from the analysis with different amount of portfolios in the appendix.
+
+The statistical properties of portfolio sorting have been further analyzed by \cite{cattaneo2020characteristic}, and they find that contrary to what has been the trend in the literature of only focusing on 3-10 portfolios, a higher number of portfolios will give more robust and asymptotically valid results. To supplement the main focus of a bivariate portfolio sort with 10 times 10 portfolios, I will also evaluate a 15 times 15, even though it is not very common in the literature, the above-mentioned article highlights the robustness of such more extreme formations.
+
+Furthermore, the signal identified above might not be the sole signal that we are interested in. A combination of the value of the implied volatility spread and the recent change in the implied volatility spread might also provide some insights. 
+
+Therefore, I will conduct an analysis focusing only on the univariate portfolio sorting based on the value, and following that a bivariate portfolio sorting with both a dependent and independent sorting with the implied volatility spread as the first sorting factor and the recent change in the implied volatility spread as the second sorting factor.
+
+The \textit{univariate} portfolio sorting has the following steps:
+
+\textbf{Step 1: Computing the breakpoints } Identifying the signal of stock, $i$, at time, $t$, as $S_{i,t}$, I will start from the cross-sectional distribution of the signal, forming the number of portfolios I need, denoted $n_{\rho}$, I find for all the $n_{\rho}-1$ breakpoints the $k$'th breakpoint as follows:
+\begin{equation}\label{eq:step1uni}
+	\mathcal{B}_{k,t}=\text{Percentile}_{\rho_{k}}\left(S_{i,t}\right)
+\end{equation}
+The sample used for the breakpoints determination is the entire available dataset. This is done to ensure equal sized portfolios across the analysis. It might however affect the liquidity aspect of the conclusions, as inclusion of smaller and less liquid stocks might skew the picture. This is due to the fact that smaller and less liquid stocks often have higher transactions costs and tighter borrowing constraints, and therefore not priced precisely as the markets expect. An alternative would be to calculate the breakpoints for the portfolios from a sample of S\&P 500 stocks and their corresponding implied volatility spreads. I deem however, that only considering the largest 500 stocks in the US for breakpoints determination might skew the picture when including more than 2000 stocks per period, and therefore I use value-weighted returns to correct for any effects from illiquid stocks (and by weighting the implied volatility by the open interest). Furthermore, I would assume that only the larger and more traded stocks have options written on them, and of these a smaller fraction of the options are actually traded every week.
+
+\textbf{Step 2: Forming the Portfolios} The portfolios are then formed using the breakpoint, $\mathcal{B}_{k,t}$, found in the previous step. A stock, $i$, is then included in portfolio, $k$, if it's signal is within the breakpoints identified:
+% JKJ: To be more precise you could maybe state something like 'the pf corresponding to bp k is thus defined as'
+\begin{equation}
+	P_{k,t}=\left\{ i|\mathcal{B}_{k-1,t}\leq S_{i,t}<\mathcal{B}_{k,t}\right\} 
+\end{equation}
+When forming the last portfolio (the portfolio consisting of stocks with the highest value of the signal), I will add the last few stocks with a signal value equal to the maximum signal value of the sample. In contrast some researchers include less than or equal sign on both side of the signal in the formation of their portfolios, which means that some stocks might be included in two portfolios. To counteract this I choose the above approach insted, which results in my last portfolio having slightly more stocks included, but no stocks will be in two portfolios at once.
+
+\textbf{Step 3: Calculating the Returns} The returns will be calculated based on a value-weighted investment. Thus they are reported in simple value-weighted form with the market value, $MV_{i,t-1}$ observed as the shares outstanding timed the opening price at portfolio formation,  and calculated as follows:
+% JKJ: timed -> multiplied by?
+\begin{equation}
+	r_{k,t}=\frac{\sum_{i=1}^{N_{k,t}}MV_{i,t-1}\cdot r_{i,t}}{\sum_{i=1}^{N_{k,t}}MV_{i,t-1}}
+\end{equation}
+I choose a value-weighted approach compared to equal-weighted, as I want to make sure that small and illiquid stocks, which are difficult to trade, have a small impact on the results. 
+% JKJ: compared -> as opposed to
+
+For a \textit{bivariate} portfolio sorting, the steps look a little different. First and foremost, this will make it possible to control for two different sorting signals compared to just one in the univariate portfolio sorting. The inclusion of bivariate sorting to take a second signal into account leaves more choices to be made. Of course, there is the amount of portfolios and the percentiles of the second signal, but another important choice regarding the sorting of the stocks is also relevant, namely whether to do independent or dependent sorting. Which means that when we do the breakpoints calculation of the second signal, we should either find them for the entire sample or from the grouping from the first signal.
+
+In my case, I will look at the recent change in implied volatility spread as the second signal. Given the combination of the value of the same dataseries being the first sorting signal, it makes sense to do a dependent sorting. If an independent sorting were to be made, and given that the signal is relatively stable over the period as seen in Figure \ref{fig:distribution_of_signal_entire_period}, there would be very few stocks with a low value of the signal (thus sorted in the first portfolio in the first sorting) and also having a big positive change in the signal value (sorted into the last portfolio in the second sorting) and vice versa. An independent sorting would therefore result in an almost empty portfolio of stocks with high (low) value and big negative (positive) change in the signal, due to the correlation between the two signals. A dependent sorting is chosen, and the following steps from above is adapted.
+
+\textbf{Adapted Step 1: Breakpoints for Dependent Bivariate Sorting} To find the breakpoints dependent on the first sorting signal, I use the following approach. Note that as mentioned above, the last portfolios are including the stocks with maximum value of the signal. The first sorting breakpoints for portfolio $k$ are defined as above in Equation \ref{eq:step1uni}, and the second sorting signal's breakpoints for portfolio $j$ is defined below:
+\begin{equation}
+	\mathcal{B}_{k,j,t}^{2}=\text{Percentile}_{\rho_{j}}\left(S_{i,t}^{2}|\mathcal{B}_{k,t}^{1}\leq S_{i,t}^{1}<\mathcal{B}_{k,t}^{1}\right)
+\end{equation}
+Which leaves me with $n_{p_{1}} - 1$ breakpoints for the first portfolio sorting and $n_{p_{1}} \cdot \left(n_{p_{2}} - 1\right)$ breakpoints for the second portfolio sorting. 
+
+\textbf{Adapted Step 2: Forming Portfolios with Dependent Bivariate Sorting} Instead of allocating stocks to different portfolios according to only the first signal, I use both set of breakpoints simultaneously.
+\begin{equation}
+	P_{k,j,t}=\left\{ i|\mathcal{B}_{k-1,j,t}^{1}\leq S_{i,t}<\mathcal{B}_{k,j,t}^{1}\right\} \cap\left\{ i|\mathcal{B}_{k,j-1,t}^{2}\leq S_{i,t}<\mathcal{B}_{k,j,t}^{2}\right\} 
+\end{equation}
+This results in $n_{p_{1}}\cdot n_{p_{2}}$ portfolios with approximately an equal amount of stocks included in each, with only the last portfolios including a slightly larger amounts of stocks.
+
+\textbf{Adapted Step 3: Calculating Returns with Dependent Bivariate Sorting} The third step is only slightly changed to account for the second dimension of portfolios:
+\begin{equation}
+	r_{k,j,t}=\frac{\sum_{i=1}^{N_{k,j,t}}MV_{i,t-1}\cdot r_{i,t}}{\sum_{i=1}^{N_{k,j,t}}MV_{i,t-1}}
+\end{equation}
+This concluding the adapted steps for the bivariate sorting. Any structure of analysis from here will look largely the same. 
+
+A further sorting of the stocks into a third formation is not feasible, even though it might make sense to want to account for more signals. This is due to how portfolio sorting scales with the amount of sorting signals. And as such, most of the literature focus on either univariate or bivariate sorting. In an attempt to account for more variables, in particular the liquidity of the option market, we can reduce the initial amount of stocks to only include these that have a ratio of open interest in options to open interest in stocks to be larger than a certain (time-variant) threshold, and compare these results to the full sample. Essentially a third portfolio formation with a sole interest in the subsample with the highest ratio.
+
+The portfolio horizon will be limited to 1 week, and no forecasting of a future implied volatility spread will be made to enable a longer horizon of portfolio sorting. 
+
+With the portfolio returns being computed, the factors should be estimated. Both the portfolios and the factors will be analyzed through an unconditional analysis and a conditional analysis.
+
+\subsection{Forming the Factors}\label{subsec:forming_factors}
+
+A factor can be formed as a long-short zero-net investment in the portfolios, or it could be formed based on an average across different intersecting portfolios as in the \cite{fama2015five}. The choice of forming the factors as a position in only the tail portfolios means that the more portfolios considered, the more extreme might the factor be and as such, it would resemble only the outmost exposure to the signal and not a general position. 
+
+To inspect the factors, I will compare the factor competition\footnote{See subsection \ref{subsec:factorcomp_impl}.} results of three different univariate portfolio sorts based on the level of the implied volatility spread. The results are shown in Table \ref{tab:factor_competition_impl}.
+
+\begin{table}[ht]
+	\centering
+	\caption[Comparison of Factor Competition]{Factor Competition Intercept based on 3 different Portfolio Formations}
+	\label{tab:factor_competition_impl}
+	
+	\begin{tabular}{l|lll}
+		\input{./Tables/factorcompetition_ALL_1_12_13.tex}
+	\end{tabular}
+
+	{\small Note: the table shows the intercept and it's significance across 3 different portfolio sorts. The first portfolio sort has 3 portfolios with a 30\% - 40\% - 30\% split, the second has 5 equal-sized portfolios and the last has 10 equal-sized portfolios. The regression span the entire sample period and consists of weekly returns. The significance of  the coefficients are coded according to the p-value: $0 < (\ast\ast\ast) < 0.001 < (\ast\ast) < 0.01 < (\ast) < 0.05$. The scenarioIDs are 12, 1 and 13 respectively.}
+\end{table}
+
+The results of Table \ref{tab:factor_competition_impl} shows that the factors have the same level of significance, but the intercept varies as it increases in the amounts of portfolios. This signifies a clear linear dependence between a high value of the signal and a high return in the subsequent week, as a factor formed on less stocks in the far out tails have a higher intercept, and thus a higher average. 
+
+The descriptive statistics of the portfolios in general, will, of course, be elaborated upon in the empricial section. For now, I will move on to describe the relevant metrics for an unconditional analysis of the portfolios. 
+
+\subsection{Unconditional Analysis}
+
+I will define the unconditional analysis as to be the analysis of the distribution of the returns and a few selected statistical tests upon only the portfolios without involving any other factors or models.
+
+The returns of any portfolio cannot be comprised by only the average return. In the finance literature in general, the risk associated with any portfolio is mainly described by its standard deviation. This is due to the returns often being assumed normally distributed. As will be discussed later, different measures of risk might be relevant, and as such, I will report both the skewness and kurtosis for each portfolio. These metrics are all reported to give an idea about the distribution of the returns. All metrics are being calculated across the entire sample period.
+
+Using this assumption of gaussian distributed returns, a relevant metric of the performance of portfolios in the mean-variance space is the Sharpe Ratio:
+\begin{equation}
+	SR = \frac{R_{p}-R_{f}}{\sigma_{p}}
+\end{equation}
+which is too calculated across the entire sample period. In addition to this, a common known metric is the Jensen's Alpha, which is essentially just the intercept of the CAPM. This metric will not be reported among the general descriptive statistics, but the intercept will be tested among a general time-series regression against an extended factor model which includes the FF5 factors.
+
+The portfolios formed upon the signals gives rise to a factor formation. Traditionally a long-short version of factors has been the default, where they resemble a zero-net-investment in the tail portfolios. Thus a factor denoted IMPVOL will signify a long investment in portfolio N and a short investment in portfolio 1, and in the case of bivariate portfolio sorting; a long investment in portfolio N\_N and a short investment in portfolio 1\_1. In the bivariate portfolio sorting case, I will include a second factor of a long position in portfolio N\_1 and a short position in portfolio 1\_N. In \cite{fama2015five} they choose a slightly different formation of the portfolios based on a zero-net-investment long-short position of average across different portfolio sortings. This setup was deemed a slightly too complex in comparison with the goal of highlighting the effect of the signal upon the stock returns. All denotion of the portfolios have the portfolio numbering of the first sorting as the first number and the portfolio numbering of the second sorting.
+
+While I am interested in evaluating the factors, I will also investigate the patterns of the returns in the portfolios. In particular, I deem it interesting to see if the returns are monotically increasing or decreasing in the portfolio order. A statistical test will be introduced in the following subsection before I will dive deeper into the statistical test of the factor, and its relation to other factors from the literature.
+
+\subsubsection{Monotonicity Test}
+
+The pattern of the returns have traditionally been inspected through visual analysis of the mean return of each portfolio. To do this in a more structured way, \cite{wolak1987exact, wolak1989testing} introduce a test for monotinicity in returns with a null hypothesis of a clear pattern, and \cite{fama1984term} proposes a similar test using Bonferroni bounds. \cite{patton2010monotonicity} introduces a test with the same purpose, but a different null hypothesis of no clear pattern in the returns across portfolios. This ensures that we only reject the null hypothesis of no distinct monotonically increasing returns across portfolios if there is enough evidence to support it, while the abovementioned tests would require the data to show a random pattern instead of a monotonically increasing one. In other words, I prefer to use a test which has no pattern as a prior and relies on the data to prove it wrong.
+
+The hypothesis of the \cite{patton2010monotonicity} test is formally written as, using $\Delta_{i} = \mu _{i} - \mu_{i-1}$ as the difference between the average return of portfolio $i$ and $i-1$:
+\begin{equation}
+	\begin{array}{c}
+		H_{0}:\Delta\leq0\\
+		H_{1}:\Delta>0
+	\end{array}
+	\label{eq:monoton_test}
+\end{equation}
+The test statistic is then computed as the minimum of the observed deltas, $J_{T} = \min \left( \Delta \right)$. As there is no preformed distribution of this test statistic on which we can evaluate significance, we will find the distribution through bootstrapping with replacement from the original sample. This is all done in the R package provided by \cite{rpackagemonotonicity}. 
+
+The reason for the inclusion of this test is to identify if there is a monotonically increasing (or decreasing) pattern in the average returns of the portfolios. This will lead to a preliminary conclusion that it might be relevant to look at this signal, given that it when rejecting the null has a significant effect on the expected returns. 
+
+This test is, however, based on a view of the entire sample period and does not account for time varying monotonicity or if the pattern persists when corrected for other known risk factors. I will therefore in the further analysis look deeper into the signal and examine how it performs in the cross sectional study when confronted with common risk factors from \cite{fama2015five}.
+
+\subsection{Conditional Analysis}
+
+In this subsection I will elaborate upon the different analyses, I deem relevant to evaluate the relation between the signal and stock returns, and the risk premia of the factor. The starting point is the relevant external factors, hereafter they will be evaluated in the factor competition (also known as spanning regressions), the third will be risk premia estimation through the Fama-Macbeth regressions and the three-step procedure of \cite{giglio2021asset}. The pooled cross sectional regression deployed in the analysis, will not be elaborated on in this section, as the implementation is fairly straightforward.
+
+\subsubsection{Comparing with Other Factors}
+
+%In this subsection I will elaborate on different approaches used for evaluating the signal against other (acknowledged in the literature) factors. The first approach will be very basic and relate to the cross sectionality part of the analysis. The remaining approaches will relate to predictability of the 
+
+When analyzing the portfolios, I will not only base the analysis on a long-short factor calculated from the portfolios, but also incorporate some other factors. This will by no means include all factors available or proved to be significant
+\footnote{A close to exhaustive list of all factors documented in the literature to have a significant effect on stock returns is comprised by \cite{harvey2019census} in this google docs document: \href{https://docs.google.com/spreadsheets/d/1mws1bU56ZAc8aK7Dvz696LknM0Vp4Rojc3n61q2-keY/edit?usp=sharing}{Google Sheets, Factor Census}.}
+, but only include the ones relevant. I deem the following three subsets of factors relevant for inclusion in the further analysis.
+
+\textbf{FF3} The three factors of \cite{fama1992cross} based on portfolios formed of american stocks are some of the most analyzed (and scrutinised) factors. They were among the first factor models and also include the seminal market factor (introduced by \cite{treynor1961toward}, \cite{sharpe1964capital}, \cite{lintner1965security} and \cite{mossin1966equilibrium}). The estimated model has the following form:
+\begin{equation}
+	R_{i,t}^{e}=\alpha_{i}+\beta_{i,MKT}\cdot R_{MKT,t}^{e}+\beta_{i,SMB}\cdot R_{SMB,t}^{e}+\beta_{i,HML}\cdot R_{HML,t}^{e}+\epsilon_{it}
+\end{equation}
+where $R_{i,t}^{e}$ is the excess return of stock $i$ at time $t$, $\alpha_{i}$ is the abnormal return incurred after controlling for the factors (which has been argued to be largely 0 based on no-arbitrage arguments proposed by \cite{ross1976arbitrage}). The $R_{k,t}^{e}$ is the factor portfolio excess return of portfolio $k$ and $\beta_{i,k}$ is the corresponding exposure of the excess return of stock $i$ to the factor. $\epsilon_{it}$ is the error term assumed to be uncorrelated across stocks and time.
+
+\textbf{FF5} The five factors of \cite{fama2015five} extends the previous model by also including profitability and investment as factors while adapting the SMB (size) factor from FF3 to be influenced by the additional factors included in the model. The model has the following (similar) form:
+\begin{equation}
+	R_{i,t}^{e}=\alpha_{i}+\beta_{i,MKT}\cdot R_{MKT,t}^{e}+\beta_{i,SMB}\cdot R_{SMB,t}^{e}+\beta_{i,HML}\cdot R_{HML,t}^{e}+\beta_{i,RMW}\cdot R_{RMW,t}^{e}+\beta_{i,CMA}\cdot R_{CMA,t}^{e}+\epsilon_{it}
+\end{equation}
+With the main difference from the equation above being the two additional factors.
+
+\textbf{Open Asset Pricing} The last subset of relevant factors include subjectively chosen factors from Open Asset Pricing. 
+The first chosen factor is the liquidity factor of \cite{pastor2003liquidity}. This factor is relevant as it proxies a liquidity risk that might affect shorting constraints, which in turn might be affecting my signal, therefore I deem it relevant to include it for control. 
+The second chosen factor is the volatility risk factor of \cite{ang2006cross}, and measures the daily change in the VIX to capture the risk associated with volatility. 
+The third included factor is coskewness factor (CoskewACX) introduced by \cite{ang2006downside}, it is formed based on portfolios formed on the coskewness value and using equal-weighted returns. 
+The fourth is also a coskewness factor (Coskewness), introduced by \cite{harvey2000conditional} and contrary to the other coskewness factor, it is based on a long short investment in portfolios with value-weigthed returns.
+The fifth and sixth are both optionvolume factors, and the first factor measures the ratio of the offered volume in the option market versus the stock market and the second factor measures the offered option volume to the average, both were introduced by \cite{johnson2012option}. 
+The seventh factor is a skewness factor and measures the volatility smirk near at-the-money options, introduced by \cite{xing2010does}.
+All of the above-mentioned factors are available at Open Asset Pricing\footnote{All data is available at \href{https://www.openassetpricing.com/data/}{Open Asset Pricing - Data}.} and is only available at a monthly frequency. I have splitted the monthly return into four equal parts (which have a cumulative sum equal to the reported monthly one) resulting in each of these factors being constant over the month. The factors were not available at a daily or weekly frequency. This subset of data will be referred to as OA data.
+
+Other datasets and factors have been proved in the literature to be relevant, but an inclusion of all of them might prove to introduce more noise than explanatory power to the models. I only chose to use simple regressions and a limited use of Principal Components Analysis, leading to overfitting and errors in estimations when the factors are correlated. A different approach using other machine learning techniques or heavier use of Principal Components Analysis, Ridge Regression or Principal Components Regressions would utilize the information in more factors. The focus of this thesis is, however, limited to a portfolio sorting analysis of the implied volatility spread and its relation to equity risk premiums and not an evaluation of the entire factor zoo, see eg.  \cite{feng2017taming}. It should be noted, however, that some of the factors which might provide valuable insight and proxy for some related risk to the one from the implied volatility, includes the PIN factor of \cite{pan2006information} (which describes ratio of the buyer or seller initiated options). The exclusion of relevant factors is, however, due to limitations in data access and not a desire for data reduction.
+
+
+\subsubsection{Factor Competition} \label{subsec:factorcomp_impl}
+
+To evaluate the portfolios it might be beneficial to isolate the long-short factor formed on the portfolios and relate it to similar factors from the literature. To see if it is merely a proxy for some already discovered risk factor or if it provides some new insights. To do this, I will follow the approach outlined in \cite{fama2015five} and perform simple regressions of each factor upon the rest of the factors in the control set, this analysis is also known as spanning regressions. In this case the control set will be FF5, but the rest of the factors will be included in the appendix. The following equation outlines the simple regression of estimating the intercept and coefficients of regressing the factors formed on the portfolios upon the remaining factors. In case of a bivariate sorting, both the factor of $n_n - 1_1$ and the diagonal factor of $n_1 - 1_n$ is included:
+
+\begin{equation}
+	f_{t,k}=a_{k}+\sum_{j\neq k}^{K}\delta_{k,j}f_{t,j}+\epsilon_{t,k}
+	\label{eq:factorcompetition}
+\end{equation}
+
+The standard errors are robust against both heteroscedasticity and autocorrelation, as instead of using regular standard errors supplied from the LM function in R, the Newey-West standard errors have been deployed. This will essentially correct the standard errors to be less prone to be affected by any issues with autocorrelation and heteroscedasticity. The autocorrelation in the returns of the individual portfolios are quiet prevalent, and can be seen in the appendix in Figure \ref{fig:acf:1}. 
+
+The interpretation of this analysis will be to evaluate the intercept. If it is statistically significantly different from zero, then we can conclude that the average return of the factor is not redundant or explained by any of the control factors. 
+
+When performing the analysis, only the comparison against FF5 will be included in the main part of the text, however, the analysis of an extended model including both the FF5 and the OA factors will be supplied in the appendix. Furthermore, the regression spans the entire sample. This might provide a skewed picture, as the market for options has matured through the sample period and might provide a better signal of the stock market in recent years compared to the sample period start.
+
+\subsubsection{Fama-Macbeth Regressions}
+
+In a seminal paper \cite{fama1973risk} propose an approach for estimating the risk-premia of factors and variables upon returns was introduced. It is built upon a two-step approach, where we first will estimate the covariance between a factor and the returns over time, and then afterwards use this covariance in estimating the compensation of which the stocks or portfolios provide as price for being exposed towards this factor. 
+
+In the analysis, I will include both factors estimated on the portfolios, and the median of the implied volatility spread within each group in time. This is done to evaluate if the signal itself is priced, or if it is merely the tails that are priced through the factors.
+
+Implicitly in this regression we will have an assumption that the exposure towards the factor is constant over time, which I will challenge. Therefore, I will include both a time invariant version of the Fama-Macbeth regression and a time variant version, in which I will assume that the dependence is the same within 52 weeks (approximately a year) and then changing afterwards. 
+
+While, of course, I am mostly interested in the risk premia of my signal, it would be beneficial to control for a few factors, and as such, there will also be both a time invariant and time variant version of the Fama-Macbeth regressions with factors including the signal and the FF5 factors. All returns are excess returns of the portfolios, while any traded factors are excess returns by definition, as they are formed as net-zero-investment long short factors. 
+
+The approach of the analysis is as follows:
+
+\textbf{Step 1:} The first step is a simple regression of each individual stock or portfolio upon the factor(s). The purpose of this regression is to estimate the exposure of a certain stock to the factor and then utilize these $\beta$'s in the next regression:
+
+\begin{equation}
+	r_{t,n}^{e}=a_{n}+\sum_{k=1}^{K}\beta_{n,k}\cdot f_{t,k}+\epsilon_{t,n}
+	\label{eq:fm1}
+\end{equation}
+where $r_{t,n}^{e}$ is the excess return of portfolio $n$ at time $t$, $a_{n}$ is the average return of the stock not explained by the factors, $k$ measures the amount of factors included and $\epsilon_{t,n}$ is the error term. If a time invariant version is estimated, I will estimate this on the entire sample period, if a time invariant version is deployed instead, I will use a rolling window of 52 weeks to estimate the $\beta$'s for each factor.
+
+\textbf{Step 2: } The second step is then regressing the portfolio returns upon the estimated $\beta$'s from Equation \ref{eq:fm1}. It should be noted here, that I am only assuming a changing exposure to the risk factor and not a changing risk premia, the following equation will therefore be estimated across the entire sample period with either the changing $\beta$'s of the time variant version or the constant $\beta$'s from the time invariant version:
+\begin{equation}
+	r_{t,n}^{e}=\gamma_{t,0}+\sum_{k=1}^{K}\gamma_{t,k}\widehat{\beta}_{n,k}+\epsilon_{t,n}
+	\label{eq:fm2}
+\end{equation} 
+where $\gamma_{t,0}$ is the time varying excess return, $\widehat{\beta}_{n,k}$ is the estimated coefficients from Equation \ref{eq:fm1} and $\gamma_{t,k}$ is the price of risk, or the compensation in return for every unit of exposure to factor $k$.
+
+When doing these regressions, I am essentially estimating the some coefficients whereafter I use those very same coefficients to estimate new coefficients, leading to the errors-in-variables problem. If there is just a slight measurement error in the first regression it will bias the second regression tremendously. Therefore I have chosen to use weekly returns, and not decrease the sampling frequency to monthly observations, in the hope that the factors, returns and signals will be more precisely observed when sampling frequently. Furthermore, this gives me a larger sample of returns, which should make the estimates more reliable. 
+
+In addition to this, all included factors are either traded (all the FF5 factors) or it is the median of the implied volatility spread, which is a quite precisely observed signal. This signal used beside the factors formed on the portfolios in the sample, means that I obtain a price for exposure towards the implied volatility spread in itself with a minimal of idiosyncratic effect from individual stocks. This also means that there is very little measurement error in the signal, as it is not a macroeconomic estimate with delayed publication and tons of measurement uncertainty. 
+
+To combat this Errors-in-variables problem often discussed in the literature, an alternative approach using GMM to simultaneously estimate both regressions at once is proposed. This can combat both the estimation problems of the coefficients, but also take problems arising from heteroscedasticity and autocorrelation into account. I will argue, based on the sampling frequency, the stationarity of the signal, and the use of portfolios to reduce idiosyncratic noise, that the errors-in-variables does not give rise to an additional use of GMM. The signal is stationary without a trend, as can be seen in Figure \ref{fig:distribution_of_signal_entire_period} in the appendix.
+
+To otherwise combat the issues with variables being difficult to measure, \cite{shanken1992estimation} has introduced a correction for the standard errors, to make it less likely that coefficients will be concluded to be statistically significantly different from zero when that is not the case. This correction is undoubtedly relevant when using factors, that are difficult to measure, but as this is not the case here, I will not deploy them. Furthermore, it turned out that none of the coefficients were close to being significant, and as such, it would not affect the conclusion to estimate an upwards correction to the standard errors.
+
+While the Fama-Macbeth regressions have been used extensively in the literature, it has not only been faulted for the errors-in-variables problem. Issues with omitted variable bias has, as with any traditional regression models, not been solved, and proved to be a very relevant issue in these estimations. Essentially, it has been highlighted that the estimated risk premia prices are differing according to amount of control factors. To combat this issue, \cite{giglio2021asset} introduces a three-step procedure utilizing the thoughts from the Fama-Macbeth regressions while accounting for omitted variable bias by deploying principal components analysis across the original set of returns. This will be elaborated upon in the following subsubsection.
+
+\subsubsection{Three-step Procedure}
+
+\cite{giglio2021asset} introduces a three-step procedure with a purpose to estimate factor risk premia robust to omitted variable bias. They deploy principal components analysis to identify the underlying directions of variance in the returns, and uses these principal components in the second and third step with Fama-Macbeth regressions to estimate the factor risk premia. 
+
+A different approach with a goal of discerning between actual risk factors and spurious factors not related to the cross section of asset returns is proposed by \cite{pukthuanthong2019protocol}, where they focus on a distinction between the factors having both a risk premium and a positive correlation with the returns of assets, and factors without a risk premium and no correlation with the asset returns, called quasi factors. They identify the factors based on principal components analysis and the Fama-Macbeth regressions elaborated above.
+
+\cite{giglio2021asset} only holds if all factors are pervasive across time and are prevalent in all the different returns, as in the factors are strong. Therefore, I will highlight both the risk premia estimates of the included factors, and also evaluate the factor strength. The three step procedure is structured as follows: 
+
+\textbf{Step 1: PCA} The first step is an estimation of the principal components of the set of excess de-meaned returns, $\bar{R}$. The returns are comprised of $N$ portfolios with $T$ periods, leaving us with $N$ principal components, denoted $\hat{V} = T^{1/2} \left( \zeta_{1}, \zeta_{2}, \ldots, \zeta_{\hat{p}} \right)'$, where the eigenvalues, $\zeta$, is sorted in descending order. To choose the optimal amount of components, $\hat{p}$, \cite{giglio2021asset} introduce the following function:
+\begin{equation}
+	\hat{p}=\arg\min_{1\leq j\leq p_{max}} \left(   \zeta_{j} + 0.5\cdot j \cdot \left( \log(N) + \log(T) \right) \cdot \left( N^{-0.5} + T^{-0.5} \right) \cdot \text{median} \left( \zeta_{1}, \zeta_{2}, \ldots, \zeta_{\hat{p}} \right) \right)
+	\label{eq:tp_cost}
+\end{equation}
+where $p_{max}$ has been set equal to $N-1$. The purpose of this step is to identify the main directions of variance within the returns, so we have a space upon which we can project our observable factors. This space should in theory not necessarily be spanned by all initial principal components, but only a subset of the ones with highest marginal variance. This choice of $\hat{p}$ relevant components are, however, not entirely robust, and I will therefore conduct all of the analyses across $\hat{p}$ until $\hat{p}+2$ components included. The determination of $\hat{p}$ leads to an indentification of $\hat{V}$, which allows me to estimate the factor loadings as:
+\begin{equation}
+	\hat{\beta} = T^{-1}\bar{R}\hat{V}'
+	\label{eq:tp_1_beta}
+\end{equation}
+where $\hat{\beta}$ is a $N$ times $\hat{p}$ matrix of factor loadings. 
+
+\textbf{Step 2: Cross Sectional Regression} The first and second steps resemble the Fama-Macbeth regressions. I will start by estimating the cross sectional regression of the de-meaned returns upon the factor loadings, $\hat{\beta}$, but as a slight change, I will add an intercept to the regression, to allow the zero-beta rate to differ from the risk-free rate. This is just to give more flexibility to the model and allow for a potentially significant premium. The intercept is estimated as:
+\begin{equation}
+	\hat{\gamma}_{0}=\left(\iota_{N}'M_{\hat{\beta}}\iota_{N}\right)^{-1}\iota_{N}M_{\hat{\beta}}\bar{r}
+\end{equation}
+and the remaining coefficients for the latent factors are estimated as:
+\begin{equation}
+	\hat{\gamma}=\bar{G}\hat{V}'\left(\hat{V}\hat{V}'\right)^{-1}\left(\hat{\beta}'M_{\iota_{N}}\hat{\beta}\right)^{-1}\hat{\beta}M_{\iota_{N}}\bar{r}
+\end{equation}
+where
+$$M_{\iota_{N}}=I_{N}-\iota_{N}\left(\iota_{N}'\iota_{N}\right)^{-1}\iota_{N}'$$
+and
+$$M_{\hat{\beta}}=I_{N}-\hat{\beta}\left(\hat{\beta}'\hat{\beta}\right)^{-1}\hat{\beta}'$$
+with $\bar{G}$ being the demeaned value of the observed factors, $\iota_{N}$ being a conforming vector of ones with length $N$ and $I_{N}$ being the identity matrix of size $N$. This step then leaves us with the estimated risk premium of the latent factors. Which I will then use to estimate the loadings upon the observable factors to find their risk premium in the third and last step.
+
+\textbf{Step 3: Time-Series Regression} The last step will map the principal components of the first step onto the observable factors, $\hat{\eta}$. Taking the product of $\hat{\eta}$ and $\hat{\gamma}$ will then provide us with the risk premiums for the observable factors, $\hat{\gamma_{g}}$. Therefore, I will start by estimating the mapping:
+\begin{equation}
+	\hat{\eta}=\bar{G}\hat{V}'\left(\hat{V}'\hat{V}\right)^{-1}
+	\label{eq:tp_3_eta}
+\end{equation}
+and finally taking the product to get the risk prices:
+\begin{equation}
+	\hat{\gamma_{g}} = \hat{\eta}\cdot \hat{\gamma}
+	\label{eq:tp_gammahat}
+\end{equation}
+which should leave me with consistent estimations of the risk premiums for the observable factors. The robustness will, of course, be taken into account, as the conclusions are only asymptotically valid when $T$ and $N$ goes towards infinity. Therefore, an improvement to the analysis could be done by adding numerous portfolios formed on different asset classes and characteristica to the returns included. The results are, nonetheless, a relevant supplement for the Fama-Macbeth regressions, as they require the model to include all relevant factors. 
+
+To test the statistical significance of these results, I use HAC standard errors, to take any autocorrelation and heteroscedasticity problems into account. The statistics are then found using a simple t-statistic. The problems that arose in the Fama-Macbeth regressions with the errors-in-variables are proven to not be an issue here, and therefore I will not deploy anything other than the HAC standard errors. 
+
+Besides just inferring from the risk premias and their significance, I will also look at the factor strengths.
+
+\textbf{Factor Strength} The strength of the factors will be estimated through a statistically significance evaluation of $\eta$ and an assessment of the explanatory power of the regression of the factors upon the principal components. The individual factor strength is evaluated through a Wald test with the following hypothesis:
+\begin{equation}
+	\begin{array}{c}
+		H_{0}:\eta = 0\\
+		H_{1}:\eta \neq 0
+	\end{array}
+\end{equation}
+with the test statistic:
+\begin{equation}
+	\hat{W}=T\eta\left(\left(\hat{\varSigma}^{\upsilon}\right)^{-1}\hat{\varPi}_{11}\left(\hat{\varSigma}^{\upsilon}\right)^{-1}\right)^{-1}\hat{\eta}'\stackrel{d}{\rightarrow}\chi_{\hat{p}}^{2}
+\end{equation}
+where $\varSigma$ is the covariance matrix of the factors and $\varPi$ is the covariance matrix between the error terms of Equation \ref{eq:tp_1_beta} and Equation \ref{eq:tp_3_eta}. And the explanatory power of the regression is calculated as:
+\begin{equation}
+	\hat{R}_{g}^{2}=\frac{\hat{\eta}\hat{V}\hat{V}'\hat{\eta}'}{\bar{G}\bar{G}'}\stackrel{p}{\rightarrow}R_{g}^{2}
+\end{equation}
+%Adapting the Fama-Macbeth regression and accounting for omitted variable bias + by adding an initial step of finding the principal components of the returns and rotating the factors onto these most prominent principal components. Leading to a more stable conclusion not cluttered by unobserved factors.
+
+This three-step procedure provides a way to remove any omitted variable bias. This is pertinent, because I cannot account for all relevant risk factors in a simple model. A model estimated with a clear omission of relevant observable factors, will have biased estimates of the $\beta$'s and in the second step regression a biased $\gamma$, which essentially makes the inference based on the model's estimations wrong and misleading. I would, preferably, have a good variation of strong factors in the model, of which the included signal might be one of them. My a priori assumption is that the signal should be priced, and that there is a positive correlation between the value of the implied volatility spread and the following week's return. This could be either due to short-sale limitations and investor's private information therefore affecting the option market first, or a relevant skewed risk profile of the stock, which is realised in the following week. If I am just estimating the Fama-Macbeth regressions,  without accounting for a selected relevant priced (and strong) factors, I would risk assigning some risk premium to my implied volatility spread signal, that instead belonged to some other factor, fx the PIN factor of \cite{pan2006information} or liquidity factors.
+
+After this statistical analysis of significance and factor strength, I deem it necessary to also look at the economic significance of the factor. An investor would understandably be more interested if the signal has an historic effect of providing stable excess returns, and economic arguments as to why it should continue to offer a relevant premium for the investor in the future. Therefore, I will in the following subsections elaborate briefly upon the economic significance of the signal, and how it can compliment an already existing investment portfolio.
+
+\subsection{Economic Evaluation}
+
+For a more nuanced view on the effect of the implied volatility spread, I will also conduct a brief economic evaluation. The analysis is conducted ex-post and all metrics is based on the entire sample period. Which essentially means, that I am just looking back at how a rational investor might have invested using the portfolios formed on the implied volatility spread. This approach also invites critique regarding the estimation methods, as they are based on assumptions of a constant covariance matrix among the superset of portfolios throughout the entire sample period.
+
+As mentioned above, it is relevant to test if the factor and portfolios are statistically significant, but the gain for a rational investor and their portfolio might be even more relevant in the 'real' world. This is due to the fact, that even though a portfolio might have a statistical significant risk premium, a factor or signal might provide better diversification opportunities for investors. Furthermore, a rational investor might decide that an exposure towards the option markets through the portfolios formed here, will be of interest to them. 
+
+I will start by plotting the portfolios' mean and standard deviation and compare this with traditional Fama \& French portfolios on size and value. Building on this, the efficient frontier will be estimated and plotted and lastly I will evaluate the allocation to the portfolios estimated earlier given different levels of constraints upon the individual portfolios in the superset of portfolios considered.
+
+Expected utility has been a central aspect of asset pricing and economic evaluation. In this context, however, I see the optimal portfolio allocation as more pertinent to the topic, and utilizing utility frameworks would require me to make a choice regarding a relevant utility function. A relevant utility function would either be the frequently used power utility or similar, which does not take the loss aversion inherently imbedded in the negative value of the implied volatility spread into account. And as a natural consequence of a lack of expected utility evaluation, the certainty equivalent wont be estimated either. 
+
+To preface the economic evaluation, it is important to keep in mind that these conclusions are not directly transferrable to the investor's world, as the entire analysis is ex-post, and that no market frictions, such as transaction costs, integer constraints, and shorting constraints,  have been taken into account. 
+
+I am also only evaluating the investment as a sigle-period investment, with an assumption that all means, standard devations and correlations are constant.
+
+
+
+%Why would it be useful to evaluate the portfolios, in not only a statistical way but also in an economic way? Looking at utility from investing in long-short portfolios seem obvious.
+%Ex post analysis - comparing with FF 10x10 portfolios, leading to an efficient frontier
+
+%Mapping the portfolios in a mean-variance space
+
+%Mean-variance? -> gaussian distribution (then mean-variance is the most relevant) -> finding the efficient frontier -> plotting the portfolios found along with FF 25 portfolios -> drawing the optimal allocation -> including the target return index 
+
+%Plotting the efficient frontier
+
+%Optimal Allocation
+
+%Why not any utility?  -> Utility from investing (expected) in the portfolio -> certainty equivalent -> mean-variance? -> not doing utility means no choice of utility function -> but also no certainty equivalent of the portfolios
+
+%assuming constant variance covariance matrix within the sample + (samples for both entire period and yearly)
+
+%any constraints? transaction size, holding size, integer constraints etc.
+
+
+
+
+
+

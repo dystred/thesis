@@ -1,8 +1,38 @@
 
-\vspace*{3.5cm}
+\vspace*{2cm}
 \begin{center}
 \underline{\large\textbf{Abstract}}
 \end{center}
+
+This projects presents the analysis of the implied volatility spread and its effect upon the stock market. Implied volatility spreads are, in efficient markets, only present between american options and has historically a negative average. This implicates %of a negative implied volatility spread are 
+that calls are cheap and puts are expensive, when correcting the option's intrinsic value and signals a belief of the market participants to the future distribution of the stock price. 
+
+This I deem a relevant proxy for risk in the stock market. The approach for the analysis of the dependence will be portfolio sorting with an estimated long-short factor. Data is accessed through OptionMetrics, CRSP, and Open Asset Pricing, with the sample spanning from 1996 to 2021 of available observations at a daily granularity of stocks and options traded at American exchanges. I have estimated two relevant signals for the portfolio formation, with the first being the value of the implied volatility spread and the second signal being the recent change in the implied volatility spread. The choices made in the portfolio formation and later analysis is evaluated explicitly, to ensure that the results are robust against data-snooping. 
+
+%The portfolios' returns show a clear monotonic relationship, and the long-short factors are not fully spanned by other external factors. The cumulative returns of the portfolios are clearly positively correlated with the value of the implied volatility spread. Further indicating that informed investors participate in the option markets before moving over to the stock market.
+%Performing the unconditional analysis of the portfolios, their returns show a clear monotonic relationship, whether the portfolio sorting is univariate or bivariate.
+% Univariate portfolios formed on either of the signals both show clear monotonic relationships in the returns, and dependent bivariate portfolio sortings show the same. 
+%The cumulative returns of the portfolios increases in the value of the implied volatility spread. Intuitively, a high call price indicates higher probability of the stock increasing in value. %This makes intuitively sense, as a high implied volatility spread means a higher priced call, which might 
+ %, so they bid up the price of a call option on a stock they know will increase in value. 
+
+
+
+%In the conditional analysis, the factor competition shows that the long-short net-zero investment factors in the portfolios are not redundant when comparing with Fama \& French's 5 factor model, and when correcting for a subjectively chosen list of factors from Open Asset Pricing. This could be due to the factor proxying investors' private information or it could be due to shorting limitations in the stock market.% resulting in investors taking positions in the option markets to get their desired exposure.
+%Estimating the price of risk through both Fama-Macbeth regressions and the three-step procedure, the analysis provides no apparent results, even when accounting for time-varying risk premia and other external factors. 
+%I am also using both Fama-macbeth regressions and the three-step procedure to evaluate the price of risk. The Fama-Macbeth regressions provide inconclusional results, using either time invariant or time varying exposure, and accounting for just the factor or including all five factors from \cite{fama2015five}. The three-step procedure did provide a small risk premia of the factor, but the explanatory power of the model was very low, so the evaluation of the factor strength was not relevant. 
+%The pooled cross sectional regression provides only the expected relation between the portfolios, and intuitive coefficients for the included factors. 
+%The last part of the conditional analysis was a pooled cross sectional analysis, with dummies for the portfolio indexes and a varying amount of factors included. The results gave a clear distinction between the average results of the different portfolios, and the coefficients of the external factors included were intuitive. 
+
+%The economic analysis of the portfolios are based on the optimal portfolio allocation of a rational investor, without using the utility framework. When forming the efficient frontier and the optimal allocation given allocation constraints, the portfolios were excluded in favor of including the size and value portfolios of Fama \& French. Only in the case of imposed allocation constraints were the portfolios allocated a positive weight. Thus in a mean-variance framework, the portfolios seem to be deprecated in favor of other external portfolios.
+
+%Using the portfolio optimisation framework, we are assuming the primary risk factor of concern to the investor to be the variance. The implied volatility spread does however catch the loss aversion of the investors, as puts are often overpriced. It would make sense to take this loss aversion into account when forming the optimal portfolio in the mean-variance framework. 
+
+I set out to investigate the relation between the implied volatility spread, as it is a proxy of the mispricing of options after correcting for the option's intrinsic value, and the stock returns. The option market is in general very interesting, as it provides an expectation of the future distribution of the stock price, given probabilities inferred from the prices. I find that the returns are significantly higher for the tail portfolios, and even more so when sorting into several portfolios, the factor is not proxied by other external factors, but it does not demand a significant risk premium when included in the traditional tests. An ex-post economic analysis show a limited inclusion of the portfolios in the optimal portfolio. 
+
+Most of my analysis has been based on an entire sample view, but as the option markets have matured significantly over the sample period, it would be interesting to split the analysis into subperiods. These subperiods could be determined by liquidity factors of both markets, or in a chronological order. The signals deployed could be supplemented by variations to look at only the negative values of the signal, or to investigate the absolute value. This would proxy mispricings in general, and not the directional mispricings of my analysis. 
+
+A common critique point of these kinds of projects is the applicability for an investor in the markets. None of the results include transaction costs or borrowing constraints, which would severely affect the possible earnings incurred for an investor wishing to be exposed to the risk factors. Furthermore, the mean-variance framework of the economic analysis should be challenged, as the implied volatility spread proxies for a loss-aversion not seen in rational investors.%tail-risk in the investors portfolio.
+
 \vspace*{6mm}
 
 

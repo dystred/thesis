@@ -5,50 +5,108 @@
 \section*{Appendices}
 \addcontentsline{toc}{section}{Appendices}
 \setstretch{1.1}
-\listoftables
 \listoffigures
+\listoftables
 \restoregeometry
 \setcounter{figure}{0}
 \renewcommand{\thefigure}{A\arabic{figure}}
 \setcounter{table}{0}
-\renewcommand{\thetable}{A\arabic{table}}
+\renewcommand{\thetable}{B\arabic{table}}
 \setstretch{1.5}
 \clearpage
 
 %%%%%%%%%%%%%%%%%%%%%%% Appendix A (Figures) %%%%%%%%%%%%%%%%%%%%% 
 \renewcommand\thesubsection{A}
 \subsection{Figures}
-%\input{Figures/exp_5_plot_div_yield}
-%\input{Figures/exp_5_heston_errors}
-%\input{Figures/exp_2_garch_sim}
-%\input{Figures/experiment_3_hist_alphas}
-%\input{Figures/exp_2_garch_sim_tc}
-%\input{Figures/VStermstructure}
-%\input{Figures/SimVS}
-%\input{Figures/calibspx_app}
-%\input{Figures/jumptransform}
-%\input{Figures/jumpdistribution}
-\clearpage
 
-\renewcommand\thesubsection{B}
-\subsection{Tables}
-%\input{Tables/experiment_3_loss_stats_short_2012_2020_subsample_freq_5_horizon_35_OTM}
-%\input{Tables/exp_5_rg_params}
-%\input{Tables/exp_5_garch_params}
-%\input{Tables/experiment_3_loss_stats_pbs_rg}
-%\input{Tables/experiment_3_loss_stats_short_2012_2018_subsample}
-%\input{Figures/VStermstructure}
-%\input{Figures/SimVS}
-%\input{Figures/calibspx_app}
-%\input{Figures/jumptransform}
-%\input{Figures/jumpdistribution}
-\clearpage
+\begin{figure}[ht]
+	\centering
+	\caption[Comparison of CRSP returns]{Plots of CRSP reported holding period returns against daily close/open retuns}
+	
+	\begin{tabular}{cccc}
+		\subfloat[Year 1997]{\includegraphics[width=0.45\textwidth]{./Plots/plot_returns_1997.png}} &
+		\subfloat[Year 2002]{\includegraphics[width=0.45\textwidth]{./Plots/plot_returns_2002.png}} \\
+		\subfloat[Year 2006]{\includegraphics[width=0.45\textwidth]{./Plots/plot_returns_2006.png}} &		\subfloat[Year 2010]{\includegraphics[width=0.45\textwidth]{./Plots/plot_returns_2010.png}} \\
+		\subfloat[Year 2015]{\includegraphics[width=0.45\textwidth]{./Plots/plot_returns_2015.png}} &
+		\subfloat[Year 2021]{\includegraphics[width=0.45\textwidth]{./Plots/plot_returns_2021.png}} \\
+	\end{tabular}
+	\label{fig:crspreturns_openclose_vs_ret}
+	
+	{\small Note: Figure shows the difference between using the daily holding period return supplied by CRSP or calculating the returns as open/close every trading day without accounting for stock splits or dividends, of all returns in the sample across the particular year. The x axis depicts (ret) daily holding return, and the y axis depicts (returns1) open/close. This is just 6 representative years of data evenly spaced out throughout the sample period.}
+\end{figure}
 
+\begin{figure}
+	\centering
+	\caption[Distribution of the Implied Volatility Spread]{Plots of the distribution of the Implied Volatility Spread, across modifications to the signal}
+	
+	\begin{tabular}{cccc}
+		\subfloat[Filtered \& weighted signal]{\includegraphics[width=0.6\textwidth]{./Plots/implvolspread_entireperiod_filtered_weighted.png}} \\
+		\subfloat[Raw \& weighted signal]{\includegraphics[width=0.6\textwidth]{./Plots/implvolspread_entireperiod_raw_weighted.png}} \\
+		\subfloat[Filtered \& simple signal]{\includegraphics[width=0.6\textwidth]{./Plots/implvolspread_entireperiod_filtered_simple.png}} \\
+		\subfloat[Raw \& simple signal]{\includegraphics[width=0.6\textwidth]{./Plots/implvolspread_entireperiod_raw_simple.png}} \\
+		\end{tabular}
+	\label{fig:distribution_of_signal_entire_period}
+	
+	{\small Note: Figure shows the distribution of the implied volatility spread across the entire sample period. Filtered and raw dictates if the conditions outlined in section \ref{section:data} are implemented. Simple or weighted dictates if the implied volatility spread is weighted by the open interest for each pair. The blue lines are the 0.05 and 0.95 percentiles in the distribution, with the black line equal to the median.}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\caption[ACF of Univariate Portfolio Sort, 5 Implied Vol Spread Level]{Autocorrelation Function of Univariate Portfolio Sort, 5 }
+	
+	\includegraphics[width=0.95\textwidth]{./Plots/ACF_entireperiod_simple_1.png}
+	\label{fig:acf:1}
+	
+	{\small Note: The five equal-sized portfolios are sorted on the implied volatility spread across the entire sample period with value-weighted weekly returns, with a signal observed on the last trading day before the next week (in which the return is observed) incurred. The returns have been demeaned across t before calculated the ACF.}
+	
+\end{figure}
+
+
+\clearpage
 
 %%%%%%%%%%%%%%%%%%%%%%% Appendix B (Math) %%%%%%%%%%%%%%%%%%%%% 
 \renewcommand\thesubsection{B}
-%\subsection{Equivalent Measure Changes in the Heston Model}
-% \input{Appendicies/HestonMeasureChange}
+\subsection{Tables}
+
+\begin{table}[ht]
+	{\tiny
+	\centering
+	\caption[Factor Competition, all factors]{Factor Competition Coefficients, Bivariate Dependent Sort 10x10}
+	\label{tab:factor_competition_9_ALL}	
+	\begin{tabular}{l|lllllllllllllll}
+		\input{./Tables/factorcompetition_ALL_9-forprint.tex}
+	\end{tabular}
+	
+	
+	{\scriptsize \centering Note: The regression span the entire sample period and consists of weekly returns. The significance of  the coefficients are coded according to the p-value: $0 < (\ast\ast\ast) < 0.001 < (\ast\ast) < 0.01 < (\ast) < 0.05$.}}
+\end{table}
+
+\begin{table}
+	\centering
+	\caption[Three-Step Procedure, coefficients and standard errors]{Three-Step Procedure, coefficients and standard errors}
+	\label{tab:tp_results_standarderrors_9}
+	
+	\begin{tabular}{l|rrrrrrrrr}
+				\input{./Tables/threepass_coefs_se_FF5_9.tex}
+	\end{tabular}
+\end{table}
+
+\clearpage
+
+%\subsection{Overview of ScenarioIDs}
+
+%The ScenarioIDs used for the portfolio analysis and regressions will be outlined here.
+
+\begin{sidewaystable}%{angle=90}
+	\centering
+	\caption{Overview of ScenarioIDs}
+	\label{tab:scenarioids}
+	
+	\begin{tabular}{l|lllllllllll}
+		\input{./Tables/metadata_ScenarioID.tex}
+	\end{tabular}
+\end{sidewaystable}
+
 \clearpage
 
 \renewcommand\thesubsection{C}

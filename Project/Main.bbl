@@ -1,14 +1,63 @@
-\begin{thebibliography}{11}
+\begin{thebibliography}{49}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
 
+\bibitem[Amin et~al.(2004)Amin, Coval, and Seyhun]{amin2004index}
+K.~Amin, J.~D. Coval, and H.~N. Seyhun.
+\newblock Index option prices and stock market momentum.
+\newblock \emph{The Journal of Business}, 77\penalty0 (4):\penalty0 835--874,
+  2004.
+
+\bibitem[Ang et~al.(2006{\natexlab{a}})Ang, Chen, and Xing]{ang2006downside}
+A.~Ang, J.~Chen, and Y.~Xing.
+\newblock Downside risk.
+\newblock \emph{The review of financial studies}, 19\penalty0 (4):\penalty0
+  1191--1239, 2006{\natexlab{a}}.
+
+\bibitem[Ang et~al.(2006{\natexlab{b}})Ang, Hodrick, Xing, and
+  Zhang]{ang2006cross}
+A.~Ang, R.~J. Hodrick, Y.~Xing, and X.~Zhang.
+\newblock The cross-section of volatility and expected returns.
+\newblock \emph{The journal of finance}, 61\penalty0 (1):\penalty0 259--299,
+  2006{\natexlab{b}}.
+
+\bibitem[Black and Scholes(1973)]{black1973pricing}
+F.~Black and M.~Scholes.
+\newblock The pricing of options and corporate liabilities.
+\newblock \emph{Journal of political economy}, 81\penalty0 (3):\penalty0
+  637--654, 1973.
+
 \bibitem[Breeden and Litzenberger(1978)]{breeden1978prices}
 D.~T. Breeden and R.~H. Litzenberger.
 \newblock Prices of state-contingent claims implicit in option prices.
 \newblock \emph{Journal of business}, pages 621--651, 1978.
+
+\bibitem[Byrne(2013)]{byrne2013structural}
+B.~M. Byrne.
+\newblock \emph{Structural equation modeling with Mplus: Basic concepts,
+  applications, and programming}.
+\newblock routledge, 2013.
+
+\bibitem[Cattaneo et~al.(2020)Cattaneo, Crump, Farrell, and
+  Schaumburg]{cattaneo2020characteristic}
+M.~D. Cattaneo, R.~K. Crump, M.~H. Farrell, and E.~Schaumburg.
+\newblock Characteristic-sorted portfolios: Estimation and inference.
+\newblock \emph{Review of Economics and Statistics}, 102\penalty0 (3):\penalty0
+  531--551, 2020.
+
+\bibitem[Chen and Zimmermann()]{chen_zimmermann}
+A.~Y. Chen and T.~Zimmermann.
+\newblock Data (march 2022 release).
+\newblock URL \url{https://www.openassetpricing.com/data/}.
+
+\bibitem[Cox et~al.(1979)Cox, Ross, and Rubinstein]{cox1979option}
+J.~C. Cox, S.~A. Ross, and M.~Rubinstein.
+\newblock Option pricing: A simplified approach.
+\newblock \emph{Journal of financial Economics}, 7\penalty0 (3):\penalty0
+  229--263, 1979.
 
 \bibitem[Cremers and Weinbaum(2010)]{cremers2010deviations}
 M.~Cremers and D.~Weinbaum.
@@ -16,21 +65,105 @@ M.~Cremers and D.~Weinbaum.
 \newblock \emph{Journal of Financial and Quantitative Analysis}, 45\penalty0
   (2):\penalty0 335--367, 2010.
 
+\bibitem[Delbaen and Schachermayer(1994)]{delbaen1994general}
+F.~Delbaen and W.~Schachermayer.
+\newblock A general version of the fundamental theorem of asset pricing.
+\newblock \emph{Mathematische annalen}, 300\penalty0 (1):\penalty0 463--520,
+  1994.
+
+\bibitem[Fama(1970)]{fama1970efficient}
+E.~F. Fama.
+\newblock Efficient capital markets: A review of theory and empirical work.
+\newblock \emph{The journal of Finance}, 25\penalty0 (2):\penalty0 383--417,
+  1970.
+
 \bibitem[Fama(1984)]{fama1984term}
 E.~F. Fama.
 \newblock Term premiums in bond returns.
 \newblock \emph{Journal of Financial economics}, 13\penalty0 (4):\penalty0
   529--546, 1984.
 
-\bibitem[Harvey and Siddique(2000)]{harvey2000time}
+\bibitem[Fama and French(1992)]{fama1992cross}
+E.~F. Fama and K.~R. French.
+\newblock The cross-section of expected stock returns.
+\newblock \emph{the Journal of Finance}, 47\penalty0 (2):\penalty0 427--465,
+  1992.
+
+\bibitem[Fama and French(2015)]{fama2015five}
+E.~F. Fama and K.~R. French.
+\newblock A five-factor asset pricing model.
+\newblock \emph{Journal of financial economics}, 116\penalty0 (1):\penalty0
+  1--22, 2015.
+
+\bibitem[Fama and MacBeth(1973)]{fama1973risk}
+E.~F. Fama and J.~D. MacBeth.
+\newblock Risk, return, and equilibrium: Empirical tests.
+\newblock \emph{Journal of political economy}, 81\penalty0 (3):\penalty0
+  607--636, 1973.
+
+\bibitem[Feng et~al.(2017)Feng, Giglio, and Xiu]{feng2017taming}
+G.~Feng, S.~Giglio, and D.~Xiu.
+\newblock Taming the factor zoo.
+\newblock Technical report, Working paper, 2017.
+
+\bibitem[Figlewski and Webb(1993)]{figlewski1993options}
+S.~Figlewski and G.~P. Webb.
+\newblock Options, short sales, and market completeness.
+\newblock \emph{The Journal of Finance}, 48\penalty0 (2):\penalty0 761--777,
+  1993.
+
+\bibitem[Giglio and Xiu(2021)]{giglio2021asset}
+S.~Giglio and D.~Xiu.
+\newblock Asset pricing with omitted factors.
+\newblock \emph{Journal of Political Economy}, 129\penalty0 (7):\penalty0
+  1947--1990, 2021.
+
+\bibitem[Girsanov(1960)]{girsanov1960transforming}
+I.~V. Girsanov.
+\newblock On transforming a certain class of stochastic processes by absolutely
+  continuous substitution of measures.
+\newblock \emph{Theory of Probability \& Its Applications}, 5\penalty0
+  (3):\penalty0 285--301, 1960.
+
+\bibitem[Harvey and Liu(2019)]{harvey2019census}
+C.~R. Harvey and Y.~Liu.
+\newblock A census of the factor zoo.
+\newblock \emph{Available at SSRN 3341728}, 2019.
+
+\bibitem[Harvey and Siddique(2000{\natexlab{a}})]{harvey2000conditional}
+C.~R. Harvey and A.~Siddique.
+\newblock Conditional skewness in asset pricing tests.
+\newblock \emph{The Journal of finance}, 55\penalty0 (3):\penalty0 1263--1295,
+  2000{\natexlab{a}}.
+
+\bibitem[Harvey and Siddique(2000{\natexlab{b}})]{harvey2000time}
 C.~R. Harvey and A.~Siddique.
 \newblock Time-varying conditional skewness and the market risk premium.
 \newblock \emph{Research in Banking and Finance}, 1\penalty0 (1):\penalty0
-  27--60, 2000.
+  27--60, 2000{\natexlab{b}}.
 
-\bibitem[Isakas and Melenberg()]{isakasoption}
+\bibitem[Isakas and Melenberg(2020)]{isakasoption}
 J.~Isakas and B.~Melenberg.
 \newblock The option implied risk-neutral distribution.
+\newblock \emph{Tilburg School of Economics and Management}, 2020.
+
+\bibitem[Jarrow and Rudd(1982)]{jarrow1982approximate}
+R.~Jarrow and A.~Rudd.
+\newblock Approximate option valuation for arbitrary stochastic processes.
+\newblock \emph{Journal of financial Economics}, 10\penalty0 (3):\penalty0
+  347--369, 1982.
+
+\bibitem[Johnson and So(2012)]{johnson2012option}
+T.~L. Johnson and E.~C. So.
+\newblock The option to stock volume ratio and future returns.
+\newblock \emph{Journal of Financial Economics}, 106\penalty0 (2):\penalty0
+  262--286, 2012.
+
+\bibitem[Kahneman and Tversky(2013)]{kahneman2013prospect}
+D.~Kahneman and A.~Tversky.
+\newblock Prospect theory: An analysis of decision under risk.
+\newblock In \emph{Handbook of the fundamentals of financial decision making:
+  Part I}, pages 99--127. World Scientific, 2013.
 
 \bibitem[Köstlmeier(2019)]{rpackagemonotonicity}
 S.~Köstlmeier.
@@ -39,11 +172,49 @@ S.~Köstlmeier.
 \newblock URL \url{https://CRAN.R-project.org/package=monotonicity}.
 \newblock R package version 1.3.1.
 
+\bibitem[Lintner(1965)]{lintner1965security}
+J.~Lintner.
+\newblock Security prices, risk, and maximal gains from diversification.
+\newblock \emph{The journal of finance}, 20\penalty0 (4):\penalty0 587--615,
+  1965.
+
+\bibitem[Markowitz(1952)]{markowitz1952portfolio}
+H.~Markowitz.
+\newblock Portfolio selection, the journal of finance. 7 (1), 1952.
+
+\bibitem[Markowitz(1959)]{markowitz1959efficient}
+H.~M. Markowitz.
+\newblock Efficient diversification of investments--new york, 1959.
+
+\bibitem[Merton(1973)]{merton1973theory}
+R.~C. Merton.
+\newblock Theory of rational option pricing.
+\newblock \emph{The Bell Journal of economics and management science}, pages
+  141--183, 1973.
+
+\bibitem[Mossin(1966)]{mossin1966equilibrium}
+J.~Mossin.
+\newblock Equilibrium in a capital asset market.
+\newblock \emph{Econometrica: Journal of the econometric society}, pages
+  768--783, 1966.
+
 \bibitem[OptionMetrics(2015)]{optionmetrics}
 OptionMetrics.
 \newblock Ivydb us, file and data reference manual.
-\newblock Technical report, December 2015.
+\newblock Technical report, OptionMetrics, December 2015.
 \newblock Version 5.0.x.
+
+\bibitem[Pan and Poteshman(2006)]{pan2006information}
+J.~Pan and A.~M. Poteshman.
+\newblock The information in option volume for future stock prices.
+\newblock \emph{The Review of Financial Studies}, 19\penalty0 (3):\penalty0
+  871--908, 2006.
+
+\bibitem[P{\'a}stor and Stambaugh(2003)]{pastor2003liquidity}
+L.~P{\'a}stor and R.~F. Stambaugh.
+\newblock Liquidity risk and expected stock returns.
+\newblock \emph{Journal of Political economy}, 111\penalty0 (3):\penalty0
+  642--685, 2003.
 
 \bibitem[Patton and Timmermann(2010)]{patton2010monotonicity}
 A.~J. Patton and A.~Timmermann.
@@ -52,10 +223,59 @@ A.~J. Patton and A.~Timmermann.
 \newblock \emph{Journal of Financial Economics}, 98\penalty0 (3):\penalty0
   605--625, 2010.
 
+\bibitem[Pukthuanthong et~al.(2019)Pukthuanthong, Roll, and
+  Subrahmanyam]{pukthuanthong2019protocol}
+K.~Pukthuanthong, R.~Roll, and A.~Subrahmanyam.
+\newblock A protocol for factor identification.
+\newblock \emph{The Review of Financial Studies}, 32\penalty0 (4):\penalty0
+  1573--1607, 2019.
+
+\bibitem[Rockafellar et~al.(2000)Rockafellar, Uryasev,
+  et~al.]{rockafellar2000optimization}
+R.~T. Rockafellar, S.~Uryasev, et~al.
+\newblock Optimization of conditional value-at-risk.
+\newblock \emph{Journal of risk}, 2:\penalty0 21--42, 2000.
+
+\bibitem[Ross(1976)]{ross1976arbitrage}
+S.~A. Ross.
+\newblock The arbitrage theory of capital asset pricing.
+\newblock \emph{Journal of Economic Theory}, 13\penalty0 (3):\penalty0
+  341--360, 1976.
+
 \bibitem[Shang(2016)]{shang2016option}
 D.~Shang.
 \newblock \emph{Option markets and stock return predictability}.
 \newblock PhD thesis, The University of Arizona, 2016.
+
+\bibitem[Shanken(1992)]{shanken1992estimation}
+J.~Shanken.
+\newblock On the estimation of beta-pricing models.
+\newblock \emph{The review of financial studies}, 5\penalty0 (1):\penalty0
+  1--33, 1992.
+
+\bibitem[Sharpe(1964)]{sharpe1964capital}
+W.~F. Sharpe.
+\newblock Capital asset prices: A theory of market equilibrium under conditions
+  of risk.
+\newblock \emph{The journal of finance}, 19\penalty0 (3):\penalty0 425--442,
+  1964.
+
+\bibitem[Treynor(1961)]{treynor1961toward}
+J.~L. Treynor.
+\newblock \emph{Toward a theory of market value of risky assets}.
+\newblock 1961.
+
+\bibitem[Von~Neumann and Morgenstern(2007)]{von2007theory}
+J.~Von~Neumann and O.~Morgenstern.
+\newblock Theory of games and economic behavior.
+\newblock In \emph{Theory of games and economic behavior}. Princeton university
+  press, 2007.
+
+\bibitem[Weigand(2019)]{weigand2019machine}
+A.~Weigand.
+\newblock Machine learning in empirical asset pricing.
+\newblock \emph{Financial Markets and Portfolio Management}, 33:\penalty0
+  93--104, 2019.
 
 \bibitem[Wolak(1987)]{wolak1987exact}
 F.~A. Wolak.
@@ -69,5 +289,12 @@ F.~A. Wolak.
 \newblock Testing inequality constraints in linear econometric models.
 \newblock \emph{Journal of econometrics}, 41\penalty0 (2):\penalty0 205--235,
   1989.
+
+\bibitem[Xing et~al.(2010)Xing, Zhang, and Zhao]{xing2010does}
+Y.~Xing, X.~Zhang, and R.~Zhao.
+\newblock What does the individual option volatility smirk tell us about future
+  equity returns?
+\newblock \emph{Journal of Financial and Quantitative Analysis}, 45\penalty0
+  (3):\penalty0 641--662, 2010.
 
 \end{thebibliography}

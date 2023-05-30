@@ -152,7 +152,50 @@ VS_{i,t}=\sum_{j=1}^{N_{i,t}}w_{j,t}^{i}\left(IV_{j,t}^{i,call}-IV_{j,t}^{i,put}
 
 \begin_inset Formula 
 \[
-\frac{}{}
+\mathcal{B}_{k,t}=\text{Percentile}_{\rho_{k}}\left(S_{i,t}\right)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+P_{k,t}=\left\{ i|\mathcal{B}_{k-1,t}≤S_{i,t}<\mathcal{B}_{k,t}\right\} 
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+r_{k,t}=\frac{\sum_{i=1}^{N_{k,t}}MV_{i,t-1}\cdot r_{i,t}}{\sum_{i=1}^{N_{k,t}}MV_{i,t-1}}
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\mathcal{B}_{k,j,t}^{2}=\text{Percentile}_{\rho_{j}}\left(S_{i,t}^{2}|\mathcal{B}_{k,t}^{1}\leq S_{i,t}^{1}<\mathcal{B}_{k,t}^{1}\right)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+P_{k,j,t}=\left\{ i|\mathcal{B}_{k-1,j,t}^{1}≤S_{i,t}<\mathcal{B}_{k,j,t}^{1}\right\} \cap\left\{ i|\mathcal{B}_{k,j-1,t}^{2}≤S_{i,t}<\mathcal{B}_{k,j,t}^{2}\right\} 
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\begin{array}{c}
+H_{0}:\Delta\leq0\\
+H_{1}:\Delta>0
+\end{array}
 \]
 
 \end_inset
@@ -160,5 +203,501 @@ VS_{i,t}=\sum_{j=1}^{N_{i,t}}w_{j,t}^{i}\left(IV_{j,t}^{i,call}-IV_{j,t}^{i,put}
 
 \end_layout
 
+\begin_layout Standard
+Spanning test - ex post analyse - mean variance investor
+\end_layout
+
+\begin_layout Part
+To do:
+\end_layout
+
+\begin_layout Standard
+Rstudio:
+\end_layout
+
+\begin_layout Standard
+— make commit work
+\end_layout
+
+\begin_layout Standard
+load dataset of open interest ratio as continuous variable
+\end_layout
+
+\begin_layout Standard
+— make function for data tabling
+\end_layout
+
+\begin_layout Standard
+— portfoliomaker work for independent doublesort
+\end_layout
+
+\begin_layout Standard
+find out what is wrong when doublesorting 10x10 in 2000
+\end_layout
+
+\begin_layout Standard
+check that all metadata has been saved somewhere
+\begin_inset Newline newline
+\end_inset
+
+Latex:
+\end_layout
+
+\begin_layout Standard
+Subtitle
+\end_layout
+
+\begin_layout Standard
+Abstract
+\end_layout
+
+\begin_layout Standard
+Intro 
+\end_layout
+
+\begin_layout Standard
++ literature -> based on the results made in this paper, how do it differ
+ and how does it relate? any similarity in approaches or contrasts worth
+ highlighting?
+\end_layout
+
+\begin_layout Standard
++ expanding on the p vs.
+ q measure
+\end_layout
+
+\begin_layout Standard
++ evaluating cross sectionality + seasonality
+\end_layout
+
+\begin_layout Standard
+setting
+\end_layout
+
+\begin_layout Standard
++ implied vol spread
+\end_layout
+
+\begin_layout Standard
++ descriptive statistics (statistical properties + stationarity of data
+ + relevance of mean and variance of sample)
+\end_layout
+
+\begin_layout Standard
++ expanding on comparison with other factors, why is it relevant
+\end_layout
+
+\begin_layout Standard
++ ff3 and ff5 + oa data
+\end_layout
+
+\begin_layout Standard
++ fama-macbeth
+\end_layout
+
+\begin_layout Standard
++ three step procedure + adapted fama macbeth (maybe put the elaboration
+ in an appendix)
+\end_layout
+
+\begin_layout Standard
++ economic evaluation (Sharpe ratio, utility, certainty equivalent, leading
+ on to ex-post investment decisions)
+\end_layout
+
+\begin_layout Standard
++ optimal allocation ( + ending with critique of the mean-variance framework
+ + with ties to prospect theory)
+\end_layout
+
+\begin_layout Standard
+data
+\end_layout
+
+\begin_layout Standard
++ sources (CRSP, optionmetrics, kenneth french, oa data, compustat) (calculation
+ of returns : ret or open/close)
+\end_layout
+
+\begin_layout Standard
++ optionmetrics (calculation of forward prices, cox-rox-rubenstein, implied
+ vol spread)
+\end_layout
+
+\begin_layout Standard
++ conditions
+\end_layout
+
+\begin_layout Standard
++ Liquidity measure + open interest consideration + distribution of the
+ ratio
+\end_layout
+
+\begin_layout Standard
++ metadata of the data, distribution of the signal, stationarity
+\end_layout
+
+\begin_layout Standard
+cross sectional analysis
+\end_layout
+
+\begin_layout Standard
++ evaluate univariate portfolios (metadata + cumulative returns) on both
+ signals, choosing the first sorting variable and arguments as to why bivariate
+ is relevant
+\end_layout
+
+\begin_layout Standard
++ descriptive statistics
+\end_layout
+
+\begin_layout Standard
++ analysis : cumulative returns, fama-macbeth (all 4 versions : time vs.
+ expansions), three step procedure (all versions : ff3, ff5, oadata), cross
+ section (dummy, control factors, ff factors, oadata), dummies, simple vs.
+ expanded model + liquidity factor taken into account (only looking at a
+ subset of the data)
+\end_layout
+
+\begin_layout Standard
++ optimal allocation : analysis of efficient frontier + optimal allocation
+ with different risk allocation constraints + commenting on Sharpe ratio
+ + does it make sense to have a risk measure based on variance, if the signal
+ is based on loss aversion and tail risk + portray it in another space than
+ mean-variance
+\end_layout
+
+\begin_layout Standard
+predictability analysis
+\end_layout
+
+\begin_layout Standard
++ is it relevant to look at predictability? + based on cumulative returns
+ : yes, based on other analysis : maybe not
+\end_layout
+
+\begin_layout Standard
++ how do we use the signal to predict future returns autocorrelation in
+ the returns or in the signal + what other models might predict the returns
+ (literature)
+\end_layout
+
+\begin_layout Standard
++ liquidity, using it as a factor / variable + specific thresholds for the
+ factor (after it has been demeaned and detrended) interaction between the
+ factor and the dummy for portfolio number
+\end_layout
+
+\begin_layout Standard
++ data snoooooping + date thresholds for evaluating the sample and comparing
+ it with other articles (if time)
+\end_layout
+
+\begin_layout Standard
+Discussion
+\end_layout
+
+\begin_layout Standard
++ mean-variance space, does it make sense to use just variance as a risk
+ factor (others could be VaR or CVaR)
+\end_layout
+
+\begin_layout Standard
++ choice of signal -> what does it implicate, compared to the squared, absolute,
+ only negative, only positive or similar modification
+\end_layout
+
+\begin_layout Standard
++ other models to compare with: instead of portfolio sorting -> random forest,
+ neural network, elastic net, ridge, pca, pcr, etc.
+\end_layout
+
+\begin_layout Standard
++ the use of portfolio sorting ? too many choices of hyperparameters left
+ to be made by the researcher -> contrasting evidence from other articles
+ ?
+\end_layout
+
+\begin_layout Part
+To do list:
+\end_layout
+
+\begin_layout Itemize
+Title
+\end_layout
+
+\begin_layout Itemize
+Subtitle
+\end_layout
+
+\begin_layout Itemize
+Abstract
+\end_layout
+
+\begin_layout Itemize
+Introduction
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Asset pricing
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+predictability
+\end_layout
+
+\begin_layout Itemize
+cross sectional
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Why does this make sense
+\end_layout
+
+\begin_layout Itemize
+What is the relevance to the world
+\end_layout
+
+\begin_layout Itemize
+Can it be applied to other countries / the world stock market
+\end_layout
+
+\begin_layout Itemize
+What are the trends in the literature
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Setting
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Black Scholes option price
+\end_layout
+
+\begin_layout Itemize
+Starting with the black scholes and the thoughts behind it 
+\end_layout
+
+\begin_layout Itemize
+how to find implied vol and what it means
+\end_layout
+
+\begin_layout Itemize
+look at the difference to american options, and how the equality looks,
+ defining the approach used by optionmetrics
+\end_layout
+
+\begin_layout Itemize
+Approach for analysis
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Portfolios
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Univariate and bivariate
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Testing monotinicity
+\end_layout
+
+\begin_layout Itemize
+Evaluating significance
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Data and estimation of signal
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+All data
+\end_layout
+
+\begin_layout Itemize
+Restrictions on implied vol spread (conditions)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Return Predictability
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Why is it relevant, what does the literature say
+\end_layout
+
+\begin_layout Itemize
+Methods
+\end_layout
+
+\begin_layout Itemize
+Insample evaluation
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+One variable
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Monotonicity test
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Two variables
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Monotonicity test
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+In combination with other models
+\end_layout
+
+\begin_layout Itemize
+Interactions
+\end_layout
+
+\begin_layout Itemize
+Predictability of predictability
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Out of sample evaluation
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Statistical
+\end_layout
+
+\begin_layout Itemize
+Economical
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Utility
+\end_layout
+
+\begin_layout Itemize
+Sharpe Ratio
+\end_layout
+
+\begin_layout Itemize
+Certainty Equivalent
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+State dependency (predicting predictability)
+\end_layout
+
+\begin_layout Itemize
+Conclusion
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Cross sectional
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Why is it relevant, what does the literature say
+\end_layout
+
+\begin_layout Itemize
+Methods
+\end_layout
+
+\begin_layout Itemize
+Evaluation
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Alpha with other factors
+\end_layout
+
+\begin_layout Itemize
+Proxy for something?
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+State dependency
+\end_layout
+
+\begin_layout Itemize
+Conclusion
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Discussion
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Imperfections
+\end_layout
+
+\begin_layout Itemize
+Practical Implications
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Conclusion
+\end_layout
+
+\begin_layout Itemize
+References
+\end_layout
+
+\begin_layout Itemize
+Appendix
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+TOT
+\end_layout
+
+\begin_layout Itemize
+TOP
+\end_layout
+
+\begin_layout Itemize
+Link for Github
+\end_layout
+
+\begin_layout Itemize
+Overview of data
+\end_layout
+
+\end_deeper
 \end_body
 \end_document

@@ -20,65 +20,248 @@
 \bibstyle{abbrvnat}
 \providecommand \oddpage@label [2]{}
 \@writefile{toc}{\thispagestyle {empty}}
-\citation{harvey2000time}
+\citation{ross1976arbitrage}
 \citation{breeden1978prices}
 \citation{isakasoption}
+\citation{figlewski1993options}
+\citation{cremers2010deviations}
 \@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
 \newlabel{section:Introduction}{{1}{1}{Introduction}{section.1}{}}
 \citation{cremers2010deviations}
-\@writefile{toc}{\contentsline {section}{\numberline {2}Setting}{2}{section.2}\protected@file@percent }
-\newlabel{section:Setting}{{2}{2}{Setting}{section.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Implied Volatility}{2}{subsection.2.1}\protected@file@percent }
-\citation{}
+\citation{harvey2000time}
+\citation{amin2004index}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Setting the Stage}{3}{section.2}\protected@file@percent }
+\newlabel{section:Setting}{{2}{3}{Setting the Stage}{section.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Option Pricing}{3}{subsection.2.1}\protected@file@percent }
+\citation{black1973pricing}
+\citation{merton1973theory}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.1.1}Implied Volatility}{4}{subsubsection.2.1.1}\protected@file@percent }
+\newlabel{eq:bs_call}{{2.3}{4}{Implied Volatility}{equation.2.3}{}}
+\newlabel{eq:bs_put}{{2.4}{4}{Implied Volatility}{equation.2.4}{}}
+\citation{black1973pricing}
+\citation{cox1979option}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.1.2}Implied Volatility Spread}{5}{subsubsection.2.1.2}\protected@file@percent }
+\citation{jarrow1982approximate}
+\citation{optionmetrics}
+\citation{cox1979option}
+\newlabel{eq:call_price}{{2.8}{6}{Implied Volatility Spread}{equation.2.8}{}}
 \citation{cremers2010deviations}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Portfolios}{3}{subsection.2.2}\protected@file@percent }
-\newlabel{eq:step1uni}{{2.5}{4}{Portfolios}{equation.2.5}{}}
+\citation{girsanov1960transforming}
+\citation{delbaen1994general}
+\newlabel{eq:forwardprice}{{2.9}{7}{Implied Volatility Spread}{equation.2.9}{}}
+\newlabel{eq:imp_vol_spread_CW}{{2.10}{7}{Implied Volatility Spread}{equation.2.10}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.1.3}Risk-Neutral Pricing}{7}{subsubsection.2.1.3}\protected@file@percent }
+\citation{ross1976arbitrage}
+\citation{fama1970efficient}
+\citation{markowitz1952portfolio}
+\citation{markowitz1952portfolio}
+\citation{markowitz1959efficient}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Arbitrage Pricing Theory}{8}{subsection.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Rational Investors' Preferences}{8}{subsection.2.3}\protected@file@percent }
+\citation{von2007theory}
+\citation{kahneman2013prospect}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}A Small Note on Statistical Properties}{9}{subsection.2.4}\protected@file@percent }
+\citation{chen_zimmermann}
+\citation{cremers2010deviations}
+\citation{shang2016option}
+\citation{cremers2010deviations}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Data}{10}{section.3}\protected@file@percent }
+\newlabel{section:data}{{3}{10}{Data}{section.3}{}}
+\citation{optionmetrics}
+\newlabel{th:condition:implvol}{{3.1}{11}{Restrictions on Implied Volatility Level}{tcb@cnt@mycondition.3.1}{}}
+\newlabel{th:condition:ttm}{{3.2}{11}{Restrictions on Time To Maturity}{tcb@cnt@mycondition.3.2}{}}
+\newlabel{th:condition:moneyyy}{{3.3}{11}{Restrictions on Moneyness}{tcb@cnt@mycondition.3.3}{}}
+\citation{cremers2010deviations}
+\citation{shang2016option}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.0.1}{\ignorespaces Metadata, CRSP and OptionMetrics}}{13}{figure.caption.2}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{fig:data_metadata}{{3.0.1}{13}{Metadata, CRSP and OptionMetrics}{figure.caption.2}{}}
+\citation{fama1992cross}
+\citation{cremers2010deviations}
+\citation{cremers2010deviations}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Empirical Implementation}{14}{section.4}\protected@file@percent }
+\newlabel{section:empirical}{{4}{14}{Empirical Implementation}{section.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Estimating the Signal}{14}{subsection.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Forming Portfolios}{14}{subsection.4.2}\protected@file@percent }
+\citation{fama1992cross}
+\citation{cremers2010deviations}
+\citation{cattaneo2020characteristic}
+\newlabel{eq:step1uni}{{4.2}{16}{Forming Portfolios}{equation.4.2}{}}
+\citation{fama2015five}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Forming the Factors}{18}{subsection.4.3}\protected@file@percent }
+\newlabel{subsec:forming_factors}{{4.3}{18}{Forming the Factors}{subsection.4.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Unconditional Analysis}{18}{subsection.4.4}\protected@file@percent }
+\citation{fama2015five}
+\@writefile{lot}{\contentsline {table}{\numberline {4.3.1}{\ignorespaces Comparison of Factor Competition}}{19}{table.caption.3}\protected@file@percent }
+\newlabel{tab:factor_competition_impl}{{4.3.1}{19}{Comparison of Factor Competition}{table.caption.3}{}}
 \citation{wolak1987exact,wolak1989testing}
 \citation{fama1984term}
 \citation{patton2010monotonicity}
 \citation{patton2010monotonicity}
 \citation{rpackagemonotonicity}
-\citation{fama1984term}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Descriptive Statistics}{6}{subsection.2.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Monotonicity Test}{6}{subsection.2.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.5}Comparing with Other Factors}{7}{subsection.2.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.5.1}Fama-Macbeth Analysis}{7}{subsubsection.2.5.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.6}Economic Evaluation}{7}{subsection.2.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.7}Optimal Allocation}{7}{subsection.2.7}\protected@file@percent }
+\citation{fama2015five}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.4.1}Monotonicity Test}{20}{subsubsection.4.4.1}\protected@file@percent }
+\newlabel{eq:monoton_test}{{4.9}{20}{Monotonicity Test}{equation.4.9}{}}
+\citation{giglio2021asset}
+\citation{harvey2019census}
+\citation{fama1992cross}
+\citation{treynor1961toward}
+\citation{sharpe1964capital}
+\citation{lintner1965security}
+\citation{mossin1966equilibrium}
+\citation{ross1976arbitrage}
+\citation{fama2015five}
+\citation{pastor2003liquidity}
+\citation{ang2006cross}
+\citation{ang2006downside}
+\citation{harvey2000conditional}
+\citation{johnson2012option}
+\citation{xing2010does}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5}Conditional Analysis}{21}{subsection.4.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.5.1}Comparing with Other Factors}{21}{subsubsection.4.5.1}\protected@file@percent }
+\citation{feng2017taming}
+\citation{pan2006information}
+\citation{fama2015five}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.5.2}Factor Competition}{22}{subsubsection.4.5.2}\protected@file@percent }
+\newlabel{subsec:factorcomp_impl}{{4.5.2}{22}{Factor Competition}{subsubsection.4.5.2}{}}
+\citation{fama1973risk}
+\newlabel{eq:factorcompetition}{{4.12}{23}{Factor Competition}{equation.4.12}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.5.3}Fama-Macbeth Regressions}{23}{subsubsection.4.5.3}\protected@file@percent }
+\newlabel{eq:fm1}{{4.13}{24}{Fama-Macbeth Regressions}{equation.4.13}{}}
+\newlabel{eq:fm2}{{4.14}{24}{Fama-Macbeth Regressions}{equation.4.14}{}}
+\citation{shanken1992estimation}
+\citation{giglio2021asset}
+\citation{giglio2021asset}
+\citation{pukthuanthong2019protocol}
+\citation{giglio2021asset}
+\citation{giglio2021asset}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.5.4}Three-step Procedure}{25}{subsubsection.4.5.4}\protected@file@percent }
+\newlabel{eq:tp_cost}{{4.15}{26}{Three-step Procedure}{equation.4.15}{}}
+\newlabel{eq:tp_1_beta}{{4.16}{26}{Three-step Procedure}{equation.4.16}{}}
+\citation{pan2006information}
+\newlabel{eq:tp_3_eta}{{4.19}{27}{Three-step Procedure}{equation.4.19}{}}
+\newlabel{eq:tp_gammahat}{{4.20}{27}{Three-step Procedure}{equation.4.20}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.6}Economic Evaluation}{28}{subsection.4.6}\protected@file@percent }
+\citation{byrne2013structural}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Cross Sectional Analysis}{30}{section.5}\protected@file@percent }
+\newlabel{section:cross}{{5}{30}{Cross Sectional Analysis}{section.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Unconditional Analysis}{30}{subsection.5.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {5.1.1}{\ignorespaces Descriptive Statistics, Univariate Sorting, 5 portfolios}}{31}{table.caption.4}\protected@file@percent }
+\newlabel{tab:descr_stats_univariate_sortings}{{5.1.1}{31}{Descriptive Statistics, Univariate Sorting, 5 portfolios}{table.caption.4}{}}
+\citation{patton2010monotonicity}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.1.1}{\ignorespaces Mean Returns Across Bivariate Sorting}}{32}{figure.caption.5}\protected@file@percent }
+\newlabel{fig:mean_returns_bivariate}{{5.1.1}{32}{Mean Returns Across Bivariate Sorting}{figure.caption.5}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.1.2}{\ignorespaces Monotonicity Tests}}{32}{table.caption.6}\protected@file@percent }
+\newlabel{tab:monotonicity_tests_9}{{5.1.2}{32}{Monotonicity Tests}{table.caption.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.1.2}{\ignorespaces Cumulative Weekly Returns}}{33}{figure.caption.7}\protected@file@percent }
+\newlabel{fig:cumula_returns_2}{{5.1.2}{33}{Cumulative Weekly Returns}{figure.caption.7}{}}
+\citation{fama2015five}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Conditional Analysis}{34}{subsection.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.2.1}Factor Competition}{34}{subsubsection.5.2.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {5.2.1}{\ignorespaces Factor Competition against FF5}}{34}{table.caption.8}\protected@file@percent }
+\newlabel{tab:factor_competition_9}{{5.2.1}{34}{Factor Competition against FF5}{table.caption.8}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.2.2}Fama-Macbeth Regressions}{35}{subsubsection.5.2.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {5.2.2}{\ignorespaces Fama-Macbeth Regression, One Factor}}{35}{table.caption.9}\protected@file@percent }
+\newlabel{tab:fm_simple_9}{{5.2.2}{35}{Fama-Macbeth Regression, One Factor}{table.caption.9}{}}
+\citation{giglio2021asset}
+\@writefile{lot}{\contentsline {table}{\numberline {5.2.3}{\ignorespaces Fama-Macbeth Regression, FF5}}{36}{table.caption.10}\protected@file@percent }
+\newlabel{tab:fm_FF5_9}{{5.2.3}{36}{Fama-Macbeth Regression, FF5}{table.caption.10}{}}
+\citation{giglio2021asset}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.2.3}Three-Step Procedure}{37}{subsubsection.5.2.3}\protected@file@percent }
+\citation{giglio2021asset}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.2.1}{\ignorespaces Proportional Explained Variance}}{38}{figure.caption.11}\protected@file@percent }
+\newlabel{fig:explainedvariance_9}{{5.2.1}{38}{Proportional Explained Variance}{figure.caption.11}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.2.4}{\ignorespaces Three-Step Procedure, Coefficients}}{38}{table.caption.12}\protected@file@percent }
+\newlabel{tab:tp_results_9}{{5.2.4}{38}{Three-Step Procedure, Coefficients}{table.caption.12}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.2.5}{\ignorespaces Three-Step Procedure, Strength}}{39}{table.caption.13}\protected@file@percent }
+\newlabel{tab:tp_strength_9}{{5.2.5}{39}{Three-Step Procedure, Strength}{table.caption.13}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.2.4}Pooled Cross Sectional Regression}{39}{subsubsection.5.2.4}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5.3.1}{\ignorespaces Efficient Frontier}}{41}{figure.caption.15}\protected@file@percent }
+\newlabel{fig:eff_frontier_9}{{5.3.1}{41}{Efficient Frontier}{figure.caption.15}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Optimal Allocation}{41}{subsection.5.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5.3.2}{\ignorespaces Optimal Allocation}}{43}{figure.caption.16}\protected@file@percent }
+\newlabel{fig:optimalloc}{{5.3.2}{43}{Optimal Allocation}{figure.caption.16}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.2.6}{\ignorespaces Cross Sectional Regression\relax }}{44}{table.caption.14}\protected@file@percent }
+\newlabel{tab:cross_sec_regs}{{5.2.6}{44}{Cross Sectional Regression\relax }{table.caption.14}{}}
 \citation{cremers2010deviations}
-\citation{shang2016option}
-\citation{cremers2010deviations}
-\@writefile{toc}{\contentsline {section}{\numberline {3}Data}{8}{section.3}\protected@file@percent }
-\newlabel{section:data}{{3}{8}{Data}{section.3}{}}
-\newlabel{th:condition:implvol}{{3.1}{8}{Restrictions on Implied Volatility Level}{tcb@cnt@mycondition.3.1}{}}
-\citation{optionmetrics}
-\newlabel{th:condition:ttm}{{3.2}{9}{Restrictions on Time To Maturity}{tcb@cnt@mycondition.3.2}{}}
-\newlabel{th:condition:moneyyy}{{3.3}{9}{Restrictions on Moneyness}{tcb@cnt@mycondition.3.3}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Cross Sectional Analysis}{10}{section.4}\protected@file@percent }
-\newlabel{section:cross}{{4}{10}{Cross Sectional Analysis}{section.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Descriptive Statistics}{10}{subsection.4.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Analysis}{10}{subsection.4.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Optimal Allocation}{10}{subsection.4.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Conclusion}{10}{subsection.4.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {5}Discussion and Further Research}{11}{section.5}\protected@file@percent }
-\newlabel{section:disco}{{5}{11}{Discussion and Further Research}{section.5}{}}
+\citation{pan2006information}
+\citation{markowitz1952portfolio}
+\citation{rockafellar2000optimization}
+\citation{weigand2019machine}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Discussion and Further Research}{45}{section.6}\protected@file@percent }
+\newlabel{section:disco}{{6}{45}{Discussion and Further Research}{section.6}{}}
+\citation{fama2015five}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Conclusion}{47}{section.7}\protected@file@percent }
+\newlabel{section:conc}{{7}{47}{Conclusion}{section.7}{}}
+\bibstyle{}
 \bibdata{biblo.bib}
-\bibcite{breeden1978prices}{{1}{1978}{{Breeden and Litzenberger}}{{}}}
-\bibcite{cremers2010deviations}{{2}{2010}{{Cremers and Weinbaum}}{{}}}
-\bibcite{fama1984term}{{3}{1984}{{Fama}}{{}}}
-\bibcite{harvey2000time}{{4}{2000}{{Harvey and Siddique}}{{}}}
-\bibcite{isakasoption}{{5}{}{{Isakas and Melenberg}}{{}}}
-\bibcite{rpackagemonotonicity}{{6}{2019}{{Köstlmeier}}{{}}}
-\bibcite{optionmetrics}{{7}{2015}{{OptionMetrics}}{{}}}
-\bibcite{patton2010monotonicity}{{8}{2010}{{Patton and Timmermann}}{{}}}
-\bibcite{shang2016option}{{9}{2016}{{Shang}}{{}}}
-\bibcite{wolak1987exact}{{10}{1987}{{Wolak}}{{}}}
-\bibcite{wolak1989testing}{{11}{1989}{{Wolak}}{{}}}
-\@writefile{toc}{\contentsline {section}{Appendices}{13}{section*.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {A}Figures}{14}{subsection.5.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {B}Tables}{15}{subsection.5.2}\protected@file@percent }
-\newlabel{LastPage}{{}{15}{}{page.15}{}}
-\xdef\lastpage@lastpage{15}
-\xdef\lastpage@lastpageHy{15}
-\zref@newlabel{LastPage}{\default{B}\page{15}\abspage{18}}
-\gdef \@abspage@last{18}
+\bibcite{amin2004index}{{1}{2004}{{Amin et~al.}}{{Amin, Coval, and Seyhun}}}
+\bibcite{ang2006downside}{{2}{2006{a}}{{Ang et~al.}}{{Ang, Chen, and Xing}}}
+\bibcite{ang2006cross}{{3}{2006{b}}{{Ang et~al.}}{{Ang, Hodrick, Xing, and Zhang}}}
+\bibcite{black1973pricing}{{4}{1973}{{Black and Scholes}}{{}}}
+\bibcite{breeden1978prices}{{5}{1978}{{Breeden and Litzenberger}}{{}}}
+\bibcite{byrne2013structural}{{6}{2013}{{Byrne}}{{}}}
+\bibcite{cattaneo2020characteristic}{{7}{2020}{{Cattaneo et~al.}}{{Cattaneo, Crump, Farrell, and Schaumburg}}}
+\bibcite{chen_zimmermann}{{8}{}{{Chen and Zimmermann}}{{}}}
+\bibcite{cox1979option}{{9}{1979}{{Cox et~al.}}{{Cox, Ross, and Rubinstein}}}
+\bibcite{cremers2010deviations}{{10}{2010}{{Cremers and Weinbaum}}{{}}}
+\bibcite{delbaen1994general}{{11}{1994}{{Delbaen and Schachermayer}}{{}}}
+\bibcite{fama1970efficient}{{12}{1970}{{Fama}}{{}}}
+\bibcite{fama1984term}{{13}{1984}{{Fama}}{{}}}
+\bibcite{fama1992cross}{{14}{1992}{{Fama and French}}{{}}}
+\bibcite{fama2015five}{{15}{2015}{{Fama and French}}{{}}}
+\bibcite{fama1973risk}{{16}{1973}{{Fama and MacBeth}}{{}}}
+\bibcite{feng2017taming}{{17}{2017}{{Feng et~al.}}{{Feng, Giglio, and Xiu}}}
+\bibcite{figlewski1993options}{{18}{1993}{{Figlewski and Webb}}{{}}}
+\bibcite{giglio2021asset}{{19}{2021}{{Giglio and Xiu}}{{}}}
+\bibcite{girsanov1960transforming}{{20}{1960}{{Girsanov}}{{}}}
+\bibcite{harvey2019census}{{21}{2019}{{Harvey and Liu}}{{}}}
+\bibcite{harvey2000conditional}{{22}{2000{a}}{{Harvey and Siddique}}{{}}}
+\bibcite{harvey2000time}{{23}{2000{b}}{{Harvey and Siddique}}{{}}}
+\bibcite{isakasoption}{{24}{2020}{{Isakas and Melenberg}}{{}}}
+\bibcite{jarrow1982approximate}{{25}{1982}{{Jarrow and Rudd}}{{}}}
+\bibcite{johnson2012option}{{26}{2012}{{Johnson and So}}{{}}}
+\bibcite{kahneman2013prospect}{{27}{2013}{{Kahneman and Tversky}}{{}}}
+\bibcite{rpackagemonotonicity}{{28}{2019}{{Köstlmeier}}{{}}}
+\bibcite{lintner1965security}{{29}{1965}{{Lintner}}{{}}}
+\bibcite{markowitz1952portfolio}{{30}{1952}{{Markowitz}}{{}}}
+\bibcite{markowitz1959efficient}{{31}{1959}{{Markowitz}}{{}}}
+\bibcite{merton1973theory}{{32}{1973}{{Merton}}{{}}}
+\bibcite{mossin1966equilibrium}{{33}{1966}{{Mossin}}{{}}}
+\bibcite{optionmetrics}{{34}{2015}{{OptionMetrics}}{{}}}
+\bibcite{pan2006information}{{35}{2006}{{Pan and Poteshman}}{{}}}
+\bibcite{pastor2003liquidity}{{36}{2003}{{P{\'a}stor and Stambaugh}}{{}}}
+\bibcite{patton2010monotonicity}{{37}{2010}{{Patton and Timmermann}}{{}}}
+\bibcite{pukthuanthong2019protocol}{{38}{2019}{{Pukthuanthong et~al.}}{{Pukthuanthong, Roll, and Subrahmanyam}}}
+\bibcite{rockafellar2000optimization}{{39}{2000}{{Rockafellar et~al.}}{{Rockafellar, Uryasev, et~al.}}}
+\bibcite{ross1976arbitrage}{{40}{1976}{{Ross}}{{}}}
+\bibcite{shang2016option}{{41}{2016}{{Shang}}{{}}}
+\bibcite{shanken1992estimation}{{42}{1992}{{Shanken}}{{}}}
+\bibcite{sharpe1964capital}{{43}{1964}{{Sharpe}}{{}}}
+\bibcite{treynor1961toward}{{44}{1961}{{Treynor}}{{}}}
+\bibcite{von2007theory}{{45}{2007}{{Von~Neumann and Morgenstern}}{{}}}
+\bibcite{weigand2019machine}{{46}{2019}{{Weigand}}{{}}}
+\bibcite{wolak1987exact}{{47}{1987}{{Wolak}}{{}}}
+\bibcite{wolak1989testing}{{48}{1989}{{Wolak}}{{}}}
+\bibcite{xing2010does}{{49}{2010}{{Xing et~al.}}{{Xing, Zhang, and Zhao}}}
+\@writefile{toc}{\contentsline {section}{Appendices}{52}{section*.18}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {A}Figures}{53}{subsection.7.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {A1}{\ignorespaces Comparison of CRSP returns}}{53}{figure.caption.21}\protected@file@percent }
+\newlabel{fig:crspreturns_openclose_vs_ret}{{A1}{53}{Comparison of CRSP returns}{figure.caption.21}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {A2}{\ignorespaces Distribution of the Implied Volatility Spread}}{54}{figure.caption.22}\protected@file@percent }
+\newlabel{fig:distribution_of_signal_entire_period}{{A2}{54}{Distribution of the Implied Volatility Spread}{figure.caption.22}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {A3}{\ignorespaces ACF of Univariate Portfolio Sort, 5 Implied Vol Spread Level}}{55}{figure.caption.23}\protected@file@percent }
+\newlabel{fig:acf:1}{{A3}{55}{ACF of Univariate Portfolio Sort, 5 Implied Vol Spread Level}{figure.caption.23}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {B}Tables}{56}{subsection.7.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {B1}{\ignorespaces Factor Competition, all factors}}{56}{table.caption.24}\protected@file@percent }
+\newlabel{tab:factor_competition_9_ALL}{{B1}{56}{Factor Competition, all factors}{table.caption.24}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {B2}{\ignorespaces Three-Step Procedure, coefficients and standard errors}}{57}{table.caption.25}\protected@file@percent }
+\newlabel{tab:tp_results_standarderrors_9}{{B2}{57}{Three-Step Procedure, coefficients and standard errors}{table.caption.25}{}}
+\newlabel{RF1}{58}
+\@writefile{lot}{\contentsline {table}{\numberline {B3}{\ignorespaces Overview of ScenarioIDs\relax }}{58}{table.caption.26}\protected@file@percent }
+\newlabel{tab:scenarioids}{{B3}{58}{Overview of ScenarioIDs\relax }{table.caption.26}{}}
+\newlabel{LastPage}{{}{58}{}{page.58}{}}
+\xdef\lastpage@lastpage{58}
+\xdef\lastpage@lastpageHy{58}
+\zref@newlabel{LastPage}{\default{B}\page{58}\abspage{61}}
+\gdef \@abspage@last{61}

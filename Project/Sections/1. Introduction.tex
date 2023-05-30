@@ -1,26 +1,71 @@
-Starting with classic asset pricing theory
- -> talking about risk factors
- -> which are prominent at the moment?
- -> some have shown that options are a factor 
- -> \cite{harvey2000time} show skewness is relevant -> at odds with a mean variance optimizing investor -> more in line with prospect theory and other behavioural finance aspects, such as loss aversion
- 
- -> the option market is inherently forward looking - see appendix regarding theorem
- -> options in general or mispricings of options?
- -> use implied spread as a proxy for the mispricing of options 
- -> the implied vol spread should be negative, as puts are more expensive, can protect against jump risk
- -> which factors affect the implied vol spread? 
- -> why is this implied vol spread a good proxy for systematic risk in stocks?
- 
- -> is it just a sign of shortsale constraints? Or informed trading?
- -> or Pan and Poteshman proxy this by looking at trades initiated by the buyer, Ofek et al. also looks at the relation and find significant predictability from the short sale constraint
- 
- -> put call parity
- -> fundamentals 
- -> borrowing lending rates differ 
- -> transactions costs
- -> margin requirements and taxes
- -> option on stocks are american and not european (which means the put call parity is not an equality but an inequality)
+
+%%% INTRODUCTION
+
+The American Stock market has been the victim of extensive scrutiny from researchers, investors and analysts among others. We have looked at anything affecting the returns and dived deep into all kinds of models or assumptions for the analysis to explain and predict the common variation of the stocks. 
+
+Starting from a no-arbitrage assumption, \cite{ross1976arbitrage} introduced a factor model, which should comprise all the factors affecting the returns. These factors should signify systematic risk in the markets, as any investor could diversify their portfolios to avoid idiosyncratic risk. These factors were not specified in the original article, and ever since, researchers have tried to identify the factors which demand a risk premium, and those that do not. The factors demanding a risk premium are systematic risk factors, and can be either traded, or non-traded. Traded factors are portfolios formed on the factor, while non-traded factors could be macro-economic factors. The factors that do not affect the stock market or does not demand a risk premium will be denoted quasi factors. Not all of these factors are observable, and most of them seems to be correlated or proxy for the same risk, which provides problems when doing traditional regressions.
+
+The arbitrage theory did not specify how many and of which origin, factors were. So researchers have formed three relevant groups of factors. The first group is the macroeconomic factors, which are not traded, very hard to measure, infrequently updated and in general prone to error in the estimation. The second group consists of statistical factors, found through principal components analysis which maps the space of variation in the returns. And the last group is consisting of the firm-specific characteristics. These could be accounting measures, technical analysis of earlier price movements, or related signals from industries or other financial markets. 
+
+% COMMENT HERE ABOUT OTHER LITERATURE DOING THE SAME
 
 
- -> Inherent forward looking property of the option market 
- -> we can estimate the risk-neutral distribution of the stock price given a lot of different options on the stock according to formula (2) in \cite{breeden1978prices} (and elaborated in appendix A in \cite{isakasoption}) which is under the Q-measure but can be approximated to the P-measure and used for forecasting stock prices. This is done by evaluting the differentiated call price with respect to the strike twice at a lot of different strikes at one maturity. This is however not feasible to estimate across a lot of different stocks, as their options might not be liquid enough to provide an accurate market view (due to either reduced interest, high transaction costs or too high margin requirements for the sellers).
+I have chosen to dive deeper into the option markets, and how they are related to the stock market. The main point of using option data, is the inherent forward looking property of the option markets, as they are contracts for differences dependent on the future states of the stocks. 
+
+This inherent forward looking property of the option market is shown in a theoretical setting. We can estimate the risk-neutral distribution of the stock price given a lot of different options on the stock according to formula (2) in \cite{breeden1978prices} (and elaborated in appendix A of \cite{isakasoption}). This distribution is under the $\mathbb{Q}$ measure but can be approximated to the $\mathbb{P}$ measure and used for forecasting stock prices. The distribution of the expected future value of the stock price is found by evaluting the twice differentiated call price with respect to the strike at a variety of strikes at each maturity. \cite{figlewski1993options} deploys this data and estimate the market's risk neutral densities of the stock prices, and they find a predictive power for the stock prices.
+
+This approach has been used extensively for european options on indexes, as their options are far more liquid and indicative of the market's expectations, than the american options on individual stocks. Using the option markets to get an idea of the future stock prices are, however, relevant, even with the lower liquidity. \cite{cremers2010deviations} introduces the use of the implied volatility spread, as a proxy for the mispricings of the puts and calls with the same maturity, strike and underlying stock. This implied volatility signifies the relative price of a put and a call after being corrected for the intrinsic value. A positive value of the implied volatility spread indicates a cheap put, or an expensive call. These values are further indicating the market's belief about the future of the stock. If the market increases the demand for call options,  that would increase the price of the option, further increasing the implied volatility spread, and indicate that the market expects the stock price to increase in the future.
+
+I deem it relevant to investigate this signal further, as I form two signals from the implied volatility spread. The first being the value, to proxy for the market beliefs of future movements of the stock price, and second being the recent change in the implied volatility spread. The last signal is not chosen to investigate how fast the information from the option market's affect the stock markets, but instead to proxy for the change in beliefs. 
+
+To analyse this, I choose portfolio formation to reduce the idiosyncratic noise, and form long-short factors based on the portfolios. The choice of portfolios relies on the absence of a priori assumptions. This approach also follows the methods in \cite{cremers2010deviations}. They find the signal to have predictive power, and more amplified when only looking at the stocks where the liquidity of the options was high.
+
+
+
+Other related factors encompass the skewness factor of \cite{harvey2000time}. The skewness of stock prices are priced in the markets, which indicates that the investors are pricing the risk 
+
+%Some believe that the returns are only driven by randomness, others that they are driven by systematic factors, of which investors demand compensation for exposure to. 
+
+%The traditional analysis has been split into different groups (factors, APT, CAPM, SDF etc) exploiting the increase in data and computing power available. 
+
+%Starting with simple models for the returns, CAPM derived and supplied by APT, leading to a frantic search for factors - some unobservable, some observable, some priced, some without a risk premium, some traded etc etc.
+
+%Looking at factors, some use macroeconomic information, but this is very infrequent (and prone to error), others use firm specific factors (more computing demanding, reliably measured?) and some just put everything together and find common variation (ridge, elastic net, PCA, PCR, PLS, pruned random forests). Looking at either specific stocks or a portfolio of ones with common characteristica. All of this leading to a model with significant coefficients and arguments against statements of datasnooping. The different choices have been examined and the results of the alternate decisions are shown in the appendix to highlight the robustness of the signal. 
+
+% I have chosen one firm-specific characteristica measured every day (High frequency) and averaged it out across maturities and strikes to get a more stable estimate, furthermore I have collected the different stocks into portfolios based on their characteristica to eliminate idiosyncratic effects. Lastly, I have looked at both the utility from investing based on this strategy and also evaluated the allocation to a long short portfolio given a target return.
+
+%Starting with classic asset pricing theory
+ %-> talking about risk factors
+ %-> which are prominent at the moment?
+ %-> some have shown that options are a factor 
+ %-> \cite{harvey2000time} show skewness is relevant 
+ %-> at odds with a mean variance optimizing investor -> more in line with prospect theory and other behavioural finance aspects, such as loss aversion
+ 
+ %-> the option market is inherently forward looking - see appendix regarding theorem
+ %-> options in general or mispricings of options?
+ %-> use implied spread as a proxy for the mispricing of options, because this measure evaluates the mispricing by taken the intrinsic value of the option into account and allows for comparing puts and calls
+ %-> the implied vol spread should be negative, as puts are more expensive, can protect against jump risk
+ %-> which factors affect the implied vol spread? 
+ %-> why is this implied vol spread a good proxy for systematic risk in stocks?
+ %-> a factor or a characteristic? a factor is observed before, a characteristic is observed during, some factors are priced and correlated, others are quasi factors. 
+ 
+ %-> is it just a sign of shortsale constraints? Or informed trading?
+ %-> or Pan and Poteshman proxy this by looking at trades initiated by the buyer, Ofek et al. also looks at the relation and find significant predictability from the short sale constraint
+ 
+ %-> borrowing lending rates differ 
+ %-> transactions costs
+ %-> margin requirements and taxes
+ %-> option on stocks are american and not european (which means the put call parity is not an equality but an inequality)
+
+% Uses implied vol spread to predict - figlewski1993options
+Same with \cite{amin2004index}
+ 
+ 
+ % The timestamp of the observations might affect the risk-neutral distribution of the options, as option prices are reported at market-close, which is a few minutes after stock-market-close, naturally there is more information in the option prices then. 
+ 
+ %%% DELIMITATIONS
+ 
+ 
+ %%% ROADMAP
+ 
+ The project is structured as follows. The following section will set the stage, and explain the relevant theoretical frameworks built upon in this project. The third section will outline the data, how it was obtained and filtered for the analysis. The fourth section builds upon the theoretical section and explains how the analyses will be conducted, and argues for the choices made in the process. The analyses of the data are done in section five. The sixth section discusses further research and limitations regarding the choices made in this project, and section 7 concludes.

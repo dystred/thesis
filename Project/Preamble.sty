@@ -27,6 +27,12 @@
 \usepackage{changepage}
 \usepackage{graphbox}
 \usepackage{geometry}
+\usepackage{graphicx}
+%\usepackage{hyperref}
+
+\usepackage{chngcntr}
+\counterwithin{figure}{subsection}
+\counterwithin{table}{subsection}
 
 %% Setting equation numbering to count as Section#.X  %%
 \numberwithin{equation}{section}
@@ -83,12 +89,22 @@
 \usepackage{multirow}
 \usepackage{booktabs}
 \usepackage[labelfont=sc]{caption}
-\usepackage[colorlinks=true,citecolor=blue!35!black]{hyperref}
+\usepackage{xcolor}
+\usepackage[hidelinks,colorlinks=true,citecolor=blue!35!black]{hyperref}
+\hypersetup{
+	colorlinks,
+	linkcolor={red!30!black},% Table of contents: 40% red
+	citecolor={blue!40!black}, %Citations: 60% blue
+	urlcolor={blue!70!black} %URL: 80% Blue
+}
+%\usepackage[colorlinks=true,citecolor=blue!35!black]{hyperref}
 \usepackage{xcolor}
 %\usepackage{setspace}
 \usepackage{import}
 \usepackage{tablefootnote}
 \usepackage{tabularx}
+\usepackage{rotating} % ADDED MDO
+%\usepackage[graphicx]{realboxes} % ADDED MDO
 \usepackage[lastpage,user]{zref}
 \usepackage{lscape}
 \usepackage{selinput}
@@ -123,6 +139,11 @@
 {colback=blue!5,colframe=blue!15!black,fonttitle=\bfseries}{th}
 
 % Bibliography
+%\usepackage[nottoc]{tocbibind}
+%\usepackage{csquotes}% Recommended
+%\usepackage[style=authoryear-ibid,backend=biber]{biblatex}
+%\usepackage[style=authoryear,sorting=ynt]{biblatex}
+%\addbibresource{biblo.bib}
 \usepackage{natbib}
 \bibliographystyle{abbrvnat}
 \setcitestyle{authoryear,open={(},close={)}}

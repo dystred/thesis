@@ -2,51 +2,56 @@ This is BibTeX, Version 0.99d (TeX Live 2021)
 Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: Main.aux
 The style file: abbrvnat.bst
+Illegal, another \bibstyle command---line 196 of file Main.aux
+ : \bibstyle
+ :          {}
+I'm skipping whatever remains of this command
 Database file #1: biblo.bib
-Warning--I didn't find a database entry for ""
-Warning--empty journal in isakasoption
-Warning--empty year in isakasoption
-Warning--empty year in isakasoption
-Warning--empty institution in optionmetrics
-You've used 11 entries,
+Repeated entry---line 486 of file biblo.bib
+ : @misc{ross1976arbitrage
+ :                        ,
+I'm skipping whatever remains of this entry
+Warning--empty year in chen_zimmermann
+Warning--empty publisher in treynor1961toward
+You've used 49 entries,
             2773 wiz_defined-function locations,
-            662 strings with 6181 characters,
-and the built_in function-call counts, 4319 in all, are:
-= -- 412
-> -- 165
-< -- 12
-+ -- 59
-- -- 48
-* -- 310
-:= -- 667
-add.period$ -- 34
-call.type$ -- 11
-change.case$ -- 48
-chr.to.int$ -- 11
-cite$ -- 26
-duplicate$ -- 216
-empty$ -- 384
-format.name$ -- 69
-if$ -- 897
-int.to.chr$ -- 1
+            887 strings with 11423 characters,
+and the built_in function-call counts, 20852 in all, are:
+= -- 1963
+> -- 918
+< -- 44
++ -- 321
+- -- 270
+* -- 1595
+:= -- 3159
+add.period$ -- 149
+call.type$ -- 49
+change.case$ -- 234
+chr.to.int$ -- 47
+cite$ -- 100
+duplicate$ -- 997
+empty$ -- 1864
+format.name$ -- 361
+if$ -- 4387
+int.to.chr$ -- 3
 int.to.str$ -- 1
-missing$ -- 8
-newline$ -- 64
-num.names$ -- 44
-pop$ -- 89
+missing$ -- 44
+newline$ -- 253
+num.names$ -- 196
+pop$ -- 438
 preamble$ -- 1
-purify$ -- 38
+purify$ -- 187
 quote$ -- 0
-skip$ -- 164
+skip$ -- 752
 stack$ -- 0
-substring$ -- 198
-swap$ -- 20
-text.length$ -- 1
+substring$ -- 1037
+swap$ -- 87
+text.length$ -- 4
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 121
-warning$ -- 4
-while$ -- 48
+type$ -- 529
+warning$ -- 2
+while$ -- 225
 width$ -- 0
-write$ -- 148
-(There were 5 warnings)
+write$ -- 635
+(There were 2 error messages)

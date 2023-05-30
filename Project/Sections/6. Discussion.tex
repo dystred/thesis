@@ -1,0 +1,38 @@
+%%% Discussion
+
+A few points of clarifications and considerations for further research is outlined in this section.
+
+The choice of the singal fell on the value of the implied volatility spread to proxy the mispricings in the option markets, and evaluate how this affected the stock markets. \cite{cremers2010deviations} investigated how this relation was a consequence of the informed investors trading in the option markets before moving over to the stock market through the use of the PIN factor of \cite{pan2006information}. Furthermore, I wanted to investigate how this relation held when changing the choices made during the portfolio formation and signal estimation. In addition to this, the other relevant factor was included to proxy this change in investor behaviour, as the information in the option markets changed and how it affected the stock markets in the following week. 
+
+Additional variations of the implied volatility spread could have been used. Both in this format of portfolios, but also in a more classic asset pricing exercise with an investigation into individual assets. For a different signal estimation in this setting, I could have investigated only the strictly negative implied volatility spreads, and changed all the positive spreads equal to zero. This would have highlighted the emphasis of cheap calls and expensive puts, and shown the effects of loss aversion, assumedly, more in depth. The opposite signal, of only looking at the positive implied volatility spreads, could have been used as a proxy for private information leaking to the option markets first, or investors being interested in exposure towards the volatility of an asset, because of some scheduled news. 
+
+Another choice would be the absolute value or the squared value of the implied volatility spread. I assume, however, that there is no risk in stock returns associated with a general mispricing, but more of a directional mispricing. 
+
+To supplement these alternative choices of signals, one could also consider state dependency. That is, as the option market has matured throughout the last three decades, the implied volatility spread might provide more information towards the stock market in recent years, as it is more reflective of the market's view. This allows for a state-dependency split of the sample into several subperiods or samples based on the liquidity factor as a proxy for the interest in the option markets.
+
+Regarding the mean-variance model of \cite{markowitz1952portfolio}, where we assume that the investors are onlu concerned with the risk associated with the variance of a portfolio return, one could challenge this aspect. Investors have introduced several other risk measures, which might not provide the same analytical formulas for solving the problem, but are able to take these other kind of risk measures into account. Two such risk measures are commonly chosen to be either Value-at-Risk, or the slightly adapted Conditional-Value-at-Risk. To do optimal portfolio allocation, a slightly more sophisticated approach is needed (see for example of CVaR: \cite{rockafellar2000optimization}). Other approaches could entail the cumulative prospect theory investor, which still operates in the mean-variance space, but takes central concepts from prospect theory into account.
+
+I have mainly based this entire project on simple regressions, and only a marginal use of principal components analysis, which seems at odds with the hype surrounding machine learnings techniques and complex models. I have decided against using neural networks and random forests, based on the complexity and black-box impression they provide. Even though an increasing amount of literature is researching the added explanatory power of such models, see e.g. \cite{weigand2019machine}.
+
+It could, however, be a relevant consideration if I would need to estimate the Stochastic Discount Factor. As I mentioned in Section \ref{section:Setting}, the stochastic discount factor is formed in the space between the $\mathbb{P}$ and $\mathbb{Q}$ measure, and an estimation hereof would have been a natural extension of this project. 
+
+A last comment, related to the sample period, and inclusion of all data in the analyses. A different approach would have been relevant if looking  at predictability, as the present project investigated the whole sample in as one, a different approach would be to test this predictability abilities of the signal within the last few years. This would require a training and test sample split, and an evaluation of how these portfolios performed out of sample, given different model specifications. The results from such an analysis would have been more indicative of a future profit from investing according to the implied volatility spread.
+
+%Choice of signal ->
+%	value -> evaluating the mispricing with a lower value equal to higher potential of losses
+%	absolute value -> evaluating mispricings and assuming both mispricing would lead to lower future return
+%	only the negative values -> only looking at the overpriced puts and if this is priced differently in the market
+%	squared mispricing -> 
+	
+%mean-variance optimizing investors ->
+%	does it make sense ? 
+%	how have it been disproved
+%	what other masurements are there
+	
+	
+%which other risk measures could be relevant? - cvar - var - etc.
+
+%the SDF is found through the difference between the P and Q measure. P is real returns, Q assumes risk-free returns, combination of them gives the risk factors that are priced as they are correlated with the utility of different future states. 
+
+
+% OBS the returns do not contain overnight returns --- OBS OBS OBS

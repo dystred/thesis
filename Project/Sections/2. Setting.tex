@@ -1,160 +1,180 @@
-% Roadmap for this section 
-	%- Implied vol
-	%- Portfolios
-	%- test of portfolios
-	%- Significance compared to other factors
-	%- Sharpe ratio
-	%- Utility from investing in long-short portfolio
+%%%% SETTING THE STAGE
 
-The setting of this study is elaborated in this section. I will start out by explaining the implied volatility spread, how it is derived and why it is a relevant signal. Then I will go on to discuss the formation of portfolios and why this approach was decided on. Afterwards, the included test for monotonicity is described, and then followed up by the models I will employ to evaluate the signal and its significance compared to previous known risk factors. Lastly, I will draw up some usefull thoughts from the utility framework and include some relevant measures for evaluating the signal.
+The setting of this study is elaborated in this section. I will start out by explaining the implied volatility spread, how it is derived and why it is a relevant signal. Then I will go on to discuss the ideas underlying the factor models and how they came to be through the arbitrage pricing theory. Next the rational investor's preference will be discussed to support the analysis of optimal portfolio formation, and subsequently a few concepts from prospect theory will be outlined to give some nuance to discussion. Lastly I will include a small note on the statistical properties of the data, in regards to problems arising from heteroscedasticity, autocorrelation and stationarity.
 
+\subsection{Option Pricing}
 
-\subsection{Implied Volatility}
+The interest of this entire project is centered around the implied volatility spread of american options on stocks across the American stock market within the last 28 years. 
 
-% Uses implied vol spread to predict - figlewski1993options
-% Same with amin2004index
-
-% Starting with the black scholes and the thoughts behind it - > how to find implied vol and what it means -> look at the difference to american options, and how the equality looks, defining the approach used by optionmetrics, 
-
-The Black-Scholes-Merton formula for a European call price is:
+The optionmarket is inherently forward looking, as options are contracts for future differences between the strike and stock price. In general, the price of a call option with time to maturity, $T$, and strike, $K$, is defined as follows:
 \begin{equation}
-	c=SN\left(d_{1}\right)-Ke^{-r\left(T-t\right)}N\left(d_{2}\right)
+	C_{t}(K,T)=\mathbb{E}_{t}^{\mathbb{Q}}\left[\left(S_{T}-K\right)^{+}\right]
 \end{equation}
-where $d_{1}=\frac{\ln\left(S_{0}/K\right)+\left(r-\delta+\frac{1}{2}\sigma^{2}\right)\left(T-t\right)}{\sigma\sqrt{T-t}}$
+where the right hand side of the equation just shows the expectation under the $\mathbb{Q}$-measure\footnote{The $\mathbb{Q}$ denotes risk-neutral pricing and will be elaborated upon further in the following subsections.} to the positive difference between the stock price, $S_{T}$, at maturity and the strike while assuming the risk free rate, $r$, to be zero (and constant). As an option is a contract for difference, where the buyer chooses if they want to exercise the contract for the difference at prespecified moments before maturity, they provide an alternative to taking an outright position in the underlying for an investor with different views (or information) than the market. In addition to exposing the investor towards this outright stock price, the non-linearity of the option pay-off also allows the investor to take exposure in the volatility of the stock. 
+
+The optionmarkets are characterised by trading a lot of different european options upon indexes and the like, while the options on individual stocks are american. These two kinds of options share many similarities, and I will therefore start by outlining the theory for pricing an european option and then dive into the differences and how this affects the prices of american options. The focus within these classes of options will be both puts and calls. I will refrain from including any other kinds of options, as their pricing and payoff structure is different, and therefore might affect the results in an unintended way. 
+
+Given the historic context of the American stock market increasing in value over the last decades, it seems natural that an investor will expect the future value of a stock to be higher than the current value. Therefore, one would conclude that calls should be priced higher than puts, if the strike is equal to the current traded price. However, some investors use the puts to lock in their profits, as they secure a future salesprice at the strike level of the put. And according to prospect theory\footnote{See subsection \ref{subsection:prospect}.}, this loss aversion is rational and very present in all financial markets.
+
+With a put and a call with the same strike, maturity and underlying, it is natural to conclude that the prices of these two products should be related. This is defined as the put-call parity, and it holds only for european options:
+\begin{equation}
+	C_{t}\left(K,T\right)+Ke^{-r\left(T-t\right)} = P_{t}\left(K,T\right)+S_{t}
+\end{equation}
+where the price of a call in addition with the present value of the strike (discounted at the risk-free rate) is equal to the sum of the put price and the current stock price. This relation holds as a position in a call option and lending at the risk free rate with a payoff of $K$ at time $T$, against a position in one put option and the share, results in the exact same payoff at time $T$. This should be priced the same according to the law of one price. This also means that one can replicate the payoff from a call option by investing in the opposite site of the equation, leading to arbitrage opportunities if the option is mispriced according to the put-call parity. Any mispricings in the 'real' world would therefore be due to transaction costs, restrictions on borrowing or shorting constraints on the underlying stock as arbitrageurs would ensure the markets stay efficient.
+
+\subsubsection{Implied Volatility}
+
+The implied volatility stems from the general framework for European option prices of \cite{black1973pricing}. Assuming lognormal distributed returns, constant volatility of the stock and a constant relevant interest rate, and of course no transaction costs or difference between borrowing and lending rates, they present the iconic pricing formula for an european Call option:
+\begin{equation}
+	C_{t}(K,T)=SN\left(d_{1}\right)-Ke^{-r\left(T-t\right)}N\left(d_{2}\right)
+	\label{eq:bs_call}
+\end{equation}
+where $$d_{1}=\frac{\ln\left(S_{0}/K\right)+\left(r-\delta+\frac{1}{2}\sigma^{2}\right)\left(T-t\right)}{\sigma\sqrt{T-t}}$$
 and 
-$d_{2}=\frac{\ln\left(S_{0}/K\right)+\left(r-\delta-\frac{1}{2}\sigma^{2}\right)\left(T-t\right)}{\sigma\sqrt{T-t}}$.
-
-The corresponding price for an European put is:
+$$d_{2}=\frac{\ln\left(S_{0}/K\right)+\left(r-\delta-\frac{1}{2}\sigma^{2}\right)\left(T-t\right)}{\sigma\sqrt{T-t}}$$
+with $S$ as the stock price today, $N\left(j\right)$ being the cumulative probability function evaluated in $j$ with a standard normal distribution, $K$ is the strike of the option, $r$ being the risk free rate and $T-t$ being the time to maturity. In the latter two equations, the constant term of the volatility of the underlying, $\sigma$, is present. The corresponding price for a european put option is:
 \begin{equation}
-	p=Ke^{-r\left(T-t\right)}N\left(-d_{2}\right)-SN\left(-d_{1}\right)
+	P_{t}(K,T)=Ke^{-r\left(T-t\right)}N\left(-d_{2}\right)-SN\left(-d_{1}\right)
+	\label{eq:bs_put}
 \end{equation}
 
+These functions were derived by \cite{merton1973theory} with a simple assumption of investors preferring more to less. Combining the put-call parity with the price function of the european call option, I can infer the corresponding price of a put, which means that the implied volatility of a call option will be equal to that of a put option, if their strike, maturity, and underlying stock is the same. Thus any implied volatility spread different from zero will indicate market inefficiencies and/or arbitrage opportunities. This result holds regardles of the Black \& Scholes framework, as any implied volatility spread different from zero on european options represents an arbitrage opportunity in frictionless markets. 
 
-Following the notation in \cite{cremers2010deviations} the implied volatility spread is calculated as:
+When calculating the model-based price of an european call option, I would need to make an estimate of the volatility on the underlying stock's price. In other words, the volatility of the stock return is deterministic in regards to the option price. Therefore, given a set of option prices, I can derive the implied volatility, assuming that Equations \ref{eq:bs_call} and \ref{eq:bs_put} holds. 
+
+As the implied volatility is deterministic, I can plug in the volatility of a stock return into Equation \ref{eq:bs_call} and get the theoretical implied price of a call option.
+
+\subsubsection{Implied Volatility Spread}
+
+For the american options, the pricing equation is slightly modified, as an american option always will be priced higher than their european counterpart. This is due to the early excercise premium, given that american options can be excercised at any time before maturity. The inequality of the american call option is:
 \begin{equation}
-	IV_{i,t}^{call}-IV_{i,t}^{put}=VS_{i,t}
+	C_{t}^{a}(K,T) \geq S_{t}N\left(d_{1}\right)-Ke^{-r\left(T-t\right)}N\left(d_{2}\right)
 \end{equation}
- and the signal is then estimated across time and stocks:
-  
+with the options being the same value only when they are far out of the money. As the call price now is an inequality and not an equality, the put-call-parity is now of course not exact either.
+
+To model the value of an option, the volatility of the stock price is portrayed in a tree-like structure. 
+Essentially, the stock return follows a Brownian motion in the \cite{black1973pricing} framework, and this process can be approximated with a binomial process using different estimations of the up- and down-movements and the risk-neutral probability of an up-movement. This binomial process is drawn to resemble a tree and shows the movement of the stock price and the corresponding value of the option in each time-increment assuming that the stock price will either move up by $u$ or down by $d$. These values are approximated by several different approaches, but most commonly is the Cox-Ross-Rubinstein (CRR) formula \citep{cox1979option}:
 \begin{equation}
-	VS_{i,t} = \sum_{j=1}^{N_{i,t}}w_{j,t}^{i}\left(IV_{j,t}^{i,call}-IV_{j,t}^{i,put}\right)
+	\begin{cases}
+		u=e^{\sigma\sqrt{\Delta t}}\\
+		d=e^{-\sigma\sqrt{\Delta t}}
+	\end{cases}
 \end{equation}
-where $t$, $i$ and $j$ specifies the time, stock and combination of strike and maturity. $w_{j,t}^{i}$ is the weight for the specific maturity, strike and time. This weight can be both set to a simple average or based on the open interest in the pair of options.
-
-%\subsection{Approach}
-
-\subsection{Portfolios}
-
-The analysis of the relation between stock returns and the signal defined above is conducted using portfolios. Thus I will split the different firms into portfolios with the use of the signal. 
-
-The choice of forming portfolios compared to analyzing specific stocks over a period of time,
-is made based on the flexibility  of the setup. The approach requires no a priori assumptions about the effect, and also allows for the discovery of more than just a linear effect. This approach also has some diasadvantages, as the flexibility gives rise to a bigger risk of datasnooping. 
-
-The choice of using portfolios for the analysis is further made based on the extensive literature within asset pricing which makes the same choice. Furthermore, the choice is based on an approach looking the the effect of the signal on the entire American stock market, and not on specific stocks, therefore, an aggregation and combination of these stocks provides a clearer picture of the effect from the signal and reduces the noise from other individual risk factors.
-% JKJ: the word idiosyncratic might be useful in this context
-
-The portfolios are formed using breakpoints in distribution of the signal. Thus I start by choosing the amount of portfolios I would like. The traditional choice would be to follow \cite{} and make three portfolios with breakpoints at the 30 percentile and 70 percentile, to make portfolios consisting of the lowest 30\% of the signal, then the middle 40\%  and the last portfolio of the highest 30\% from the sample. In \cite{cremers2010deviations} they use five equal sized portfolios, and I will follow their example, but compare the results with portfolios sorted in the traditional way as mentioned above, and also with 10 portfolios. 
-
-The use of equal-sized portfolios stems from an ambition to evaluate the effect of the entire distribution of the signal and not just evaluate the tails as done in the traditional approach. Furthermore, my main analysis will be based on 5 equal sized portfolios to ensure a sufficient amount of stocks are in each. This means that I have a smaller sample of portfolio returns to evaluate, which I thought a reasonable tradeoff given the inclusion of the results from the analysis with different amount of portfolios in the appendix.
-
-Furthermore, the signal identified above might not be the sole signal that we are interested in. A combination of the absolute value of the implied volatility spread and the recent change in the implied volatility spread might also provide some insights. 
-
-Therefore, I will conduct an analysis focusing only on the univariate portfolio sorting based on the value, and following that a bivariate portfolio sorting with both a dependent and independent sorting with the implied volatility spread as the first sorting factor and the recent change in the implied volatility spread as the second sorting factor.
-% JKJ: I suppose this approach is based on some reference paper.
-
-The \textit{univariate} portfolio sorting has the following steps:
-
-\textbf{Step 1: Computing the breakpoints } Starting from the cross-sectional distribution of the signal, $S_{i,t}$, from the number of portfolios I need, denoted $n_{\rho}$, I find for all the $n_{\rho}-1$ breakpoints the $k$'th breakpoint as follows:
-\begin{equation}\label{eq:step1uni}
-	\mathcal{B}_{k,t}=\text{Percentile}_{\rho_{k}}\left(S_{i,t}\right)
-\end{equation}
-The sample used for the breakpoints determination is the entire available dataset. This is done to ensure equal sized portfolios across the analysis. It might however affect the liquidity aspect of the conclusions, as inclusion of smaller and less liquid stocks might skew the picture. This is due to the fact that smaller and less liquid stocks often have higher transactions costs and tighter borrowing constraints, and therefore not priced precisely as the markets expect.
-% JKJ: Maybe elaborate on what would be the alternative to using the full sample for bp determination
-
-\textbf{Step 2: Forming the Portfolios} The portfolios are then formed using the breakpoint, $\mathcal{B}_{k,t}$, found in the previous step. A stock, $i$, is then included in portfolio, $k$, if it's signal is within the breakpoints identified:
-% JKJ: To be more precise you could maybe state something like 'the pf corresponding to bp k is thus defined as'
+which then can be used to calculate the risk-neutral probabilities of an up-movement of the underlying, $q$:
 \begin{equation}
-	P_{k,t}=\left\{ i|\mathcal{B}_{k-1,t}\leq S_{i,t}<\mathcal{B}_{k,t}\right\} 
+	q=\frac{e^{r\Delta t}-d}{u-d}
 \end{equation}
-When forming the last portfolio (the portfolio consisting of stocks with the highest value of the signal), I will add the last few stocks with a signal value equal to the maximum signal value of the sample. In contrast some researchers include less than or equal sign on both side of the signal in the formation of their portfolios, which means that some stocks might be included in two portfolios. To counteract this I choose the above approach insted, which results in my last portfolio having slightly more stocks included, but no stocks will be in two portfolios at once.
+As the inherent discrete time nature of binomial trees, when the time increments goes towards zero, the price of the option will approach the Black-Scholes model implied price.
 
-\textbf{Step 3: Calculating the Returns} The returns will be calculated based on a value-weighted investment. Thus they are reported in simple value-weighted form with the market value, $MV_{i,t-1}$ observed as the shares outstanding timed the opening price at portfolio formation,  and calculated as follows:
-% JKJ: timed -> multiplied by?
+It should be noted here, that the choice of the CRR model is an industry standard, and I assume that a different choice of for example the Second Order CRR or the Jarrow-Rudd model \citep{jarrow1982approximate}, will not change the results drastically, as they only show a small modification to CRR. Furthermore, I am looking at the difference in implied volatility and not the absolute value, which means that only a model with asymmetric assignment of the volatility to calls versus puts would give a significant different estimation of the implied volatility spread. In addition to the choice of model, I could also use trinomial trees instead, which would resemble a possibility of the stock to either move up, down or be constant in the next period. This would make the analysis more nuanced, but in my view not provide enough new insights to outweight the increased computational burden. Another feasible way to valuing these american options would have been to use a simulation with a simple least squares approch as presented by \ref{longstaff2001valuing}. 
+
+Thus I can approximate the price of an option given a constant, known value of the volatility and a constant risk-free rate. This price will then be risk-neutral, and means that according to a risk-neutral view on the financial markets, an option should have that price to reflect the market's view on the future value of the option. 
+
+Using the binomial trees, it is possible to infer a price for an american option, by assuming that at any future state, the investor will exercise the option if the future expected value is less than the (at the time) current value. According to \cite{optionmetrics} the implied volatility is calculated using the binomial tree approach of \cite{cox1979option} and letting the time increments be sufficiently small to proxy continous time. For the calculation of a call option's value at time $i$ the following function is used:
 \begin{equation}
-	r_{k,t}=\frac{\sum_{i=1}^{N_{k,t}}MV_{i,t-1}\cdot r_{i,t}}{\sum_{i=1}^{N_{k,t}}MV_{i,t-1}}
+	C_{i}=\max\left\{ \begin{array}{c}
+		\left(qC_{i+1}^{up}+\left(1-q\right)C_{i+1}^{down}\right)/R\\
+		S_{i}-K
+	\end{array}\right\} 
+	\label{eq:call_price}
 \end{equation}
-I choose a value-weighted approach compared to equal-weighted, as I want to make sure that small and illiquid stocks, which are difficult to trade, have a small impact on the results. 
-% JKJ: compared -> as opposed to
+with $q$ being the risk-neutral probability of an up-movement in the stock price and $R$ is the relevant continous risk-free rate less any relevant dividends. Using this formula iteratively from maturity and back to the present, this will yield a fair price for the option. However, when I have only the price and not the volatility, I can use this setup to find the implied volatility. Thus I iterate through different values for $\sigma$ until the estimated price of the option converges to the midpoint between best bid and offer of the option at market close every day. 
 
-For a \textit{bivariate} portfolio sorting, the steps look a little different. First and foremost, this will make it possible to control for two different sorting signals compared to just one in the univariate portfolio sorting. The inclusion of bivariate sorting to take a second signal into account leaves more choices to be made. Of course, there is the amount of portfolios and the percentiles of the second signal, but another important choice regarding the sorting of the stocks is also relevant, namely whether to do independent or dependent sorting. Which means that when we do the breakpoints calculation of the second signal, we should either find them for the entire sample or from the grouping from the first signal.
+Completely analogously to the european option case, if I plug in the volatility of a stock return recursively into Equation \ref{eq:call_price}, it would result in the model-implied call price.
 
-In my case, I will look at the recent change in implied volatility spread as the second signal. Given the combination of the value of the same dataseries being the first sorting signal, it makes sense to do a dependent sorting. If an independent sorting were to be made, and given that the signal is relatively stable over the period as seen in figure OBS, there would be very few stocks with a low value of the signal (thus sorted in the first portfolio in the first sorting) and also having a big positive change in the signal value (sorted into the last portfolio in the second sorting) and vice versa. An independent sorting would therefore result in an almost empty portfolio of stocks with high (low) value and big negative (positive) change in the signal. A dependent sorting is chosen, and the following steps from above is adapted.
-% JKJ: makes sense, I think. So, as I understand your argument, in short, a dependent sort makes sense since the two different transformations of the spread feature is likely to be highly correlated.)
-
-\textbf{Adapted Step 1: Breakpoints for Dependent Bivariate Sorting} To find the breakpoints dependent on the first sorting signal, I use the following approach. Note that as mentioned above, the last portfolios are including the stocks with maximum value of the signal. The first sorting breakpoints for portfolio $k$ are defined as above in Equation \ref{eq:step1uni}, and the second sorting signal's breakpoints for portfolio $j$ is defined below:
+Traditionally when approximating the implied volalility, the researcher uses the price of the option, which incorporates all current knowledge of future dividends or stocksplits, and has the following form:
 \begin{equation}
-	\mathcal{B}_{k,j,t}^{2}=\text{Percentile}_{\rho_{j}}\left(S_{i,t}^{2}|\mathcal{B}_{k,t}^{1}\leq S_{i,t}^{1}<\mathcal{B}_{k,t}^{1}\right)
+	f_{t}=S_{t}e^{R\left(T-t\right)}.
+	\label{eq:forwardprice}
 \end{equation}
-Which leaves me with $n_{p_{1}} - 1$ breakpoints for the first portfolio sorting and $n_{p_{1}} \cdot \left(n_{p_{2}} - 1\right)$ breakpoints for the second portfolio sorting. 
 
-\textbf{Adapted Step 2: Forming Portfolios with Dependent Bivariate Sorting} Instead of allocating stocks to different portfolios according to only the first signal, I use both set of breakpoints simultaneously.
+As the put-call parity does not hold for american options, it is possible to encounter a non-zero implied volatility spread between a pair of call and put options. This spread is indicative of a relative expensive call or put. Following the notation in \cite{cremers2010deviations} the implied volatility spread is found through:
 \begin{equation}
-	P_{k,j,t}=\left\{ i|\mathcal{B}_{k-1,j,t}^{1}\leq S_{i,t}<\mathcal{B}_{k,j,t}^{1}\right\} \cap\left\{ i|\mathcal{B}_{k,j-1,t}^{2}\leq S_{i,t}<\mathcal{B}_{k,j,t}^{2}\right\} 
+	IV_{i,t}^{call}-IV_{i,t}^{put}=VS_{i,t} 
+	\label{eq:imp_vol_spread_CW}
 \end{equation}
-This results in $n_{p_{1}}\cdot n_{p_{2}}$ portfolios with approximately an equal amount of stocks included in each, with only the last portfolios including a slightly larger amounts of stocks.
+where $t$, $i$ and $j$ specifies the time, stock and combination of strike and maturity. The equaiton indicates that if the spread is positive (negative) then the call is relatively expensive (cheap) or the put is cheap (expensive). I would expect the spread to be close to zero and have a fairly small standard deviation, as I assume the markets are efficient and pricing the products close to their risk-neutral values.
 
-\textbf{Adapted Step 3: Calculating Returns with Dependent Bivariate Sorting} The third step is only slightly changed to account for the second dimension of portfolios:
+\subsubsection{Risk-Neutral Pricing}
+
+To provide a short note on the risk-neutral pricing, I will elaborate on the difference between the $\mathbb{Q}$ and $\mathbb{P}$ measure, and why it is relevant to keep their definitions in mind when doing an empirical asset pricing exercise on the basis of options and their risk-neutral inferred volatilities.
+
+%A measure is 
+
+As the $\mathbb{Q}$ measure is only signaling an adapted set of probabilities of future states which allows for risk-neutral pricing of any asset, it is related to the true probabilities under the $\mathbb{P}$ measure. The relation is defined in Girsanov's theorem \citep{girsanov1960transforming}. 
+
+On a general level, the measure determines which probabilities are assigned to uncertain events. Under the $\mathbb{P}$ measure (also known as the physical/historical measure), the probabilities are the ones pertaining to the real world. This is the measure under which we observe asset dynamics.
+
+The $\mathbb{Q}$-measure is another particular measure that is famously known from the fundamental theorem of asset pricing \citep{delbaen1994general}. It corresponds to the measure that would prevail in a world where all investors were risk-neutral, which would drive risk-premia to zero. In particular, under this measure, all asset price processes are driftless (i.e., martingales) when deflated by the value of the bank account. Another way to say this is that all assets earn the risk-free rate under the Q measure. The FTAP states that all assets can be priced as a discounted expectation under the Q measure, as in (2.1).
+
+%The intuitive difference between the $\mathbb{Q}$ measure and $\mathbb{P}$ measure is that the first one finds the risk-neutral probabilities, meaning that the price of today is set by the market according to the risk attributed with each possible outcome, while the latter denotes the 'real' or actual probabilities of the future outcome.
+
+As is apparent from the Girsanov theorem, $\mathbb{P}$ and $\mathbb{Q}$ measures are related through a risk premium, which is closely related to stochastic discount factors (SDF’s). On an intuitive level, one may view the $\mathbb{Q}$-measure as arising from a combination of the physical probabilities and a correction that is related to the risk-aversion of investors (and hence the SDF).
+
+Thus I am observing mispricings under the $\mathbb{Q}$-measure in the option markets, and basing my analysis of the stock returns under a $\mathbb{P}$-measure on the magnitude of these mispricings. This results in an analysis based on the $\mathbb{P}$-measure which identifies risk premia in the stock market. 
+
+%- On a general level, the measure determines which probabilities are assigned to uncertain events. Under the P-measure (also known as the physical/historical measure), the probabilities are the ones pertaining to the real world. This is the measure under which we observe asset dynamics.
+
+%The Q-measure is another particular measure that is famously known from the fundamental theorem of asset pricing  (oprindelig reference: Delbaen & Schachermeyer). It corresponds to the measure that would prevail in a world where all investors were risk-neutral, which would drive risk-premia to zero. In particular, under this measure, all asset price processes are driftless (i.e., martingales) when deflated by the value of the bank account. Another way to say this is that all assets earn the risk-free rate under the Q measure. The FTAP states that all assets can be priced as a discounted expectation under the Q measure, as in (2.1).
+
+%As is apparent from the Girsanov theorem, P and Q measures are related through a risk premium, which is closely related to stochastic discount factors (SDF’s). On an intuitive level, one may view the Q-measure as arising from a combination of the physical probabilities and a correction that is related to the risk-aversion of investors (and hence the SDF).
+
+\subsection{Arbitrage Pricing Theory}
+
+Arbitrage pricing theory was introduced by \cite{ross1976arbitrage} through the simple assumption of no arbitrage. He argues that investors should diversify their portfolios, so their exposure only is towards systemic risk factors and not idiosyncratic risk. And that all returns are primarily affected by a selected amount of factors. These returns are, of course, only a relative pricing mechanism, as Ross only states that the factors help determine the relative price levels of the assets. 
+
+These factors driving the returns should be fewer than the amount of assets available for investment. Ross derives the approximate relation between a diversified investment in a variety of assets and an unknown set of factors. The derivation is based on the statement that a zero-beta net-zero investment in a set of assets also should provide zero return, so as to not provide arbitrage opportunities. A net-zero investment in a diversified portfolio with no exposure to any factors, should yield no expected payoff. 
+
+Thus Ross builds the arguments as to all returns being approximately driven by a linear dependence on the factors. The factor model can as an extension of the APT model of Ross be written as:
 \begin{equation}
-	r_{k,j,t}=\frac{\sum_{i=1}^{N_{k,j,t}}MV_{i,t-1}\cdot r_{i,t}}{\sum_{i=1}^{N_{k,j,t}}MV_{i,t-1}}
+	r_{t,i}=\mathbb{E}_{t-1}\left(r_{t,i}\right)+\sum_{k=1}^{K}\beta_{k,i}\cdot f_{k,t-1}+\sum_{j=1}^{J}\beta_{j,i}\cdot g_{j,t-1}+\sum_{h=1}^{H}\beta_{h,i}\cdot p_{h,t}+\epsilon_{t,i}
 \end{equation}
-This concluding the adapted steps for the bivariate sorting. Any structure of analysis from here will look largely the same. 
+where the returns of an asset in period $t$ is determined through its expected value, its exposure to the priced factors, $f$, the quasi factors $g$, which are not priced, and lastly the characteristics of the asset, $p$, which is only observable within the return period. Any of the relevant factors might be traded.
 
-With the portfolio returns being computed, it is time to analyze them. A relevant fourth step will be to do some descriptive statistics of the returns and dive further into the pattern. 
+According to the Efficient Market Hypothesis \cite{fama1970efficient}, the investor should already incorporate any public knowledge into the pricing of the security, and the investors should demand compensation for systemic risk. This means that any idiosycratic risk factors do not demand a risk premium. The market should therefore have homogenous expectations regarding the exposures and risk factors.
 
-%JKJ: Never read or heard about portfolio sorting, but thought that maybe a general argument as to how this sorting approach scales with the number of features (not very well, given that you already have np1 * np2 portfolios, (yikes!) portfolios) could be relevant somewhere in the thesis?
+%Explaining arbitrage pricing theory -  investors pricing risks in the markets - some factors are priced, some are not Efficient market hypothesis states that factors should be priced, but it should already be priced in the stock. 
 
+%factor model : factors are traded or not traded, some are priced, some are not priced and just quasi factors, other things affecting the returns is the characteristics, which are observed within the holding period return.
 
-\subsection{Descriptive Statistics}
+\subsection{Rational Investors' Preferences}
 
-Sharpe Ratio leading on to Utility
+A rational investor is characterised by preferring more to less. In the mean-variance model of \cite{markowitz1952portfolio}, the returns approximately follows a gaussian distribution, which leads to the natural conclusion that investors will make their investment decisions solely based on the expected return and the variance of the return. 
 
+This consideration of only mean and variance means that we can implement the portfolio optimization proposed by \cite{markowitz1952portfolio} and \cite{markowitz1959efficient}. Here the covariance matrix of the returns, the expected value and the variance of the returns are assumed to remain somewhat stable. And the investor should then combine the portfolios on the efficient frontier, and identify the relevant split between the risk free asset and the optimal portfolio.
 
-\subsection{Monotonicity Test}
+In this setup, I am not assuming risk aversion, but only that the only source of risk relevant to the investor is the variance. This is because I do not need the additional assumptions of the utility framework introduced by \cite{von2007theory}, because I am limiting the focus to the optimal portfolio formation. 
 
-The pattern of the returns have traditionally been inspected through visual analysis of the mean return of each portfolio. To do this in a more structured way, \cite{wolak1987exact, wolak1989testing} introduce a test for monotinicity in returns with a null hypothesis of a clear pattern, and \cite{fama1984term} proposes a similar test using Bonferroni bounds. \cite{patton2010monotonicity} introduces a test with the same purpose, but a different null hypothesis of no clear pattern in the returns across portfolios. This ensures that we only reject the null hypothesis of no distinct monotonically increasing returns across portfolios if there is enough evidence to support it, while the abovementioned tests would require the data to show a random pattern instead of a monotonically increasing one. In other words, I prefer to use a test which has no pattern as a prior and relies on the data to prove it wrong.
+Inclusion of the utility framework would result in a choice regarding the utility function. This would model the rational investors preference under an expected utility view, and not account for several behavioural biases, which I have deemed relevant in the choice of implied volatility spreads. Namely the loss aversion which is evident as a backbone of the prospect theory introduced by \cite{kahneman2013prospect}.
 
-The hypothesis of the \cite{patton2010monotonicity} test is formally written as, using $\Delta_{i} = \mu _{i} - \mu_{i-1}$ as the difference between the average return of portfolio $i$ and $i-1$:
-\begin{equation}
-	\begin{array}{c}
-		H_{0}:\Delta\leq0\\
-		H_{1}:\Delta>0
-	\end{array}
-\end{equation}
-The test statistic is then computed as the minimum of the observed deltas, $J_{T} = \min \left( \Delta \right)$. As there is no preformed distribution of this test statistic on which we can evaluate significance, we will find the distribution through bootstrapping with replacement from the original sample. This is all done in the R package provided by \cite{rpackagemonotonicity}. 
+\textbf{Prospect Theory} To make a brief comment on prospect theory. The choice of including the implied volatility spreads data, is partly based on the historical average being negative. I interpret this negative value to be a signal of the put options to frequently have a relatively high price, even after correcting for the intrinsic value of the option. A relatively high price of the put indicates that investors are bidding up the price of the  right to sell in the future. Thus they are willing to pay a higher price to ensure that their profits are locked in. This indicates loss aversion, as they are not behaving rationally. If all investors were rational, then the implied volaatility spread should be fairly small and close to zero, as it only would proxy the extra information of the delayed market close of the optionmarkets, and the tendency of informed investors to trade in the option markets before moving to the stock market.
 
-The reason for the inclusion of this test is to identify if there is a monotonically increasing (or decreasing) pattern in the average returns of the portfolios. This will lead to a preliminary conclusion that it might be relevant to look at this signal, given that it when rejecting the null has a significant effect on the expected returns. 
+%assumptions from utility 
+%always preferring more to less, the investor are risk-averse, assuming that all investors therefore would only invest in risky stocks if the expected future value is higher than the risk free rate. 
 
-This test is, however, based on a view on the entire sample period and does not account for time varying monotonicity or if the pattern persists when corrected for other known risk factors. I will therefore in the further analysis look deeper into the time-varying predictability abilities of the signal and examine how it performs in the cross sectional study when confronted with common risk factors from \cite{fama1984term}.
+%returns are normally distributed (gaussian) -> resulting in the mean-variance space being relevant -> is this true? no, so 
 
-\subsection{Comparing with Other Factors}
+%mean-variance investors results in the mean-variance Efficient Set and the capital allocation line -> allocation according to optimal allocation given the ex-post analysis -> resulting in analysis of the covariance of the portfolios giving a optimal allocation according to the highest Sharpe Ratio -> allocation constraints as no shorting + a wish to be diversified or unavailability of the portfolios.
 
-In this subsection I will elaborate on different approaches used for evaluating the signal against other (and acknowledged in the literature) factors. The first approach will be very basic and relate to the cross sectionality part of the analysis. The remaining approaches will relate to predictability of the 
+%we are not assuming risk-aversion , we are just assuming standard deviation being the relevant risk measure.
 
-\subsubsection{Fama-Macbeth Analysis}
-Models considered : time invariant + rolling window betas + simple model + extended models with FF5
+%\subsection{Prospect Theory}\label{subsection:prospect}
 
-Common issues -> Errors-in-variables + autocorrelation and heteroskedasticity -> using GMM to lessen issues  + increasing the sample frequency to decrease uncertainty in measuring + using portfolios to cancel out noise + using Shanken's correction to the standard errors as to not accept some coefficient as being statistical different from zero.
+%loss aversion -> puts should be more expensive than calls -> rational value of the mean implied volatility spread
 
-\subsection{Economic Evaluation}
+\subsection{A Small Note on Statistical Properties}
 
-Why would it be useful to evaluate the portfolios, in not only a statistical way but also in an economic way? Looking at utility from investing in long-short portfolios seem obvious.
+The statistical properties of the returns are relevant for the interpretation and validity of the results. For the regressions deployed, the returns should follow a gaussian distribution. OLS is assumed to be the efficient estimator, but the returns show some problems related to autocorrelation and heteroscedasticity. 
 
-Utility from investing (expected) in the portfolio -> certainty equivalent -> mean-variance?
+The autocorrelation of asset returns is a common problem, and as such I have deployed Newey-West standard errors to correct for this potential issue. This also takes care of the problems with heteroscedasticity.
 
-\subsection{Optimal Allocation}
+Some of the models are deployed in the literature using both OLS and in a GMM framework, but to keep the simplicity of the methods, I have refrained from using GMM. The benefits from including GMM would be the robust standard errors and removing the errors-in-variables problem arising from Fama-Macbeth regressions, but this will be corrected through the use of robust standard errors and a correction by Shanken for the errors-in-variables. 
 
-Mean-variance? -> gaussian distribution (then mean-variance is the most relevant) -> finding the efficient frontier -> plotting the portfolios found along with FF 25 portfolios -> drawing the optimal allocation -> including the target return index
+Correcting for these problems allows me to interpret and conduct inference upon the results.
 
+The stationarity of the signal is shown in the appendix, along with the plots of the autocorrelation function of the different portfolios. 
 
+%gaussian distributed returns -> OLS is the efficient estimator -> problems with autocorrelation and heteroscedasticity -> also in the factors ? -> solutions : robust standard errors and GMM takes this into account -> it is not used here
 
+%NEWEY-WEST
 

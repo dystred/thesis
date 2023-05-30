@@ -14,7 +14,8 @@ portfolio_maker <- function(filtered_raw      = "raw"                           
                             splits_2          = 5                                    , # any integer or "custom"
                             custom_split_1    = FALSE                                , # logical FALSE or c(0.3,0.7) for a 0.3 - 0.4 - 0.3 split
                             custom_split_2    = FALSE                                , # logical FALSE or c(0.3,0.7) for a 0.3 - 0.4 - 0.3 split
-                            splits_number     = 1                                      # 1 or 2
+                            splits_number     = 1                                    , # 1 or 2
+                            scenarioID        = NULL
 ){
   #' compute portfolio returns based on characteristics
   #' 
@@ -90,25 +91,25 @@ portfolio_maker <- function(filtered_raw      = "raw"                           
     "splits_number"     = splits_number
   )
   
-  meta_data_files <- list.files(portfoliopath) %>% 
-    as_tibble() %>% 
-    dplyr::filter(grepl("metadata", value))
-  
-  for(file in meta_data_files$value){
-    # file = meta_data_files$value[1]
-    tmp_metadata <- read_csv(file = paste0(portfoliopath, "/",file),
-                             show_col_types = FALSE) %>% 
-      dplyr::select(colnames(metadata))
-    if(all(tmp_metadata == metadata)){
-      return("A metadata file equal to the one you have entered, already exists.")
+  if(is.null(scenarioID)){
+    meta_data_files <- list.files(portfoliopath) %>% 
+      as_tibble() %>% 
+      dplyr::filter(grepl("metadata", value))
+    
+    for(file in meta_data_files$value){
+      # file = meta_data_files$value[1]
+      tmp_metadata <- read_csv(file = paste0(portfoliopath, "/",file),
+                               show_col_types = FALSE) %>% 
+        dplyr::select(colnames(metadata))
+      if(all(tmp_metadata == metadata)){
+        return("A metadata file equal to the one you have entered, already exists.")
+      }
     }
+    
+    version_number <- nrow(meta_data_files) + 1
+  } else{
+    version_number <- scenarioID
   }
-  
-  ################################################################################
-  #################### Identification of unique version number ###################
-  ################################################################################
-  
-  version_number <- nrow(meta_data_files) + 1
   
   metadata %>% 
     write.csv(file = paste0(portfoliopath, "/metadata_", version_number, ".csv"))
@@ -136,7 +137,28 @@ portfolio_maker <- function(filtered_raw      = "raw"                           
                                          2+(length(custom_split_1)+2)*splits_2,
                                          2+splits_1*splits_2)))
   
+  if(splits_number==1){
+    portfolio_names <- tibble(portfolios = 1:ifelse(splits_1 == "custom", 
+                                1+length(custom_split_1),
+                                splits_1))
+  } else{
+    port1 <- 1:ifelse(splits_1 == "custom", 
+                      1+length(custom_split_1),
+                      splits_1)
+    port2 <- 1:ifelse(splits_2 == "custom", 
+                      1+length(custom_split_2),
+                      splits_2)
+    
+    portfolio_names <- tibble(port1v = sort(rep(port1, times = length(port2))), 
+           port2v = rep(port2, times = length(port1))) %>% 
+      mutate(portfolios = paste0(port1v, "_", port2v), .keep = "unused")
+  }
+  
+  portf_merger <- as_tibble(matrix(data = NA, nrow = 1, ncol = (2+nrow(portfolio_names))))
+  colnames(portf_merger) <- c("date", "week", portfolio_names$portfolios)
+  
   for(year in years){
+    # year = 1996
     # year = year + 1
     print(year)
     
@@ -160,8 +182,6 @@ portfolio_maker <- function(filtered_raw      = "raw"                           
       # date_ = ymd("1996-01-15")
       # d=1+d
       
-      #print(paste0("Step ",round(d/length(dates2$date)*100,2), " out of ", length(dates2$date)))
-      
       date_ <- ymd(dates2$date[[d]])
       tmp_return_date = tmp_return_data %>%
         dplyr::filter(date == date_)
@@ -174,42 +194,49 @@ portfolio_maker <- function(filtered_raw      = "raw"                           
            & day(date_) <= 7 
            & year(date_) != 1996
            & method == "predictability"){
-        
-        tmp_option_data = read_csv(file = paste0(datapath1,"/OPTIONM_filteredoptions_weekly_",filtered_raw,"_",year-1,".csv"), show_col_types = FALSE)
+        signal_year <-  year-1
       } else{
-        tmp_option_data = read_csv(file = paste0(datapath1,"/OPTIONM_filteredoptions_weekly_",filtered_raw,"_",year,".csv"), show_col_types = FALSE)
+        signal_year <-  year
       }
+      
+      tmp_option_data_raw <- read_csv(file = paste0(datapath1,"/OPTIONM_filteredoptions_weekly_",filtered_raw,"_",signal_year,".csv"), show_col_types = FALSE)
       
       ############################################################################
       ################ Predictability or Cross sectional analysis ################
       ############################################################################
       
       if(method == "predictability"){
-        tmp_option_data = tmp_option_data %>% 
-          dplyr::filter((date < date_) & (date >= date_-days(7))) %>% 
-          group_by(PERMNO) %>% 
-          fill(impl_vol_spread) %>% 
-          fill(weighted_impl_vol_spread) %>% 
-          ungroup()
+        start_date <- date_ - days(7)
+        end_date <- date_ - days(1)
       } else if(method == "cross sectionality"){
-        tmp_option_data = tmp_option_data %>% 
-          dplyr::filter((date >= date_) & (date <= date_+days(5))) %>% 
-          group_by(PERMNO) %>% 
-          fill(impl_vol_spread) %>% 
-          fill(weighted_impl_vol_spread) %>% 
-          ungroup()
+        start_date <- date_
+        end_date <- date_ + days(5)
       }
+      
+      tmp_option_data <- tmp_option_data_raw %>% 
+        dplyr::filter((date <= end_date) & (date >= start_date)) %>% 
+        group_by(PERMNO) %>% 
+        fill(c(impl_vol_spread, weighted_impl_vol_spread)) %>% 
+        ungroup()
       
       ############################################################################
       ################# Choosing simple or weighted impl. vol ####################
       ############################################################################
       
       if(weighted_simple == "simple"){
-        tmp_option_data = tmp_option_data %>%
-          dplyr::select(PERMNO, date, impl_vol_spread, sum_open_interest, sum_volume)
+        tmp_option_data <-tmp_option_data %>%
+          dplyr::select(PERMNO, 
+                        date, 
+                        impl_vol_spread, 
+                        sum_open_interest, 
+                        sum_volume)
       } else if(weighted_simple == "weighted"){
-        tmp_option_data = tmp_option_data %>%
-          dplyr::select(PERMNO, date, impl_vol_spread = weighted_impl_vol_spread, sum_open_interest, sum_volume)
+        tmp_option_data <- tmp_option_data %>%
+          dplyr::select(PERMNO, 
+                        date, 
+                        impl_vol_spread = weighted_impl_vol_spread, 
+                        sum_open_interest, 
+                        sum_volume)
       }
       
       ############################################################################
@@ -294,7 +321,8 @@ portfolio_maker <- function(filtered_raw      = "raw"                           
       signal_data_portfolios <- signal_data %>% 
         mutate(portfolios1 = FALSE,
                portfolios2 = FALSE) %>% 
-        dplyr::rename(DATE = date, permno = PERMNO)
+        dplyr::rename(DATE = date, permno = PERMNO) %>% 
+        dplyr::filter(!is.na(signal))
       
       available_permnos_for_portfolios <- tmp_return_date %>% 
         summarize(unique = unique(permno)) %>% 
@@ -317,7 +345,6 @@ portfolio_maker <- function(filtered_raw      = "raw"                           
         as_tibble()
       
       for(k in 1:splits_1){
-        # i= 1 +i
         lower_signal <- portfolio_cuts %>% 
           dplyr::filter(row_number() == k) %>% 
           pull(cuts)
@@ -405,7 +432,8 @@ portfolio_maker <- function(filtered_raw      = "raw"                           
         signal_data_portfolios <- signal_data_portfolios %>% 
           left_join(signal_data_2 %>% 
                       dplyr::rename(signal2=signal,permno=PERMNO,DATE=date)
-                    , by=c("permno","DATE"))
+                    , by=c("permno","DATE")) %>% 
+          dplyr::filter(!is.na(signal2))
         
         number_of_portfolios <- signal_data_portfolios %>% 
           ungroup() %>% 
@@ -418,10 +446,12 @@ portfolio_maker <- function(filtered_raw      = "raw"                           
       ############################################################################
       ####################### Second portfolio: sort into ########################
       ############################################################################
-      if(splits_number == 2 & nrow(tmp_option_data) != 0 & length(number_of_portfolios) != 1){
+      if(splits_number == 2 & nrow(tmp_option_data) != 0 & length(number_of_portfolios) > 1){
         
         if(is.logical(custom_split_2) & is.numeric(splits_2)){
           quantiles2 <- seq(from = 0, to = 1, length.out = splits_2+1)
+          quantiles2_all <- rep(seq(from = 0, to = 1, length.out = splits_2+1), 
+                                each = length(unique(signal_data_portfolios$portfolios1)))
         } else {
           splits_2 <- length(custom_split_2)+1
           quantiles2 <- c(0, custom_split_2,1)
@@ -429,13 +459,14 @@ portfolio_maker <- function(filtered_raw      = "raw"                           
         
         if(doublesort == "dependent"){
           quantiles2_fortibble <- quantiles2 %>% 
-            as_tibble() %>% 
-            dplyr::rename(quantiles = value) %>% 
-            rep(each = length(unique(signal_data_portfolios$portfolios1))) %>% 
-            rbind.data.frame() %>% 
-            pivot_longer(cols = everything(), values_to = "quantiles") %>% 
-            arrange(name) %>% 
-            dplyr::select(quantiles)
+            #as_tibble() %>% 
+            #dplyr::rename(quantiles = value) %>% 
+            rep(., times = length(unique(signal_data_portfolios$portfolios1))) %>% 
+            #matrix(nrow = length(quantiles2)) %>% 
+            as_tibble() %>% #rbind.data.frame() %>% 
+            #pivot_longer(cols = everything(), values_to = "quantiles") %>% 
+            #arrange(name) %>% 
+            dplyr::select(quantiles = value) #dplyr::select(quantiles)
           
           portfolio_cuts <- signal_data_portfolios %>%
             # left_join(signal_data_2 %>% dplyr::rename(signal_2 = signal, permno = PERMNO, DATE = date), by = c("permno", "DATE")) %>% 
@@ -446,7 +477,7 @@ portfolio_maker <- function(filtered_raw      = "raw"                           
             spread(key = portfolios1, value = cuts) %>% 
             as_tibble()
           
-          dependentsort_loop <- splits_2
+          dependentsort_loop <- ncol(portfolio_cuts)-1#splits_2
           
         } else if(doublesort == "independent"){
           portfolio_cuts <- signal_data_2 %>% 
@@ -479,8 +510,14 @@ portfolio_maker <- function(filtered_raw      = "raw"                           
               dplyr::filter(row_number() == k+1) %>% 
               pull(cuts)
             
-            signal_data_portfolios <- signal_data_portfolios %>% 
-              mutate(portfolios2 = ifelse(signal2 >= lower_signal && signal2 < upper_signal && portfolios1 == j, k, portfolios2))
+            if(doublesort == "independent"){
+              signal_data_portfolios <- signal_data_portfolios %>% 
+                mutate(portfolios2 = ifelse(signal2 >= lower_signal && signal2 < upper_signal, k, portfolios2))
+            } else {
+              partportf <- as.numeric(colnames(portfolio_cuts)[1+j])
+              signal_data_portfolios <- signal_data_portfolios %>% 
+                mutate(portfolios2 = ifelse(signal2 >= lower_signal && signal2 < upper_signal && portfolios1 == partportf, k, portfolios2))
+            }
           }
           
         }
@@ -515,35 +552,7 @@ portfolio_maker <- function(filtered_raw      = "raw"                           
                   var = var(signal, na.rm = TRUE),
                   .groups = "keep")
       
-      #if(portfolio_weight == "simple"){
-        
-      # tmp_portfolio_returns <- tmp_return_date %>% 
-      #    dplyr::left_join(signal_data_portfolios, by = "permno") %>% 
-      #    dplyr::select(-bidlo, -askhi, -closingprice,-openprice,-volume,-bidaskspread, -trades, -DATE)
-        
-      #} else if(portfolio_weight == "value"){
-      #  tmp_portfolio_returns <- tmp_return_date %>% 
-      #    dplyr::left_join(signal_data_portfolios, by = "permno") %>% 
-      #    select(permno, week, date, return = ret, value = marketvalue, portfolios1)
-        
-        #tmp_portfolio_returns <- tmp_return_date %>% 
-        #  dplyr::left_join(signal_data_portfolios, by = "permno") %>% 
-        #  dplyr::left_join(value_weighted_data %>% 
-        #                     group_by(permno) %>% 
-        #                     summarize(shares_outstanding = mean(shrout), .groups = "keep"), 
-        #                   by = "permno") %>% 
-        #  dplyr::filter(!is.na(portfolios1)) %>% 
-        #  mutate(value = shares_outstanding * openprice) %>% 
-        #  dplyr::select(-bidlo, -askhi, -closingprice,-openprice,-volume,-bidaskspread, -trades, -DATE, -shares_outstanding)
-      #}
-      
       if(splits_number == 1){
-        # tbl_colnames <- tibble(`1` = 1:max(tmp_portfolio_returns$portfolios1, na.rm = TRUE)) %>% 
-        #   dplyr::select(`1`) %>% 
-        #   rbind(c("date", "week")) %>% 
-        #   pull(`1`)
-        # tibs <- tbl <- tibble::tibble(!!!tbl_colnames, .rows = 0)
-        
         if(portfolio_weight == "simple"){
           tmp_returns <- tmp_portfolio_returns %>% 
             dplyr::select(permno, week, date, return, portfolios1) %>% 
@@ -574,20 +583,6 @@ portfolio_maker <- function(filtered_raw      = "raw"                           
             spread(key = "portfolios1", value = "return")
         }
       } else if(splits_number == 2){
-        # tbl_colnames <- tibble(`1` = 
-        #                  rep(1:max(tmp_portfolio_returns$portfolios1, na.rm = TRUE), 
-        #                      times = max(tmp_portfolio_returns$portfolios2, na.rm = TRUE)) %>% sort(),
-        #                `2` = 
-        #                  rep(1:max(tmp_portfolio_returns$portfolios2, na.rm = TRUE), 
-        #                      times = max(tmp_portfolio_returns$portfolios1, na.rm = TRUE))
-        #                      ) %>% 
-        #   mutate(comb = paste0(`1`,"_",`2`)) %>% 
-        #   dplyr::select(comb) %>% 
-        #   rbind("date") %>% 
-        #   rbind("week") %>% 
-        #   pull(comb)
-        # tibs <- tibble::tibble(!!!tbl_colnames, .rows = 1)
-        
         if(portfolio_weight == "simple"){
           tmp_returns <- tmp_portfolio_returns %>% 
             dplyr::filter(!is.na(portfolios1)) %>% 
@@ -623,11 +618,17 @@ portfolio_maker <- function(filtered_raw      = "raw"                           
         }
       }
       
-      #rbind(tmp_returns, tibs)
+      #print(tmp_returns)
       
-      if(nrow(tmp_returns) != 0 & ncol(tmp_returns) == cols_of_returns){ 
-        returns[[v]] <- tmp_returns
-        returns_log[[v]] <- tmp_log_returns
+      if(nrow(tmp_returns) != 0){ # & ncol(tmp_returns) == cols_of_returns){ 
+        returns[[v]] <- dplyr::bind_rows(portf_merger, tmp_returns) %>% 
+          dplyr::filter(!is.na(date)) %>% 
+          dplyr::select(colnames(portf_merger))
+        #returns[[v]] <- tmp_returns
+        returns_log[[v]] <- dplyr::bind_rows(portf_merger, tmp_log_returns) %>%
+          dplyr::filter(!is.na(date)) %>% 
+          dplyr::select(colnames(portf_merger))
+        #returns_log[[v]] <- tmp_log_returns
         portfolios_signal_values[[v]] <- tmp_portfolios_signal_values
         v = v+1
       }
@@ -659,7 +660,7 @@ portfolio_maker <- function(filtered_raw      = "raw"                           
     theme(legend.position="bottom",
           text=element_text(family="Times New Roman"),
           plot.title = element_text(hjust = 0.5))
-  ggsave(filename = paste0("implvolspread_entireperiod_",filtered_raw,"_",weighted_simple,"_",version_number,".png"),
+  ggsave(filename = paste0("implvolspread_entireperiod_",filtered_raw,"_",weighted_simple,"_.png"),
          path = plotpath,
          width = 250, height = 110, units = "mm")
   
@@ -683,7 +684,7 @@ portfolio_maker <- function(filtered_raw      = "raw"                           
     theme(legend.position="bottom",
           text=element_text(family="Times New Roman"),
           plot.title = element_text(hjust = 0.5))
-  ggsave(filename = paste0("implvolspread_entireperiod_",filtered_raw,"_",weighted_simple,"_",version_number,".png"),
+  ggsave(filename = paste0("implvolspread_entireperiod_",filtered_raw,"_",weighted_simple,".png"),
          path = projectplotpath,
          width = 250, height = 110, units = "mm")
   
@@ -704,3 +705,5 @@ portfolio_maker <- function(filtered_raw      = "raw"                           
     write.csv(file = paste0(portfoliopath, "/signalportfolios_", version_number, ".csv"))
   
 }
+
+

@@ -8,19 +8,19 @@
 
 %%%%%%%%%%%%%%%%%%%%%%% Abstract %%%%%%%%%%%%%%%%%%%%%
 \thispagestyle{empty}
-\setstretch{1.5}
+%\setstretch{1.5}
 
 \input{./Sections/0. Abstract}
 \clearpage
 
 %%%%%%%%%%%%%%%%%%%%%%% Table of contents %%%%%%%%%%%%%%%%%%%%%
+\setcounter{tocdepth}{2}
 \addtocontents{toc}{\protect\thispagestyle{empty}}
  \hypersetup{
- 	colorlinks,
  	linkcolor={blue!25!black},
  	citecolor={blue!60!black},
  	urlcolor={blue!25!black}
- }
+}
 {\hypersetup{linkcolor={blue!20!black},} \tableofcontents }
 \thispagestyle{empty}
 %%%%%%%%%%%%%%%%%%%%%%% END Table of contents %%%%%%%%%%%%%%%%%%%%%
@@ -31,7 +31,7 @@
 \input{./Sections/1. Introduction}
 \clearpage
 
-\section{Setting}
+\section{Setting the Stage}
 \label{section:Setting}
 \input{./Sections/2. Setting}
 \clearpage
@@ -41,19 +41,35 @@
 \input{./Sections/3. Data}
 \clearpage
 
+\section{Empirical Implementation}
+\label{section:empirical}
+\input{./Sections/6. Implementation}
+\clearpage
+
 \section{Cross Sectional Analysis}
 \label{section:cross}
 \input{./Sections/4. CrossSection}
 \clearpage
 
+%\section{Predictability}
+%\label{section:pred}
+%\input{./Sections/5. Predictability}
+%\clearpage
+
 \section{Discussion and Further Research}
 \label{section:disco}
-\input{./Sections/5. Discussion}
+\input{./Sections/6. Discussion}
+\clearpage
+
+\section{Conclusion}
+\label{section:conc}
+\input{./Sections/9. Conclusion}
 \clearpage
 
 %%%%%%%%%%%%%%%%%%%%%%% Importing bibliography %%%%%%%%%%%%%%%%%%%%%
-%\bibliographystyle{}
+\bibliographystyle{}
 \bibliography{biblo.bib}
+%\printbibliography
 \clearpage
 
 %----------------------- Appendices ----------------------------%
